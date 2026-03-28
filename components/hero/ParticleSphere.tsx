@@ -155,24 +155,26 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
       const ox = state.mx * 10
       const oy = state.my * 8
 
-      // Use normal composite; lighter can get too "sparkly".
-      ctx.globalCompositeOperation = 'source-over'
+      // A touch of additive blend like Maze's "particle mass".
+      ctx.globalCompositeOperation = 'lighter'
 
       for (const p of particles) {
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
-        // Soft edge: alpha decreases toward the edge + gentle core boost.
+        // Soft edge: alpha decreases toward the edge + stronger core boost.
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         const falloff = 1 - clamp(rr, 0, 1)
-        const coreBoost = 0.7 + 0.45 * Math.pow(falloff, 1.8)
-        const a = p.a * (0.28 + 0.72 * falloff) * coreBoost
+        const coreBoost = 0.55 + 0.85 * Math.pow(falloff, 2.35)
+        const a = p.a * (0.20 + 0.80 * falloff) * coreBoost
 
         ctx.fillStyle = `rgba(236, 241, 255, ${a.toFixed(4)})`
         ctx.beginPath()
         ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
         ctx.fill()
       }
+
+      ctx.globalCompositeOperation = 'source-over'
     }
 
     function tick() {
