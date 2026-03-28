@@ -6,6 +6,7 @@ import { useReducedMotionSafe } from './useReducedMotionSafe'
 type Particle = {
   x: number
   y: number
+  z: number
   vx: number
   vy: number
   r: number
@@ -65,15 +66,22 @@ export function ParticleSphere({
 
       // Small drift; more drift at edges than core.
       const edge = rr
-      const speed = 0.00012 + 0.00022 * edge
       const angle = rand() * Math.PI * 2
 
-      const radiusPx = 0.85 + rand() * 1.45
-      const alpha = 0.22 + rand() * 0.34
+      // Depth (front/back) like Maze: affects size + alpha.
+      const z = rand() // 0..1 (closer to 1 = closer to camera)
+
+      // Slow drift overall; slightly faster for closer particles.
+      const speed = (0.00007 + 0.00016 * edge) * (0.75 + 0.55 * z)
+
+      // Make dots more "crisp" and layered.
+      const radiusPx = (0.70 + rand() * 1.15) * (0.85 + 0.55 * z)
+      const alpha = (0.10 + rand() * 0.18) * (0.55 + 0.95 * z)
 
       out.push({
         x,
         y,
+        z,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         r: radiusPx,
@@ -125,8 +133,9 @@ export function ParticleSphere({
       const rect = canvas.getBoundingClientRect()
       const nx = (e.clientX - rect.left) / rect.width
       const ny = (e.clientY - rect.top) / rect.height
-      state.mx = (nx - 0.5) * 2
-      state.my = (ny - 0.5) * 2
+      // Smooth pointer drift for less jitter.
+      state.mx += ((nx - 0.5) * 2 - state.mx) * 0.12
+      state.my += ((ny - 0.5) * 2 - state.my) * 0.12
     }
 
     const onVisibility = () => {
@@ -167,9 +176,9 @@ export function ParticleSphere({
       const px = state.cx * state.w
       const py = state.cy * state.h
 
-      // Parallax offsets.
-      const ox = state.mx * 10
-      const oy = state.my * 8
+      // Parallax offsets (Maze-like: a bit more pronounced but still subtle).
+      const ox = state.mx * 16
+      const oy = state.my * 12
 
       // Let callers attach DOM labels to real particle anchors.
       if (onFrame) {
@@ -187,38 +196,68 @@ export function ParticleSphere({
       ctx.globalCompositeOperation = 'source-over'
 
 
-      // Pass 1: base dots (soft, non-additive)
-      for (const p of particles) {
+      // Sort so farther particles render first (depth).
+      const sorted = particles.slice().sort((a, b) => a.z - b.z)
+
+      // Maze-like color: slightly cool white.
+      const baseRGB = { r: 232, g: 239, b: 255 }
+
+      // Pass 1: crisp base dots (no blur; rely on additive pass for glow)
+      for (const p of sorted) {
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
-        // Soft edge: alpha decreases toward the edge + stronger core boost.
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         const falloff = 1 - clamp(rr, 0, 1)
-        const coreBoost = 0.60 + 1.00 * Math.pow(falloff, 2.2)
-        const a = p.a * (0.24 + 0.86 * falloff) * coreBoost
 
-        ctx.fillStyle = `rgba(244, 248, 255, ${a.toFixed(4)})`
+        // Front particles a bit brighter; edge slightly dimmer.
+        const depth = 0.55 + 0.85 * p.z
+        const a = p.a * (0.55 + 0.45 * falloff) * depth
+
+        ctx.fillStyle = `rgba(${baseRGB.r}, ${baseRGB.g}, ${baseRGB.b}, ${a.toFixed(4)})`
         ctx.beginPath()
         ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
         ctx.fill()
       }
 
-      // Pass 2: additive sparkle (helps particles pop)
+      // Pass 2: subtle additive glow when dots cluster (mostly for front half)
       ctx.globalCompositeOperation = 'lighter'
-      for (const p of particles) {
+      for (const p of sorted) {
+        if (p.z < 0.45) continue
+
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
-        if (rr > 0.62) continue
+        if (rr > 0.72) continue
 
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
         const falloff = 1 - clamp(rr, 0, 1)
-        const a = (p.a * 0.24) * Math.pow(falloff, 2.3)
+        const a = (p.a * 0.30) * Math.pow(falloff, 1.9) * (0.25 + 0.75 * p.z)
 
         ctx.fillStyle = `rgba(255, 255, 255, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * 1.18, 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * 1.25, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // Pass 3: 4 brighter "guide" points (the ones you asked for)
+      ctx.globalCompositeOperation = 'source-over'
+      const guides = [
+        { x: -0.55, y: -0.18 },
+        { x: 0.52, y: -0.06 },
+        { x: -0.18, y: 0.42 },
+        { x: 0.22, y: 0.18 },
+      ]
+      for (const g of guides) {
+        const sx = px + (g.x * state.R + ox)
+        const sy = py + (g.y * state.R + oy)
+        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 10)
+        glow.addColorStop(0, 'rgba(255,255,255,0.95)')
+        glow.addColorStop(0.35, 'rgba(255,255,255,0.35)')
+        glow.addColorStop(1, 'rgba(255,255,255,0.0)')
+        ctx.fillStyle = glow
+        ctx.beginPath()
+        ctx.arc(sx, sy, 10, 0, Math.PI * 2)
         ctx.fill()
       }
 
