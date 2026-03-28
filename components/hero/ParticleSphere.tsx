@@ -35,25 +35,25 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
 
     const out: Particle[] = []
     for (let i = 0; i < density; i++) {
-      // Sample a "sphere" distribution: more points near centre
+      // Sample a "sphere" distribution: much more density in the core
       const u = rand()
       const v = rand()
       const theta = u * Math.PI * 2
 
-      // r is biased to the centre. pow -> tighter core.
-      const rr = Math.pow(v, 0.55)
+      // Strong centre bias (closer to Maze): tighter core, softer halo.
+      const rr = Math.pow(v, 0.38)
 
       // Slightly squash vertically to feel like an orb in perspective.
       const x = Math.cos(theta) * rr
-      const y = Math.sin(theta) * rr * 0.78
+      const y = Math.sin(theta) * rr * 0.76
 
       // Small drift; more drift at edges than core.
       const edge = rr
       const speed = 0.00012 + 0.00022 * edge
       const angle = rand() * Math.PI * 2
 
-      const radiusPx = 0.7 + rand() * 1.2
-      const alpha = 0.18 + rand() * 0.26
+      const radiusPx = 0.55 + rand() * 1.05
+      const alpha = 0.12 + rand() * 0.22
 
       out.push({
         x,
@@ -139,8 +139,8 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
       const y = state.cy * state.h
 
       const g = ctx.createRadialGradient(x, y, state.R * 0.05, x, y, state.R)
-      g.addColorStop(0, 'rgba(240, 244, 255, 0.045)')
-      g.addColorStop(0.55, 'rgba(240, 244, 255, 0.012)')
+      g.addColorStop(0, 'rgba(240, 244, 255, 0.070)')
+      g.addColorStop(0.52, 'rgba(240, 244, 255, 0.016)')
       g.addColorStop(1, 'rgba(240, 244, 255, 0.0)')
 
       ctx.fillStyle = g
@@ -162,12 +162,13 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
-        // Soft edge: alpha decreases toward the edge of the sphere.
-        const rr = Math.sqrt(p.x * p.x + (p.y / 0.78) * (p.y / 0.78))
+        // Soft edge: alpha decreases toward the edge + gentle core boost.
+        const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         const falloff = 1 - clamp(rr, 0, 1)
-        const a = p.a * (0.35 + 0.65 * falloff)
+        const coreBoost = 0.7 + 0.45 * Math.pow(falloff, 1.8)
+        const a = p.a * (0.28 + 0.72 * falloff) * coreBoost
 
-        ctx.fillStyle = `rgba(235, 240, 255, ${a.toFixed(4)})`
+        ctx.fillStyle = `rgba(236, 241, 255, ${a.toFixed(4)})`
         ctx.beginPath()
         ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
         ctx.fill()
