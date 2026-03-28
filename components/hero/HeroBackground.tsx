@@ -47,6 +47,7 @@ import { useState, useEffect } from 'react'
 import SoftMass from './SoftMass'
 import OrbitingHotspot from './OrbitingHotspot'
 import EmergingLabel from './EmergingLabel'
+import { ParticleSphere } from './ParticleSphere'
 import type { LabelStatus } from './types'
 
 // ─── Timing system ──────────────────────────────────────────────────────────
@@ -228,15 +229,18 @@ export function HeroBackground() {
         background: '#0B0F17',
       }}
     >
-      {/* ── 1. Left mass — blue-violet ───────────────────────────────── */}
+      {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
+      <ParticleSphere density={isMobile ? 120 : 210} />
+
+      {/* ── 1. Left mass — ultra-soft (supporting glow) ───────────────── */}
       <SoftMass
-        x={isMobile ? '16%' : '22%'}
-        y="54%"
-        size={Math.round(500 * ms)}
-        colorA="rgba(96, 120, 255, 0.55)"
-        colorB="rgba(96, 120, 255, 0.16)"
-        opacity={isMobile ? 0.15 : 0.20}
-        blur={isMobile ? 78 : 128}
+        x={isMobile ? '18%' : '24%'}
+        y="56%"
+        size={Math.round(520 * ms)}
+        colorA="rgba(90, 120, 255, 0.22)"
+        colorB="rgba(90, 120, 255, 0.06)"
+        opacity={isMobile ? 0.08 : 0.10}
+        blur={isMobile ? 86 : 140}
         orbitRadiusX={24}
         orbitRadiusY={16}
         duration={28}
@@ -247,15 +251,15 @@ export function HeroBackground() {
         <MassLabels labels={leftLabels} />
       </SoftMass>
 
-      {/* ── 2. Right mass — cyan ─────────────────────────────────────── */}
+      {/* ── 2. Right mass — ultra-soft (supporting glow) ─────────────── */}
       <SoftMass
-        x={isMobile ? '84%' : '78%'}
-        y="46%"
-        size={Math.round(440 * ms)}
-        colorA="rgba(100, 210, 255, 0.50)"
-        colorB="rgba(100, 210, 255, 0.12)"
-        opacity={isMobile ? 0.13 : 0.18}
-        blur={isMobile ? 72 : 120}
+        x={isMobile ? '82%' : '76%'}
+        y="44%"
+        size={Math.round(460 * ms)}
+        colorA="rgba(190, 210, 255, 0.16)"
+        colorB="rgba(190, 210, 255, 0.04)"
+        opacity={isMobile ? 0.07 : 0.09}
+        blur={isMobile ? 82 : 138}
         orbitRadiusX={18}
         orbitRadiusY={28}
         duration={22}
@@ -301,16 +305,25 @@ export function HeroBackground() {
         }}
       />
 
-      {/* ── 5. Ultra-subtle grid overlay ─────────────────────────────── */}
+      {/* ── 5. Grain / speckle overlay (Maze-like texture) ───────────── */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
+          opacity: 0.08,
+          mixBlendMode: 'soft-light',
+          filter: 'blur(0.25px)',
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)
+            radial-gradient(circle at 12% 18%, rgba(255,255,255,0.11) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 26% 72%, rgba(255,255,255,0.08) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 44% 40%, rgba(255,255,255,0.10) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 62% 22%, rgba(255,255,255,0.07) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 78% 66%, rgba(255,255,255,0.09) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 88% 34%, rgba(255,255,255,0.08) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 52% 84%, rgba(255,255,255,0.06) 0 1px, transparent 1.6px),
+            radial-gradient(circle at 36% 18%, rgba(255,255,255,0.07) 0 1px, transparent 1.6px)
           `,
-          backgroundSize: '52px 52px',
+          backgroundSize: '240px 240px',
           WebkitMaskImage:
             'radial-gradient(ellipse 72% 62% at 50% 50%, black 0%, transparent 100%)',
           maskImage:
