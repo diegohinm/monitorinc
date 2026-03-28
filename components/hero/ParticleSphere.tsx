@@ -156,8 +156,10 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
       const oy = state.my * 8
 
       // A touch of additive blend like Maze's "particle mass".
-      ctx.globalCompositeOperation = 'lighter'
+      // Keep it subtle: we'll do a two-pass render.
+      ctx.globalCompositeOperation = 'source-over'
 
+      // Pass 1: base dots (soft, non-additive)
       for (const p of particles) {
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
@@ -171,6 +173,24 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
         ctx.fillStyle = `rgba(236, 241, 255, ${a.toFixed(4)})`
         ctx.beginPath()
         ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // Pass 2: additive sparkle only for the core
+      ctx.globalCompositeOperation = 'lighter'
+      for (const p of particles) {
+        const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
+        if (rr > 0.45) continue
+
+        const sx = px + (p.x * state.R + ox)
+        const sy = py + (p.y * state.R + oy)
+
+        const falloff = 1 - clamp(rr, 0, 1)
+        const a = (p.a * 0.22) * Math.pow(falloff, 2.6)
+
+        ctx.fillStyle = `rgba(242, 246, 255, ${a.toFixed(4)})`
+        ctx.beginPath()
+        ctx.arc(sx, sy, p.r * 1.15, 0, Math.PI * 2)
         ctx.fill()
       }
 
