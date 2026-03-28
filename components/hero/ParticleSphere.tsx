@@ -67,8 +67,8 @@ export function ParticleSphere({
       const speed = 0.00012 + 0.00022 * edge
       const angle = rand() * Math.PI * 2
 
-      const radiusPx = 0.55 + rand() * 1.05
-      const alpha = 0.12 + rand() * 0.22
+      const radiusPx = 0.65 + rand() * 1.25
+      const alpha = 0.16 + rand() * 0.30
 
       out.push({
         x,
@@ -188,9 +188,9 @@ export function ParticleSphere({
       // Pass 0: soft core haze (gives the "sphere mass" feel)
       {
         const haze = ctx.createRadialGradient(px, py, state.R * 0.02, px, py, state.R * 0.62)
-        haze.addColorStop(0, 'rgba(245, 248, 255, 0.085)')
-        haze.addColorStop(0.28, 'rgba(245, 248, 255, 0.030)')
-        haze.addColorStop(0.62, 'rgba(245, 248, 255, 0.010)')
+        haze.addColorStop(0, 'rgba(245, 248, 255, 0.070)')
+        haze.addColorStop(0.28, 'rgba(245, 248, 255, 0.024)')
+        haze.addColorStop(0.62, 'rgba(245, 248, 255, 0.008)')
         haze.addColorStop(1, 'rgba(245, 248, 255, 0.0)')
         ctx.fillStyle = haze
         ctx.fillRect(0, 0, state.w, state.h)
@@ -207,7 +207,7 @@ export function ParticleSphere({
         const coreBoost = 0.55 + 0.85 * Math.pow(falloff, 2.35)
         const a = p.a * (0.20 + 0.80 * falloff) * coreBoost
 
-        ctx.fillStyle = `rgba(236, 241, 255, ${a.toFixed(4)})`
+        ctx.fillStyle = `rgba(244, 248, 255, ${a.toFixed(4)})`
         ctx.beginPath()
         ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
         ctx.fill()
@@ -223,11 +223,11 @@ export function ParticleSphere({
         const sy = py + (p.y * state.R + oy)
 
         const falloff = 1 - clamp(rr, 0, 1)
-        const a = (p.a * 0.22) * Math.pow(falloff, 2.6)
+        const a = (p.a * 0.28) * Math.pow(falloff, 2.6)
 
-        ctx.fillStyle = `rgba(242, 246, 255, ${a.toFixed(4)})`
+        ctx.fillStyle = `rgba(255, 255, 255, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * 1.15, 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * 1.22, 0, Math.PI * 2)
         ctx.fill()
       }
 
