@@ -237,10 +237,10 @@ export function HeroBackground() {
         x={isMobile ? '18%' : '24%'}
         y="56%"
         size={Math.round(520 * ms)}
-        colorA="rgba(90, 120, 255, 0.22)"
-        colorB="rgba(90, 120, 255, 0.06)"
-        opacity={isMobile ? 0.08 : 0.10}
-        blur={isMobile ? 86 : 140}
+        colorA="rgba(90, 120, 255, 0.16)"
+        colorB="rgba(90, 120, 255, 0.04)"
+        opacity={isMobile ? 0.05 : 0.06}
+        blur={isMobile ? 96 : 160}
         orbitRadiusX={24}
         orbitRadiusY={16}
         duration={28}
@@ -256,10 +256,10 @@ export function HeroBackground() {
         x={isMobile ? '82%' : '76%'}
         y="44%"
         size={Math.round(460 * ms)}
-        colorA="rgba(190, 210, 255, 0.16)"
-        colorB="rgba(190, 210, 255, 0.04)"
-        opacity={isMobile ? 0.07 : 0.09}
-        blur={isMobile ? 82 : 138}
+        colorA="rgba(190, 210, 255, 0.12)"
+        colorB="rgba(190, 210, 255, 0.03)"
+        opacity={isMobile ? 0.05 : 0.06}
+        blur={isMobile ? 96 : 160}
         orbitRadiusX={18}
         orbitRadiusY={28}
         duration={22}
@@ -310,7 +310,7 @@ export function HeroBackground() {
         style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.08,
+          opacity: 0.055,
           mixBlendMode: 'soft-light',
           filter: 'blur(0.25px)',
           backgroundImage: `
