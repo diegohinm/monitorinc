@@ -158,14 +158,16 @@ export function ParticleSphere({
       ctx.clearRect(0, 0, state.w, state.h)
     }
 
-    function drawBackdrop() {
-      // Very subtle radial fog like Maze.
+    function drawBackdrop(t: number) {
+      // Very subtle radial fog like Maze, with tiny temperature shift.
       const x = state.cx * state.w
       const y = state.cy * state.h
+      const pulse = 0.5 + 0.5 * Math.sin(t * 0.00022)
 
       const g = ctx.createRadialGradient(x, y, state.R * 0.05, x, y, state.R)
-      g.addColorStop(0, 'rgba(240, 244, 255, 0.070)')
-      g.addColorStop(0.52, 'rgba(240, 244, 255, 0.016)')
+      // cool white -> slightly lavendar-ish as it pulses
+      g.addColorStop(0, `rgba(236, 242, 255, ${(0.060 + 0.010 * pulse).toFixed(4)})`)
+      g.addColorStop(0.55, `rgba(230, 236, 255, ${(0.014 + 0.004 * pulse).toFixed(4)})`)
       g.addColorStop(1, 'rgba(240, 244, 255, 0.0)')
 
       ctx.fillStyle = g
@@ -199,10 +201,17 @@ export function ParticleSphere({
       // Sort so farther particles render first (depth).
       const sorted = particles.slice().sort((a, b) => a.z - b.z)
 
-      // Maze-like color: slightly cool white.
-      const baseRGB = { r: 232, g: 239, b: 255 }
+      // Maze-like color: cool white with subtle blue/lavender shift over time.
+      const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.00018)
+      const cool = { r: 228, g: 236, b: 255 }
+      const blue = { r: 206, g: 224, b: 255 }
+      const lav = { r: 218, g: 214, b: 255 }
 
-      // Pass 1: crisp base dots (no blur; rely on additive pass for glow)
+      function mix(a: number, b: number, t: number) {
+        return a + (b - a) * t
+      }
+
+      // Pass 1: crisp points + tiny chroma variation by depth/center.
       for (const p of sorted) {
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
@@ -210,33 +219,46 @@ export function ParticleSphere({
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         const falloff = 1 - clamp(rr, 0, 1)
 
-        // Front particles a bit brighter; edge slightly dimmer.
-        const depth = 0.55 + 0.85 * p.z
-        const a = p.a * (0.55 + 0.45 * falloff) * depth
+        const depth = 0.45 + 0.95 * p.z
+        const center = Math.pow(falloff, 1.6)
 
-        ctx.fillStyle = `rgba(${baseRGB.r}, ${baseRGB.g}, ${baseRGB.b}, ${a.toFixed(4)})`
+        // Hue shift target: center leans slightly blue/lavender.
+        const hueT = clamp(0.20 + 0.55 * center + 0.25 * pulse, 0, 1)
+        const midR = mix(blue.r, lav.r, pulse)
+        const midG = mix(blue.g, lav.g, pulse)
+        const midB = mix(blue.b, lav.b, pulse)
+
+        const r = mix(cool.r, midR, hueT)
+        const g = mix(cool.g, midG, hueT)
+        const b = mix(cool.b, midB, hueT)
+
+        // Sharper points: slightly smaller, higher alpha. Front particles brighter.
+        const a = p.a * (0.68 + 0.32 * center) * depth
+
+        ctx.fillStyle = `rgba(${r.toFixed(0)}, ${g.toFixed(0)}, ${b.toFixed(0)}, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r, 0, Math.PI * 2)
+        ctx.arc(sx, sy, Math.max(0.55, p.r * 0.92), 0, Math.PI * 2)
         ctx.fill()
       }
 
-      // Pass 2: subtle additive glow when dots cluster (mostly for front half)
+      // Pass 2: additive micro-glow (gives cluster bloom). Only front-ish particles.
       ctx.globalCompositeOperation = 'lighter'
       for (const p of sorted) {
-        if (p.z < 0.45) continue
+        if (p.z < 0.40) continue
 
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
-        if (rr > 0.72) continue
+        if (rr > 0.78) continue
 
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
         const falloff = 1 - clamp(rr, 0, 1)
-        const a = (p.a * 0.30) * Math.pow(falloff, 1.9) * (0.25 + 0.75 * p.z)
+        const center = Math.pow(falloff, 1.6)
+        const a = (p.a * 0.26) * (0.35 + 0.65 * p.z) * (0.35 + 0.65 * center)
 
         ctx.fillStyle = `rgba(255, 255, 255, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * 1.25, 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * (1.35 + 0.20 * center), 0, Math.PI * 2)
         ctx.fill()
       }
 
@@ -251,13 +273,13 @@ export function ParticleSphere({
       for (const g of guides) {
         const sx = px + (g.x * state.R + ox)
         const sy = py + (g.y * state.R + oy)
-        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 10)
-        glow.addColorStop(0, 'rgba(255,255,255,0.95)')
-        glow.addColorStop(0.35, 'rgba(255,255,255,0.35)')
-        glow.addColorStop(1, 'rgba(255,255,255,0.0)')
+        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 9)
+        glow.addColorStop(0, 'rgba(255,255,255,0.92)')
+        glow.addColorStop(0.28, 'rgba(235,242,255,0.38)')
+        glow.addColorStop(1, 'rgba(235,242,255,0.0)')
         ctx.fillStyle = glow
         ctx.beginPath()
-        ctx.arc(sx, sy, 10, 0, Math.PI * 2)
+        ctx.arc(sx, sy, 9, 0, Math.PI * 2)
         ctx.fill()
       }
 
@@ -266,18 +288,21 @@ export function ParticleSphere({
 
     function tick() {
       clear()
-      drawBackdrop()
+      drawBackdrop(performance.now())
 
       // Update + draw.
       for (const p of particles) {
         p.x += p.vx
         p.y += p.vy
 
-        // Wrap inside unit circle bounds (approx). Keep density stable.
-        if (p.x > 1.05) p.x = -1.05
-        if (p.x < -1.05) p.x = 1.05
-        if (p.y > 1.05) p.y = -1.05
-        if (p.y < -1.05) p.y = 1.05
+        // Slight depth bob (very subtle), affects size/alpha via z.
+        p.z = clamp(p.z + (p.vx - p.vy) * 28, 0, 1)
+
+        // Wrap inside unit bounds. Keep density stable.
+        if (p.x > 1.08) p.x = -1.08
+        if (p.x < -1.08) p.x = 1.08
+        if (p.y > 1.08) p.y = -1.08
+        if (p.y < -1.08) p.y = 1.08
       }
 
       drawParticles()
@@ -286,7 +311,7 @@ export function ParticleSphere({
 
     function drawStatic() {
       clear()
-      drawBackdrop()
+      drawBackdrop(performance.now())
       drawParticles()
     }
 
