@@ -2,41 +2,30 @@
    MONITORINC — design copied from mazehq.com
    ───────────────────────────────────────────────────────────── */
 import { Hero } from '../components/hero/Hero'
+import { PDF_ABOUT, PDF_SERVICES, PDF_BRANDS, PDF_CONTACT } from './components/PdfContent'
 
-const SERVICES = [
-  { num: '01', title: 'Circuito cerrado de televisión',       badge: 'CCTV',    color: 'cyan',  desc: 'Cámaras IP y análogas para prevención, disuasión y control de riesgos. Combate la inseguridad, pérdida de elementos y permite control de personal y procesos.' },
-  { num: '02', title: 'Control de acceso',                    badge: 'Acceso',  color: 'cyan',  desc: 'Regulación de entrada y salida de personas y vehículos. RFID, código de barras, huellas dactilares y reconocimiento facial.' },
-  { num: '03', title: 'Alarmas de intrusión',                 badge: 'Alarma',  color: 'red',   desc: 'Sistemas alámbricos e inalámbricos para interior y exterior con monitoreo remoto desde el celular.' },
-  { num: '04', title: 'Seguridad perimetral',                 badge: 'Perímetro', color: 'red', desc: 'Cercas eléctricas y concertinas con alarmas sonoras para fincas, conjuntos cerrados e instituciones educativas.' },
-  { num: '05', title: 'Detección de incendios y evacuación',  badge: 'Incendio', color: 'red',  desc: 'Sistemas automáticos de detección y audio evacuación con equipos regidos por normas europeas.' },
-  { num: '06', title: 'GPS y rastreo',                        badge: 'GPS',     color: 'cyan',  desc: 'Posicionamiento y rastreo de automóviles, motos y bicicletas con monitoreo GSM vía SMS o internet.' },
-  { num: '07', title: 'Automatización de puertas',            badge: 'Auto',    color: 'green', desc: 'Motores de última generación para puertas batientes, basculantes y corredizas con controles inalámbricos.' },
-  { num: '08', title: 'Domótica',                             badge: 'Smart',   color: 'green', desc: 'Control inalámbrico de luces, temperatura, electrodomésticos y sensores. Gestión de energía en tiempo real.' },
-  { num: '09', title: 'Citofonía y videocitofonía',           badge: 'IP',      color: 'cyan',  desc: 'Sistemas IP y análogos con o sin video para casas, apartamentos, oficinas y empresas sin límite de usuarios.' },
-  { num: '10', title: 'Drones',                               badge: 'UAV',     color: 'cyan',  desc: 'Vigilancia rural y urbana, cartografía aérea en alta definición e inspección de construcciones.' },
-]
+const SERVICES = PDF_SERVICES.map((s, idx) => {
+  const num = String(idx + 1).padStart(2, '0')
+  // Badges/colors are UI-only; keep generic.
+  return {
+    num,
+    title: s.title,
+    badge: 'SERVICIO',
+    color: idx % 2 === 0 ? 'cyan' : 'green',
+    desc: s.desc,
+  }
+})
 
-const TESTIMONIALS = [
-  { quote: 'MONITORINC diseñó e integró todo el sistema de CCTV y control de acceso de nuestra planta. Profesionales expertos y tecnología de primera.', author: 'Director de Seguridad', role: 'Empresa industrial · Medellín' },
-  { quote: 'Instalaron cercas eléctricas y alarmas en nuestra finca. El resultado superó nuestras expectativas en calidad y tiempo de respuesta.', author: 'Propietario', role: 'Finca privada · Antioquia' },
-  { quote: 'El sistema de detección de incendios cumplió todas las normas requeridas por el ente certificador. Muy recomendados.', author: 'Gerente Administrativo', role: 'Institución educativa · Colombia' },
-]
+// Nota: el PDF no incluye testimonios ni cifras (años, cobertura, 24/7, etc.).
+// Para cumplir "únicamente la información del PDF", se dejan vacíos.
+const TESTIMONIALS = []
 
-const STATS = [
-  { num: '10+', label: 'Soluciones integradas' },
-  { num: '24/7', label: 'Monitoreo continuo' },
-  { num: '360°', label: 'Cobertura total' },
-  { num: '∞',    label: 'Usuarios citofonía' },
-]
+const STATS = []
 
 /* ─── Hotspot data (hero graphic, like Maze CVE hotspots) ─── */
-const HOTSPOTS = [
-  { color: 'red',   delay: 0,     top: '18%', left: '12%', label: 'Zona A',   status: 'Alarma activa',     badge: 'ALERTA' },
-  { color: 'cyan',  delay: 1200,  top: '55%', left: '8%',  label: 'Cámara 01', status: 'En línea · 4K',    badge: 'ACTIVO' },
-  { color: 'green', delay: 2400,  top: '30%', left: '65%', label: 'Acceso',    status: 'Autorizado',       badge: 'OK' },
-  { color: 'red',   delay: 600,   top: '70%', left: '55%', label: 'Sensor P2', status: 'Movimiento detectado', badge: 'ALERTA' },
-  { color: 'cyan',  delay: 1800,  top: '12%', left: '45%', label: 'GPS Flota', status: 'Rastreando · 3 veh', badge: 'ACTIVO' },
-]
+// Nota: el PDF no incluye datos como "Zona A", "4K", "Sensor P2", etc.
+// Para cumplir "únicamente la información del PDF", no se inventan hotspots.
+const HOTSPOTS = []
 
 /* ─── Component: Hero graphic panel ─────────────────────────── */
 function HeroGraphic() {
@@ -151,8 +140,8 @@ export default function Home() {
       {/* ── Alert bar ─────────────────────────────────────── */}
       <div className="s-alert">
         <span className="s-alert__dot" />
-        <span>Distribuimos e integramos equipos de seguridad electrónica y comunicación</span>
-        <span className="s-alert__accent">Making life safer</span>
+        <span>Distribuimos e integramos equipos de seguridad electrónica y de comunicación</span>
+        <span className="s-alert__accent">Somos los mejores en seguridad electrónica</span>
       </div>
 
       {/* ── Header ────────────────────────────────────────── */}
@@ -162,38 +151,44 @@ export default function Home() {
 
           <nav>
             <ul className="s-header__nav">
+              <li><a href="#quienes-somos">Quiénes somos</a></li>
               <li><a href="#servicios">Servicios</a></li>
-              <li><a href="#proyectos">Proyectos</a></li>
-              <li><a href="#ventajas">Ventajas</a></li>
+              <li><a href="#marcas">Marcas</a></li>
               <li><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
 
           <a href="#contacto" className="a-button a-button--secondary">
-            Agenda una cita
+            Agenda una cita para asesorar tu proyecto
           </a>
         </div>
       </header>
 
       <main>
+        {/* Anchor */}
+        <div id="inicio" />
+
         {/* ══════════════════════════════════════════════════
             HERO — canvas particle halo
         ══════════════════════════════════════════════════ */}
         <Hero />
 
         {/* ══════════════════════════════════════════════════
-            STATS BAR
+            QUIÉNES SOMOS (PDF)
         ══════════════════════════════════════════════════ */}
-        <div style={{ borderTop: '1px solid var(--card-border)', borderBottom: '1px solid var(--card-border)' }}>
-          <div className="wrap" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1px', background: 'var(--card-border)' }}>
-            {STATS.map((s) => (
-              <div key={s.label} className="c-stat-box" style={{ borderRadius: 0, border: 'none', padding: '2rem 1.5rem', textAlign: 'center' }}>
-                <div className="c-stat-box__number">{s.num}</div>
-                <div className="c-stat-box__label">{s.label}</div>
-              </div>
-            ))}
+        <section className="module--story" id="quienes-somos">
+          <div className="wrap">
+            <SectionLabel num="01" text={PDF_ABOUT.title} />
+            <h2 className="m-story__title" style={{ maxWidth: '55ch' }}>
+              {PDF_ABOUT.title}
+            </h2>
+            <p className="m-story__body" style={{ maxWidth: '85ch' }}>
+              {PDF_ABOUT.body}
+            </p>
           </div>
-        </div>
+        </section>
+
+        {/* Nota: El PDF no incluye estadísticas/cifras. Se omite barra de stats. */}
 
         {/* ══════════════════════════════════════════════════
             SECTION 01 — SERVICES
@@ -203,14 +198,13 @@ export default function Home() {
             {/* Header row */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginBottom: '3rem', alignItems: 'end' }}>
               <div>
-                <SectionLabel num="01" text="Servicios" />
+                <SectionLabel num="02" text="Servicios" />
                 <h2 className="m-story__title" style={{ maxWidth: '100%' }}>
                   Un portafolio completo para seguridad y monitoreo.
                 </h2>
               </div>
               <p className="m-story__body">
-                Desde hogares y oficinas hasta proyectos de alto nivel en
-                ciudades, pueblos, corregimientos y zonas de difícil acceso.
+                {PDF_ABOUT.body}
               </p>
             </div>
 
@@ -231,89 +225,25 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════
-            SECTION 02 — SPECIAL PROJECTS
+            MARCAS (PDF)
         ══════════════════════════════════════════════════ */}
-        <section className="module--story" id="proyectos">
+        <section className="module--story" id="marcas">
           <div className="wrap">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'start' }}>
-              {/* Left — copy */}
-              <div>
-                <SectionLabel num="02" text="Proyectos especiales" />
-                <h2 className="m-story__title">
-                  Diseño e implementación de proyectos de alto nivel.
-                </h2>
-                <p className="m-story__body">
-                  Contamos con profesionales expertos en ingeniería
-                  electrónica y telecomunicaciones para proyectos que
-                  requieren equipos y comunicaciones especiales, incluso en
-                  ambientes hostiles y de difícil acceso.
-                </p>
-
-                <ul className="c-bullet-list">
-                  {[
-                    'Diseño técnico y despliegue de soluciones especializadas',
-                    'Implementación en zonas urbanas, rurales y remotas',
-                    'Integración de seguridad, monitoreo y comunicación',
-                    'Equipos y comunicaciones para ambientes hostiles',
-                    'Ciudades, pueblos, corregimientos y zonas de difícil acceso',
-                  ].map((item) => (
-                    <li key={item} className="c-bullet-list__item">
-                      <span className="c-bullet-list__dot" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Right — capabilities panel */}
-              <div id="ventajas">
-                <SectionLabel num="03" text="Ventajas" />
-                <h2 className="m-story__title">
-                  Lo que hace fuerte a MONITORINC.
-                </h2>
-
-                {/* Capability cards */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--card-border)', borderRadius: '0.625rem', overflow: 'hidden', marginTop: '1.5rem' }}>
-                  {[
-                    { title: 'Integración completa',     desc: 'Una sola empresa para seguridad electrónica, acceso, automatización y comunicaciones.' },
-                    { title: 'Tecnología adaptable',     desc: 'Soluciones alámbricas, inalámbricas, IP y análogas según el entorno y nivel de protección requerido.' },
-                    { title: 'Múltiples sectores',       desc: 'Casas, apartamentos, empresas, fincas, conjuntos cerrados, instituciones y proyectos especiales.' },
-                    { title: 'Soporte especializado',    desc: 'Ingenieros con experiencia en electrónica y telecomunicaciones para acompañamiento técnico completo.' },
-                  ].map((a) => (
-                    <div key={a.title} className="c-service" style={{ borderRadius: 0, border: 'none' }}>
-                      <div className="c-service__title" style={{ marginBottom: '0.5rem' }}>{a.title}</div>
-                      <p className="c-service__desc">{a.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <SectionLabel num="03" text={PDF_BRANDS.title} />
+            <h2 className="m-story__title">{PDF_BRANDS.title}</h2>
+            <p className="m-story__body" style={{ maxWidth: '85ch' }}>
+              {PDF_BRANDS.body}
+            </p>
+            <p className="m-story__body" style={{ maxWidth: '85ch' }}>
+              {PDF_BRANDS.note}
+            </p>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════
-            TESTIMONIALS
-        ══════════════════════════════════════════════════ */}
-        <section className="module--story">
-          <div className="wrap">
-            <SectionLabel num="04" text="Testimonios" />
-            <h2 className="m-story__title" style={{ marginBottom: '2rem' }}>
-              Lo que dicen nuestros clientes.
-            </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: 'var(--card-border)', borderRadius: '0.625rem', overflow: 'hidden' }}>
-              {TESTIMONIALS.map((t) => (
-                <div key={t.author} className="c-testimonial" style={{ borderRadius: 0 }}>
-                  <p className="c-testimonial__quote">{t.quote}</p>
-                  <div className="c-testimonial__author">{t.author}</div>
-                  <div className="c-testimonial__role">{t.role}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Nota: el PDF no incluye testimonios. Se omite sección de testimonios. */}
 
         {/* ══════════════════════════════════════════════════
-            CTA
+            CTA (PDF)
         ══════════════════════════════════════════════════ */}
         <div className="module--cta">
           <div className="wrap">
@@ -371,17 +301,17 @@ export default function Home() {
                   seguro.
                 </h2>
                 <p className="m-story__body" style={{ marginBottom: '2rem' }}>
-                  Atención comercial y asesoría para proyectos de seguridad
-                  electrónica y comunicación en toda Colombia.
+                  {PDF_CONTACT.cta}
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {[
-                    { label: 'Celular 1',        val: '313 8407090',         href: 'https://wa.me/573138407090', blank: true },
-                    { label: 'Celular 2',        val: '321 3002548',         href: 'https://wa.me/573213002548', blank: true },
-                    { label: 'Correo principal', val: 'info@monitorinc.com.co', href: 'mailto:info@monitorinc.com.co' },
-                    { label: 'Correo adicional', val: 'ing.jimenez@outlook.com', href: 'mailto:ing.jimenez@outlook.com' },
-                    { label: 'Sitio web',        val: 'www.monitorinc.com.co',  href: 'https://www.monitorinc.com.co', blank: true },
+                    { label: 'Celular 1',        val: PDF_CONTACT.phones[0], href: 'https://wa.me/573138407090', blank: true },
+                    { label: 'Celular 2',        val: PDF_CONTACT.phones[1], href: 'https://wa.me/573213002548', blank: true },
+                    { label: 'Correo principal', val: PDF_CONTACT.emails[0].toLowerCase(), href: 'mailto:info@monitorinc.com.co' },
+                    { label: 'Correo adicional', val: PDF_CONTACT.emails[2], href: 'mailto:ing.jimenez@outlook.com' },
+                    { label: 'Correo adicional', val: PDF_CONTACT.emails[1], href: 'mailto:luquesarmiento@gmail.com' },
+                    { label: 'Sitio web',        val: PDF_CONTACT.website, href: 'https://www.monitorinc.com.co', blank: true },
                   ].map((c) => (
                     <div key={c.label} className="c-contact-line">
                       <span className="c-contact-line__label">{c.label}</span>
