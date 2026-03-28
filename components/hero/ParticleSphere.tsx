@@ -28,13 +28,11 @@ function mulberry32(seed: number) {
 export function ParticleSphere({
   density = 190,
   scale = 1,
-  edgeBias = 0,
+
   onFrame,
 }: {
   density?: number
   scale?: number
-  edgeBias?: number
-  edgeBias?: number
   onFrame?: (s: {
     anchors: { x: number; y: number }[]
     cx: number
@@ -58,14 +56,8 @@ export function ParticleSphere({
       const v = rand()
       const theta = u * Math.PI * 2
 
-      // Strong centre bias (closer to Maze): tighter core, softer halo.
-      // Optionally bias some particles toward the edge to define the sphere silhouette.
-      const rrBase = Math.pow(v, 0.38)
-      const rr = edgeBias > 0
-        ? (rand() < edgeBias
-            ? Math.pow(v, 0.10) // pushes toward edge (closer to 1)
-            : rrBase)
-        : rrBase
+      // Cloud-like distribution (no sphere silhouette).
+      const rr = Math.pow(v, 0.45)
 
       // Slightly squash vertically to feel like an orb in perspective.
       const x = Math.cos(theta) * rr
@@ -89,7 +81,7 @@ export function ParticleSphere({
       })
     }
     return out
-  }, [density, edgeBias])
+  }, [density])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -194,16 +186,6 @@ export function ParticleSphere({
       // Keep it subtle: we'll do a two-pass render.
       ctx.globalCompositeOperation = 'source-over'
 
-      // Pass 0: soft core haze (gives the "sphere mass" feel)
-      {
-        const haze = ctx.createRadialGradient(px, py, state.R * 0.02, px, py, state.R * 0.62)
-        haze.addColorStop(0, 'rgba(245, 248, 255, 0.070)')
-        haze.addColorStop(0.28, 'rgba(245, 248, 255, 0.024)')
-        haze.addColorStop(0.62, 'rgba(245, 248, 255, 0.008)')
-        haze.addColorStop(1, 'rgba(245, 248, 255, 0.0)')
-        ctx.fillStyle = haze
-        ctx.fillRect(0, 0, state.w, state.h)
-      }
 
       // Pass 1: base dots (soft, non-additive)
       for (const p of particles) {

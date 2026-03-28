@@ -243,7 +243,6 @@ export function HeroBackground() {
       <ParticleSphere
         density={isMobile ? 150 : 290}
         scale={isMobile ? 1.05 : 1.12}
-        edgeBias={isMobile ? 0.08 : 0.12}
         onFrame={setParticleFrame}
       />
 
