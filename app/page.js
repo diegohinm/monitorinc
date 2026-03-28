@@ -1,6 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
    MONITORINC — design copied from mazehq.com
    ───────────────────────────────────────────────────────────── */
+import ParticleHero from './components/ParticleHero'
 
 const SERVICES = [
   { num: '01', title: 'Circuito cerrado de televisión',       badge: 'CCTV',    color: 'cyan',  desc: 'Cámaras IP y análogas para prevención, disuasión y control de riesgos. Combate la inseguridad, pérdida de elementos y permite control de personal y procesos.' },
@@ -176,64 +177,9 @@ export default function Home() {
 
       <main>
         {/* ══════════════════════════════════════════════════
-            HERO
+            HERO — canvas particle halo
         ══════════════════════════════════════════════════ */}
-        <section className="module--welcome" id="inicio">
-          {/* Background glows + grid */}
-          <div className="s-gfx">
-            <div className="s-gfx__blob s-gfx__blob--cyan" />
-            <div className="s-gfx__blob s-gfx__blob--magenta" />
-            <div className="s-gfx__grid" />
-          </div>
-
-          <div className="wrap">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
-              {/* Left — copy */}
-              <div className="m-welcome__content">
-                <div className="m-welcome__eyebrow">
-                  <span className="s-alert__dot" />
-                  Seguridad electrónica · Colombia
-                </div>
-
-                <h1 className="m-welcome__title">
-                  Haz de cada espacio un lugar{' '}
-                  <span className="grad-text">más seguro.</span>
-                </h1>
-
-                <p className="m-welcome__subtitle">
-                  Distribuimos e integramos equipos de seguridad electrónica
-                  y comunicación: CCTV, control de acceso, alarmas, GPS,
-                  domótica, drones y proyectos especiales.
-                </p>
-
-                <div className="m-welcome__actions">
-                  <a
-                    href="https://wa.me/573138407090"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="a-button a-button--primary"
-                  >
-                    <span className="a-button__dot" />
-                    WhatsApp 313&nbsp;8407090
-                  </a>
-                  <a href="#servicios" className="a-button a-button--secondary">
-                    Ver servicios
-                  </a>
-                </div>
-
-                <div className="m-welcome__clients">
-                  <span className="m-welcome__clients-label">Atendemos a</span>
-                  {['Hogares', 'Empresas', 'Fincas', 'Instituciones'].map((c) => (
-                    <span key={c} className="client-item">{c}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right — animated monitoring panel */}
-              <HeroGraphic />
-            </div>
-          </div>
-        </section>
+        <ParticleHero />
 
         {/* ══════════════════════════════════════════════════
             STATS BAR
