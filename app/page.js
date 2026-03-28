@@ -1,7 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
    MONITORINC — design copied from mazehq.com
    ───────────────────────────────────────────────────────────── */
-import ParticleHero from './components/ParticleHero'
+import { Hero } from '../components/hero/Hero'
 
 const SERVICES = [
   { num: '01', title: 'Circuito cerrado de televisión',       badge: 'CCTV',    color: 'cyan',  desc: 'Cámaras IP y análogas para prevención, disuasión y control de riesgos. Combate la inseguridad, pérdida de elementos y permite control de personal y procesos.' },
@@ -179,7 +179,7 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════
             HERO — canvas particle halo
         ══════════════════════════════════════════════════ */}
-        <ParticleHero />
+        <Hero />
 
         {/* ══════════════════════════════════════════════════
             STATS BAR
