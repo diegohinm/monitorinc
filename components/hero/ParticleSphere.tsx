@@ -68,8 +68,8 @@ export function ParticleSphere({
       const speed = 0.00012 + 0.00022 * edge
       const angle = rand() * Math.PI * 2
 
-      const radiusPx = 0.65 + rand() * 1.25
-      const alpha = 0.16 + rand() * 0.30
+      const radiusPx = 0.85 + rand() * 1.45
+      const alpha = 0.22 + rand() * 0.34
 
       out.push({
         x,
@@ -195,8 +195,8 @@ export function ParticleSphere({
         // Soft edge: alpha decreases toward the edge + stronger core boost.
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         const falloff = 1 - clamp(rr, 0, 1)
-        const coreBoost = 0.55 + 0.85 * Math.pow(falloff, 2.35)
-        const a = p.a * (0.20 + 0.80 * falloff) * coreBoost
+        const coreBoost = 0.60 + 1.00 * Math.pow(falloff, 2.2)
+        const a = p.a * (0.24 + 0.86 * falloff) * coreBoost
 
         ctx.fillStyle = `rgba(244, 248, 255, ${a.toFixed(4)})`
         ctx.beginPath()
@@ -204,21 +204,21 @@ export function ParticleSphere({
         ctx.fill()
       }
 
-      // Pass 2: additive sparkle only for the core
+      // Pass 2: additive sparkle (helps particles pop)
       ctx.globalCompositeOperation = 'lighter'
       for (const p of particles) {
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
-        if (rr > 0.45) continue
+        if (rr > 0.62) continue
 
         const sx = px + (p.x * state.R + ox)
         const sy = py + (p.y * state.R + oy)
 
         const falloff = 1 - clamp(rr, 0, 1)
-        const a = (p.a * 0.28) * Math.pow(falloff, 2.6)
+        const a = (p.a * 0.24) * Math.pow(falloff, 2.3)
 
         ctx.fillStyle = `rgba(255, 255, 255, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * 1.22, 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * 1.18, 0, Math.PI * 2)
         ctx.fill()
       }
 
