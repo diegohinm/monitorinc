@@ -4,8 +4,8 @@ export type LabelStatus = 'ok' | 'warning' | 'alert' | 'neutral'
 
 export interface SoftMassProps {
   size: number
-  initialX: string
-  initialY: string
+  x: string
+  y: string
   colorA: string
   colorB: string
   opacity?: number
@@ -13,9 +13,10 @@ export interface SoftMassProps {
   orbitRadiusX?: number
   orbitRadiusY?: number
   duration?: number
+  delay?: number
   scaleMin?: number
   scaleMax?: number
-  delay?: number
+  children?: ReactNode
 }
 
 export interface OrbitingHotspotProps {
@@ -23,6 +24,8 @@ export interface OrbitingHotspotProps {
   radiusY: number
   duration: number
   delay?: number
+  anchorX?: string
+  anchorY?: string
   children: ReactNode
 }
 

@@ -6,14 +6,25 @@ import {
   useMotionValue,
   useTransform,
   useAnimationFrame,
-  useReducedMotion,
 } from 'framer-motion'
+import { useReducedMotionSafe } from './useReducedMotionSafe'
 import type { SoftMassProps } from './types'
 
+/**
+ * A single soft atmospheric blob.
+ *
+ * CHANGED vs previous version:
+ * - Accepts `children` so that OrbitingHotspot / EmergingLabel can nest
+ *   inside the mass bounding box. Children render as siblings of the
+ *   blurred div — they are NOT blurred themselves.
+ * - Props renamed from `initialX/initialY` to `x/y` for clarity.
+ * - Uses custom `useReducedMotionSafe` instead of framer's hook for
+ *   consistent SSR behaviour across all hero components.
+ */
 const SoftMass = memo(function SoftMass({
   size,
-  initialX,
-  initialY,
+  x: posX,
+  y: posY,
   colorA,
   colorB,
   opacity = 0.2,
@@ -21,23 +32,22 @@ const SoftMass = memo(function SoftMass({
   orbitRadiusX = 20,
   orbitRadiusY = 14,
   duration = 22,
-  scaleMin = 0.98,
-  scaleMax = 1.04,
   delay = 0,
+  scaleMin = 0.985,
+  scaleMax = 1.035,
+  children,
 }: SoftMassProps) {
-  const shouldReduceMotion = useReducedMotion()
-
-  // Accumulates time in seconds across frames
+  const reducedMotion = useReducedMotionSafe()
   const time = useMotionValue(0)
 
-  // Perfect elliptic orbit: cos/sin traces a smooth ellipse
+  // Perfect elliptic orbit via cos/sin
   const x = useTransform(time, (t) =>
     Math.cos(((t + delay) / duration) * 2 * Math.PI) * orbitRadiusX
   )
   const y = useTransform(time, (t) =>
     Math.sin(((t + delay) / duration) * 2 * Math.PI) * orbitRadiusY
   )
-  // Scale breathes at a slightly different period for organic feel
+  // Scale breathes at 1.45× the orbit period so the two never sync
   const scale = useTransform(time, (t) => {
     const s =
       Math.sin(((t + delay) / (duration * 1.45)) * 2 * Math.PI) * 0.5 + 0.5
@@ -45,24 +55,23 @@ const SoftMass = memo(function SoftMass({
   })
 
   useAnimationFrame((_, delta) => {
-    if (shouldReduceMotion) return
+    if (reducedMotion) return
     time.set(time.get() + delta / 1000)
   })
 
   return (
-    // Outer div: handles absolute centering at initialX/initialY
     <div
       style={{
         position: 'absolute',
-        left: initialX,
-        top: initialY,
+        left: posX,
+        top: posY,
         width: size,
         height: size,
         transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
       }}
     >
-      {/* Inner motion.div: handles the orbit + scale animation */}
+      {/* The visible glow — blurred, orbiting, breathing */}
       <motion.div
         style={{
           position: 'absolute',
@@ -77,6 +86,10 @@ const SoftMass = memo(function SoftMass({
           willChange: 'transform',
         }}
       />
+      {/* Children (OrbitingHotspot → EmergingLabel) sit outside the blur
+          but inside the mass bounding box, so labels emerge from specific
+          coordinates within the glow. */}
+      {children}
     </div>
   )
 })

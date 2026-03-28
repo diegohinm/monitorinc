@@ -6,23 +6,31 @@ import {
   useMotionValue,
   useTransform,
   useAnimationFrame,
-  useReducedMotion,
 } from 'framer-motion'
+import { useReducedMotionSafe } from './useReducedMotionSafe'
 import type { OrbitingHotspotProps } from './types'
 
 /**
- * Wraps children in a slowly orbiting container.
- * The orbit is a small ellipse — the movement is barely perceptible,
- * just enough to make labels feel alive rather than pinned.
+ * Invisible anchor that orbits in a tiny ellipse.
+ *
+ * CHANGED vs previous version:
+ * - Added `anchorX` / `anchorY` props. When provided, the hotspot
+ *   positions itself absolutely within its parent (the SoftMass
+ *   bounding box). This makes labels emerge FROM the mass instead
+ *   of floating beside it — key for the atmospheric feel.
+ * - When no anchor is provided, behaves as a relative-positioned
+ *   wrapper (backwards-compatible standalone usage).
  */
 const OrbitingHotspot = memo(function OrbitingHotspot({
   radiusX,
   radiusY,
   duration,
   delay = 0,
+  anchorX,
+  anchorY,
   children,
 }: OrbitingHotspotProps) {
-  const shouldReduceMotion = useReducedMotion()
+  const reducedMotion = useReducedMotionSafe()
   const time = useMotionValue(0)
 
   const x = useTransform(time, (t) =>
@@ -33,22 +41,37 @@ const OrbitingHotspot = memo(function OrbitingHotspot({
   )
 
   useAnimationFrame((_, delta) => {
-    if (shouldReduceMotion) return
+    if (reducedMotion) return
     time.set(time.get() + delta / 1000)
   })
 
+  const anchored = anchorX !== undefined && anchorY !== undefined
+
   return (
-    <motion.div
-      style={{
-        position: 'relative',
-        display: 'inline-block',
-        x,
-        y,
-        willChange: 'transform',
-      }}
+    <div
+      style={
+        anchored
+          ? {
+              position: 'absolute' as const,
+              left: anchorX,
+              top: anchorY,
+              transform: 'translate(-50%, -50%)',
+              zIndex: 2,
+            }
+          : { position: 'relative' as const }
+      }
     >
-      {children}
-    </motion.div>
+      <motion.div
+        style={{
+          display: 'inline-block',
+          x,
+          y,
+          willChange: 'transform',
+        }}
+      >
+        {children}
+      </motion.div>
+    </div>
   )
 })
 

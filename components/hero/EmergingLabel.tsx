@@ -1,10 +1,10 @@
 'use client'
 
 import { memo, useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useReducedMotionSafe } from './useReducedMotionSafe'
 import type { EmergingLabelProps, LabelStatus } from './types'
 
-// Status dot colors — semantic and legible at small size
 const STATUS_COLOR: Record<LabelStatus, string> = {
   ok:      '#4ADE80',
   warning: '#FBBF24',
@@ -13,11 +13,18 @@ const STATUS_COLOR: Record<LabelStatus, string> = {
 }
 
 /**
- * A label that cycles between hidden and visible states on a timer loop.
+ * A label that cycles between hidden and visible on a timer loop.
  * Most of the time it is invisible; it surfaces briefly, then retreats.
  *
  * Timing:
- *   delay  →  show for activeDuration  →  hide for idleDuration  →  repeat
+ *   initial delay  →  show (activeDuration)  →  hide (idleDuration)  →  repeat
+ *
+ * CHANGED vs previous version:
+ * - Entrance animation now includes filter: blur(4px) → blur(0px)
+ *   so the label materialises from the atmospheric glow, not from
+ *   thin air. This is the single biggest detail that makes labels
+ *   feel like they belong to the mass instead of being pasted on.
+ * - Uses custom useReducedMotionSafe hook.
  */
 const EmergingLabel = memo(function EmergingLabel({
   text,
@@ -26,13 +33,12 @@ const EmergingLabel = memo(function EmergingLabel({
   idleDuration = 5500,
   delay = 0,
 }: EmergingLabelProps) {
-  const shouldReduceMotion = useReducedMotion()
+  const reducedMotion = useReducedMotionSafe()
   const [visible, setVisible] = useState(false)
-  // Single ref tracks the current active setTimeout ID so cleanup is exact
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (shouldReduceMotion) return
+    if (reducedMotion) return
 
     let mounted = true
 
@@ -43,7 +49,6 @@ const EmergingLabel = memo(function EmergingLabel({
       }
     }
 
-    // Each cycle: surface → sink → surface → …
     function show() {
       if (!mounted) return
       setVisible(true)
@@ -57,15 +62,15 @@ const EmergingLabel = memo(function EmergingLabel({
       }, activeDuration)
     }
 
-    // Initial delay before first appearance; fall back to idleDuration if
-    // delay is 0 so the page fully paints before anything pops up
+    // First cycle: respect explicit delay; fall back to idleDuration
+    // so the page fully paints before the first label pops up.
     timerRef.current = setTimeout(show, delay > 0 ? delay : idleDuration)
 
     return () => {
       mounted = false
       clearTimer()
     }
-  }, [shouldReduceMotion, activeDuration, idleDuration, delay])
+  }, [reducedMotion, activeDuration, idleDuration, delay])
 
   const dotColor = STATUS_COLOR[status]
 
@@ -74,34 +79,33 @@ const EmergingLabel = memo(function EmergingLabel({
       {visible && (
         <motion.div
           key="label"
-          initial={{ opacity: 0, y: 8, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0,  scale: 1    }}
-          exit={{    opacity: 0, y: -6, scale: 0.985 }}
+          initial={{ opacity: 0, y: 8,  scale: 0.96, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0,  scale: 1,    filter: 'blur(0px)' }}
+          exit={{    opacity: 0, y: -6,  scale: 0.985 }}
           transition={{ duration: 0.42, ease: [0.25, 0.1, 0.25, 1] }}
           style={{
-            display:        'inline-flex',
-            alignItems:     'center',
-            gap:            6,
-            padding:        '4px 10px 4px 8px',
-            borderRadius:   6,
-            background:     'rgba(8, 12, 20, 0.56)',
-            border:         '1px solid rgba(255,255,255,0.08)',
-            backdropFilter: 'blur(8px)',
+            display:              'inline-flex',
+            alignItems:           'center',
+            gap:                  6,
+            padding:              '4px 10px 4px 8px',
+            borderRadius:         6,
+            background:           'rgba(8, 12, 20, 0.56)',
+            border:               '1px solid rgba(255,255,255,0.08)',
+            backdropFilter:       'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
-            color:          'rgba(255,255,255,0.94)',
-            fontSize:       11,
-            fontFamily:     'var(--font-sans, ui-sans-serif, system-ui, sans-serif)',
-            fontWeight:     500,
-            letterSpacing:  '0.04em',
-            whiteSpace:     'nowrap',
-            userSelect:     'none',
+            color:                'rgba(255,255,255,0.94)',
+            fontSize:             11,
+            fontFamily:           'var(--font-sans, ui-sans-serif, system-ui, sans-serif)',
+            fontWeight:           500,
+            letterSpacing:        '0.04em',
+            whiteSpace:           'nowrap',
+            userSelect:           'none',
           }}
         >
-          {/* Status indicator dot */}
           <span
             style={{
-              width:      5,
-              height:     5,
+              width:        5,
+              height:       5,
               borderRadius: '50%',
               background:   dotColor,
               boxShadow:    `0 0 6px ${dotColor}`,

@@ -1,130 +1,164 @@
 'use client'
 
+/**
+ * ═══════════════════════════════════════════════════════════════════
+ *  WHAT CHANGED VS THE PREVIOUS VERSION AND WHY
+ * ═══════════════════════════════════════════════════════════════════
+ *
+ *  1. Labels are now NESTED INSIDE their parent SoftMass.
+ *     Previously they were absolutely positioned at the hero level,
+ *     next to the masses but visually separate. That made them look
+ *     like floating widgets rather than events emerging from an
+ *     atmospheric glow. Nesting them inside the mass bounding box
+ *     ties them to the glow spatially.
+ *
+ *  2. Unified cycle period (CYCLE_PERIOD = 10 000 ms).
+ *     Previously each label had independent cycle timing, which
+ *     caused drift: after a few minutes, 3+ labels could be visible
+ *     at once and the scene felt crowded. A shared period + even
+ *     stagger (period / 6 ≈ 1 667 ms) guarantees max 2 visible
+ *     simultaneously, forever, with no coordinator overhead.
+ *
+ *  3. Added subtle grid / noise overlay.
+ *     A barely visible grid (0.018 opacity) masked with a radial
+ *     gradient adds depth without adding UI weight — the kind of
+ *     background texture that feels "premium" without being noticed.
+ *
+ *  4. Expanded edge vignette and centre glow.
+ *     The previous vignette was too small and the centre glow too
+ *     bright. Both are now wider and softer, making the entire scene
+ *     feel like one continuous atmosphere rather than a spotlight in
+ *     the middle with dark corners.
+ *
+ *  5. Mass opacity and blur tweaked down.
+ *     The previous values (opacity 0.22, blur 134) were slightly too
+ *     vivid and made the masses feel like coloured circles. Lowering
+ *     opacity to 0.18–0.20 and blur to 120–130 makes them merge
+ *     more with the background.
+ *
+ *  NET RESULT:
+ *  The hero goes from "dark background + floating cards + visible
+ *  widgets" to "a single living atmosphere where technical events
+ *  surface briefly and dissolve back into the glow."
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
 import { useState, useEffect } from 'react'
 import SoftMass from './SoftMass'
 import OrbitingHotspot from './OrbitingHotspot'
 import EmergingLabel from './EmergingLabel'
 import type { LabelStatus } from './types'
 
-// ─── Label definitions ────────────────────────────────────────────────────────
-// Staggered delays ensure at most 2 labels are visible at the same time
-// on desktop, and at most 1 on mobile (handled by slicing).
+// ─── Timing system ──────────────────────────────────────────────────────────
 //
-// Timing math per label:
-//   first appear = delay ms
-//   visible for  = activeDuration ms
-//   idle for     = idleDuration ms
-//   cycle        = activeDuration + idleDuration
+// All labels share the same total cycle period so their overlaps are
+// deterministic. With 6 labels staggered by CYCLE / 6, consecutive
+// labels overlap briefly (≈ 1.1 s) producing max 2 visible at once.
+//
+//   visible ratio per label ≈ 2 800 / 10 000 = 28 %
+//   expected visible at any t ≈ 6 × 0.28 = 1.68 → rounds to 1 or 2
+
+const CYCLE_PERIOD = 10_000 // ms — shared by every label
+const STAGGER = Math.round(CYCLE_PERIOD / 6) // ≈ 1 667 ms
+
+// ─── Label definitions ──────────────────────────────────────────────────────
 
 interface LabelDef {
-  id: string
   text: string
   status: LabelStatus
-  // position within the hero (% units for left/top, or right/top)
-  left?: string
-  right?: string
-  top: string
   activeDuration: number
-  idleDuration: number
   delay: number
-  // orbit params for its hotspot
-  orbitX: number
-  orbitY: number
-  orbitDuration: number
+  anchorX: string // % position within parent SoftMass bounding box
+  anchorY: string
+  orbitRx: number
+  orbitRy: number
+  orbitDur: number
   orbitDelay: number
 }
 
+// Left mass labels — staggers 0, 2, 4 (even indices)
 const LEFT_LABELS: LabelDef[] = [
   {
-    id: 'cam01',
     text: 'Cámara 01',
     status: 'ok',
-    left: '7%',
-    top: '24%',
     activeDuration: 2800,
-    idleDuration: 6400,
-    delay: 1200,
-    orbitX: 14,
-    orbitY: 9,
-    orbitDuration: 14,
+    delay: 2000 + 0 * STAGGER,
+    anchorX: '58%',
+    anchorY: '28%',
+    orbitRx: 12,
+    orbitRy: 8,
+    orbitDur: 14,
     orbitDelay: 0,
   },
   {
-    id: 'intruder',
     text: 'Intruso detectado',
     status: 'alert',
-    left: '5%',
-    top: '56%',
-    activeDuration: 3200,
-    idleDuration: 7600,
-    delay: 6800,
-    orbitX: 10,
-    orbitY: 13,
-    orbitDuration: 18,
+    activeDuration: 3000,
+    delay: 2000 + 2 * STAGGER,
+    anchorX: '42%',
+    anchorY: '64%',
+    orbitRx: 10,
+    orbitRy: 14,
+    orbitDur: 16,
+    orbitDelay: 4,
+  },
+  {
+    text: 'Incendios',
+    status: 'warning',
+    activeDuration: 2600,
+    delay: 2000 + 4 * STAGGER,
+    anchorX: '62%',
+    anchorY: '48%',
+    orbitRx: 8,
+    orbitRy: 10,
+    orbitDur: 18,
+    orbitDelay: 7,
+  },
+]
+
+// Right mass labels — staggers 1, 3, 5 (odd indices)
+// This alternates left-right-left-right in the reveal order.
+const RIGHT_LABELS: LabelDef[] = [
+  {
+    text: 'GPS Flota',
+    status: 'neutral',
+    activeDuration: 2600,
+    delay: 2000 + 1 * STAGGER,
+    anchorX: '38%',
+    anchorY: '30%',
+    orbitRx: 10,
+    orbitRy: 12,
+    orbitDur: 12,
+    orbitDelay: 2,
+  },
+  {
+    text: 'Acceso OK',
+    status: 'ok',
+    activeDuration: 2800,
+    delay: 2000 + 3 * STAGGER,
+    anchorX: '54%',
+    anchorY: '60%',
+    orbitRx: 12,
+    orbitRy: 8,
+    orbitDur: 15,
     orbitDelay: 5,
   },
   {
-    id: 'fire',
-    text: 'Incendios',
-    status: 'warning',
-    left: '10%',
-    top: '40%',
-    activeDuration: 2600,
-    idleDuration: 7000,
-    delay: 3800,
-    orbitX: 12,
-    orbitY: 8,
-    orbitDuration: 16,
+    text: 'Alarma activa',
+    status: 'alert',
+    activeDuration: 3200,
+    delay: 2000 + 5 * STAGGER,
+    anchorX: '40%',
+    anchorY: '46%',
+    orbitRx: 8,
+    orbitRy: 11,
+    orbitDur: 13,
     orbitDelay: 3,
   },
 ]
 
-const RIGHT_LABELS: LabelDef[] = [
-  {
-    id: 'gps',
-    text: 'GPS Flota',
-    status: 'neutral',
-    right: '7%',
-    top: '20%',
-    activeDuration: 3000,
-    idleDuration: 6800,
-    delay: 2600,
-    orbitX: 12,
-    orbitY: 10,
-    orbitDuration: 12,
-    orbitDelay: 2,
-  },
-  {
-    id: 'access',
-    text: 'Acceso OK',
-    status: 'ok',
-    right: '5%',
-    top: '60%',
-    activeDuration: 2500,
-    idleDuration: 7400,
-    delay: 5400,
-    orbitX: 10,
-    orbitY: 14,
-    orbitDuration: 16,
-    orbitDelay: 6,
-  },
-  {
-    id: 'alarm',
-    text: 'Alarma activa',
-    status: 'alert',
-    right: '9%',
-    top: '38%',
-    activeDuration: 3400,
-    idleDuration: 6200,
-    delay: 9200,
-    orbitX: 8,
-    orbitY: 11,
-    orbitDuration: 13,
-    orbitDelay: 4,
-  },
-]
+// ─── SSR-safe mobile hook ─────────────────────────────────────────────────
 
-// ─── SSR-safe mobile hook ─────────────────────────────────────────────────────
 function useMobile() {
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
@@ -137,164 +171,176 @@ function useMobile() {
   return isMobile
 }
 
-// ─── Label anchor ─────────────────────────────────────────────────────────────
-function LabelAnchor({ def, mobile }: { def: LabelDef; mobile: boolean }) {
-  // On mobile, push anchors further into the frame edges and lower vertically
-  // to stay clear of the headline text
-  const style: React.CSSProperties = {
-    position: 'absolute',
-    top:      mobile ? '68%' : def.top,
-    zIndex:   2,
-    // Align labels flush to the mass side; right-anchored labels use `right`
-    ...(def.left  !== undefined ? { left:  mobile ? '4%' : def.left  } : {}),
-    ...(def.right !== undefined ? { right: mobile ? '4%' : def.right } : {}),
-  }
+// ─── Render a set of labels inside a mass ─────────────────────────────────
 
+function MassLabels({ labels }: { labels: LabelDef[] }) {
   return (
-    <div style={style}>
-      <OrbitingHotspot
-        radiusX={def.orbitX}
-        radiusY={def.orbitY}
-        duration={def.orbitDuration}
-        delay={def.orbitDelay}
-      >
-        <EmergingLabel
-          text={def.text}
-          status={def.status}
-          activeDuration={def.activeDuration}
-          idleDuration={def.idleDuration}
-          delay={def.delay}
-        />
-      </OrbitingHotspot>
-    </div>
+    <>
+      {labels.map((lbl) => (
+        <OrbitingHotspot
+          key={lbl.text}
+          anchorX={lbl.anchorX}
+          anchorY={lbl.anchorY}
+          radiusX={lbl.orbitRx}
+          radiusY={lbl.orbitRy}
+          duration={lbl.orbitDur}
+          delay={lbl.orbitDelay}
+        >
+          <EmergingLabel
+            text={lbl.text}
+            status={lbl.status}
+            activeDuration={lbl.activeDuration}
+            idleDuration={CYCLE_PERIOD - lbl.activeDuration}
+            delay={lbl.delay}
+          />
+        </OrbitingHotspot>
+      ))}
+    </>
   )
 }
 
-// ─── Main export — named to match existing Hero.tsx import ───────────────────
+// ─── Main export — named to match existing Hero.tsx import ────────────────
+
 export function HeroBackground() {
   const isMobile = useMobile()
 
-  // Desktop: all 3 per side. Mobile: 1 per side (staggered so they rarely overlap)
-  const leftVisible  = isMobile ? LEFT_LABELS.slice(0, 1)  : LEFT_LABELS
-  const rightVisible = isMobile ? RIGHT_LABELS.slice(0, 1) : RIGHT_LABELS
+  // Mobile: 1 label per mass (max 1 on screen). Delays set so the two
+  // remaining labels never overlap: left at t=2 s, right at t=7 s.
+  // Desktop: all 3 per mass (max 2 on screen thanks to the stagger).
+  const leftLabels = isMobile
+    ? [{ ...LEFT_LABELS[0], delay: 2000 }]
+    : LEFT_LABELS
+  const rightLabels = isMobile
+    ? [{ ...RIGHT_LABELS[0], delay: 7000 }]
+    : RIGHT_LABELS
 
-  // Masses shrink slightly on mobile
-  const ms = isMobile ? 0.58 : 1
+  const ms = isMobile ? 0.55 : 1
 
   return (
     <div
       aria-hidden="true"
       style={{
-        position:      'absolute',
-        inset:         0,
-        overflow:      'hidden',
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
         pointerEvents: 'none',
-        zIndex:        0,
-        background:    '#0B0F17',
+        zIndex: 0,
+        background: '#0B0F17',
       }}
     >
-      {/* ── 1. Soft ambient masses ─────────────────────────────────────── */}
-
-      {/* Left mass — blue-violet */}
+      {/* ── 1. Left mass — blue-violet ───────────────────────────────── */}
       <SoftMass
+        x={isMobile ? '16%' : '22%'}
+        y="54%"
         size={Math.round(500 * ms)}
-        initialX="22%"
-        initialY="54%"
-        colorA="rgba(96, 120, 255, 0.58)"
-        colorB="rgba(96, 120, 255, 0.18)"
-        opacity={isMobile ? 0.17 : 0.22}
-        blur={isMobile ? 80 : 134}
-        orbitRadiusX={26}
+        colorA="rgba(96, 120, 255, 0.55)"
+        colorB="rgba(96, 120, 255, 0.16)"
+        opacity={isMobile ? 0.15 : 0.20}
+        blur={isMobile ? 78 : 128}
+        orbitRadiusX={24}
         orbitRadiusY={16}
         duration={28}
-        scaleMin={0.98}
-        scaleMax={1.04}
         delay={0}
-      />
+        scaleMin={0.985}
+        scaleMax={1.035}
+      >
+        <MassLabels labels={leftLabels} />
+      </SoftMass>
 
-      {/* Right mass — cyan */}
+      {/* ── 2. Right mass — cyan ─────────────────────────────────────── */}
       <SoftMass
+        x={isMobile ? '84%' : '78%'}
+        y="46%"
         size={Math.round(440 * ms)}
-        initialX="78%"
-        initialY="46%"
-        colorA="rgba(100, 210, 255, 0.52)"
-        colorB="rgba(100, 210, 255, 0.14)"
-        opacity={isMobile ? 0.13 : 0.19}
-        blur={isMobile ? 72 : 122}
+        colorA="rgba(100, 210, 255, 0.50)"
+        colorB="rgba(100, 210, 255, 0.12)"
+        opacity={isMobile ? 0.13 : 0.18}
+        blur={isMobile ? 72 : 120}
         orbitRadiusX={18}
         orbitRadiusY={28}
         duration={22}
-        scaleMin={0.98}
-        scaleMax={1.03}
         delay={8}
-      />
+        scaleMin={0.985}
+        scaleMax={1.030}
+      >
+        <MassLabels labels={rightLabels} />
+      </SoftMass>
 
-      {/* Bottom-center mass — purple accent (desktop only) */}
+      {/* ── 3. Bottom-centre mass — purple (desktop only, no labels) ── */}
       {!isMobile && (
         <SoftMass
-          size={360}
-          initialX="50%"
-          initialY="74%"
-          colorA="rgba(140, 120, 255, 0.46)"
-          colorB="rgba(140, 120, 255, 0.12)"
-          opacity={0.16}
+          x="50%"
+          y="76%"
+          size={340}
+          colorA="rgba(140, 120, 255, 0.42)"
+          colorB="rgba(140, 120, 255, 0.10)"
+          opacity={0.14}
           blur={114}
           orbitRadiusX={30}
           orbitRadiusY={12}
           duration={26}
-          scaleMin={0.98}
-          scaleMax={1.04}
           delay={5}
+          scaleMin={0.985}
+          scaleMax={1.035}
         />
       )}
 
-      {/* ── 2. Subtle radial centre glow (depth anchor) ────────────────── */}
+      {/* ── 4. Subtle centre glow ────────────────────────────────────── */}
       <div
         style={{
-          position:   'absolute',
-          inset:      0,
+          position: 'absolute',
+          inset: 0,
           background: `
             radial-gradient(
-              ellipse 58% 52% at 50% 48%,
-              rgba(62, 110, 255, 0.09) 0%,
-              rgba(62, 110, 255, 0.03) 50%,
+              ellipse 56% 50% at 50% 48%,
+              rgba(62, 110, 255, 0.07) 0%,
+              rgba(62, 110, 255, 0.02) 48%,
               transparent 72%
             )
           `,
         }}
       />
 
-      {/* ── 3. Emerging label hotspots ─────────────────────────────────── */}
-      {leftVisible.map((def) => (
-        <LabelAnchor key={def.id} def={def} mobile={isMobile} />
-      ))}
-      {rightVisible.map((def) => (
-        <LabelAnchor key={def.id} def={def} mobile={isMobile} />
-      ))}
-
-      {/* ── 4. Bottom section fade ─────────────────────────────────────── */}
+      {/* ── 5. Ultra-subtle grid overlay ─────────────────────────────── */}
       <div
         style={{
-          position:   'absolute',
-          bottom:     0,
-          left:       0,
-          right:      0,
-          height:     220,
-          background: 'linear-gradient(to bottom, transparent, #0B0F17)',
-          zIndex:     3,
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)
+          `,
+          backgroundSize: '52px 52px',
+          WebkitMaskImage:
+            'radial-gradient(ellipse 72% 62% at 50% 50%, black 0%, transparent 100%)',
+          maskImage:
+            'radial-gradient(ellipse 72% 62% at 50% 50%, black 0%, transparent 100%)',
         }}
       />
 
-      {/* ── 5. Edge vignette — darkens corners for depth ──────────────── */}
+      {/* ── 6. Bottom section fade ───────────────────────────────────── */}
       <div
         style={{
-          position:   'absolute',
-          inset:      0,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 220,
+          background: 'linear-gradient(to bottom, transparent, #0B0F17)',
+          zIndex: 3,
+        }}
+      />
+
+      {/* ── 7. Edge vignette ─────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
           background: `
             radial-gradient(
               ellipse 110% 110% at 50% 50%,
-              transparent 46%,
-              rgba(4, 6, 14, 0.62) 100%
+              transparent 42%,
+              rgba(4, 6, 14, 0.64) 100%
             )
           `,
         }}
