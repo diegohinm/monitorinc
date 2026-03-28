@@ -25,7 +25,7 @@ function mulberry32(seed: number) {
   }
 }
 
-export function ParticleSphere({ density = 190 }: { density?: number }) {
+export function ParticleSphere({ density = 190, scale = 1 }: { density?: number; scale?: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const reducedMotion = useReducedMotionSafe()
 
@@ -102,7 +102,7 @@ export function ParticleSphere({ density = 190 }: { density?: number }) {
 
       // Sphere radius relative to viewport.
       const base = Math.min(state.w, state.h)
-      state.R = clamp(base * 0.42, 240, 520)
+      state.R = clamp(base * 0.42 * scale, 240, 520)
     }
 
     const onPointerMove = (e: PointerEvent) => {

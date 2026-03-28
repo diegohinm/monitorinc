@@ -230,7 +230,7 @@ export function HeroBackground() {
       }}
     >
       {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
-      <ParticleSphere density={isMobile ? 120 : 210} />
+      <ParticleSphere density={isMobile ? 140 : 260} scale={isMobile ? 1.05 : 1.12} />
 
       {/* ── 1. Left mass — ultra-soft (supporting glow) ───────────────── */}
       <SoftMass
