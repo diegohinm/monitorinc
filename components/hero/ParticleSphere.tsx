@@ -159,6 +159,17 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
       // Keep it subtle: we'll do a two-pass render.
       ctx.globalCompositeOperation = 'source-over'
 
+      // Pass 0: soft core haze (gives the "sphere mass" feel)
+      {
+        const haze = ctx.createRadialGradient(px, py, state.R * 0.02, px, py, state.R * 0.62)
+        haze.addColorStop(0, 'rgba(245, 248, 255, 0.085)')
+        haze.addColorStop(0.28, 'rgba(245, 248, 255, 0.030)')
+        haze.addColorStop(0.62, 'rgba(245, 248, 255, 0.010)')
+        haze.addColorStop(1, 'rgba(245, 248, 255, 0.0)')
+        ctx.fillStyle = haze
+        ctx.fillRect(0, 0, state.w, state.h)
+      }
+
       // Pass 1: base dots (soft, non-additive)
       for (const p of particles) {
         const sx = px + (p.x * state.R + ox)
