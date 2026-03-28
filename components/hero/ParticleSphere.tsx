@@ -199,7 +199,23 @@ export function ParticleSphere({
 
 
       // Sort so farther particles render first (depth).
-      const sorted = particles.slice().sort((a, b) => a.z - b.z)
+      // Only re-sort occasionally (reduces per-frame overhead).
+      const now = performance.now()
+      // @ts-expect-error internal cache
+      state._sortT = state._sortT ?? 0
+      // @ts-expect-error internal cache
+      state._sorted = state._sorted ?? particles.slice()
+
+      // @ts-expect-error internal cache
+      if (now - state._sortT > 180) {
+        // @ts-expect-error internal cache
+        state._sorted = particles.slice().sort((a, b) => a.z - b.z)
+        // @ts-expect-error internal cache
+        state._sortT = now
+      }
+
+      // @ts-expect-error internal cache
+      const sorted = state._sorted as Particle[]
 
       // Maze-like color: cool white with subtle blue/lavender shift over time.
       const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.00018)
