@@ -278,13 +278,14 @@ export function ParticleSphere({
         ctx.fill()
       }
 
-      // Pass 3: 4 brighter "guide" points (the ones you asked for)
+      // Pass 3: 4 brighter "guide" points with subtle drift (so they feel alive)
       ctx.globalCompositeOperation = 'source-over'
+      const t = performance.now() * 0.00018
       const guides = [
-        { x: -0.55, y: -0.18 },
-        { x: 0.52, y: -0.06 },
-        { x: -0.18, y: 0.42 },
-        { x: 0.22, y: 0.18 },
+        { x: -0.55 + 0.015 * Math.sin(t * 1.7), y: -0.18 + 0.012 * Math.cos(t * 1.3) },
+        { x:  0.52 + 0.014 * Math.cos(t * 1.4), y: -0.06 + 0.010 * Math.sin(t * 1.6) },
+        { x: -0.18 + 0.012 * Math.sin(t * 1.2), y:  0.42 + 0.014 * Math.cos(t * 1.5) },
+        { x:  0.22 + 0.010 * Math.cos(t * 1.1), y:  0.18 + 0.012 * Math.sin(t * 1.8) },
       ]
       for (const g of guides) {
         const sx = px + (g.x * state.R + ox)
