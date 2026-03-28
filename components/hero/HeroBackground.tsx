@@ -241,7 +241,7 @@ export function HeroBackground() {
     >
       {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
       <ParticleSphere
-        density={isMobile ? 150 : 290}
+        density={isMobile ? 600 : 1160}
         scale={isMobile ? 1.05 : 1.12}
         onFrame={setParticleFrame}
       />

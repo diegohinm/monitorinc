@@ -75,8 +75,8 @@ export function ParticleSphere({
       const speed = (0.00007 + 0.00016 * edge) * (0.75 + 0.55 * z)
 
       // Make dots more "crisp" and layered.
-      const radiusPx = (0.70 + rand() * 1.15) * (0.85 + 0.55 * z)
-      const alpha = (0.10 + rand() * 0.18) * (0.55 + 0.95 * z)
+      const radiusPx = (0.68 + rand() * 1.10) * (0.85 + 0.55 * z)
+      const alpha = (0.14 + rand() * 0.22) * (0.65 + 1.05 * z)
 
       out.push({
         x,
@@ -249,7 +249,7 @@ export function ParticleSphere({
         const b = mix(cool.b, midB, hueT)
 
         // Sharper points: slightly smaller, higher alpha. Front particles brighter.
-        const a = p.a * (0.68 + 0.32 * center) * depth
+        const a = p.a * (0.82 + 0.38 * center) * depth
 
         ctx.fillStyle = `rgba(${r.toFixed(0)}, ${g.toFixed(0)}, ${b.toFixed(0)}, ${a.toFixed(4)})`
         ctx.beginPath()
@@ -257,10 +257,9 @@ export function ParticleSphere({
         ctx.fill()
       }
 
-      // Pass 2: additive micro-glow (gives cluster bloom). Only front-ish particles.
+      // Pass 2: additive micro-glow (gives cluster bloom).
       ctx.globalCompositeOperation = 'lighter'
       for (const p of sorted) {
-        if (p.z < 0.40) continue
 
         const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
         if (rr > 0.78) continue
@@ -270,15 +269,26 @@ export function ParticleSphere({
 
         const falloff = 1 - clamp(rr, 0, 1)
         const center = Math.pow(falloff, 1.6)
-        const a = (p.a * 0.26) * (0.35 + 0.65 * p.z) * (0.35 + 0.65 * center)
+        const a = (p.a * 0.42) * (0.40 + 0.75 * p.z) * (0.40 + 0.75 * center)
 
-        ctx.fillStyle = `rgba(255, 255, 255, ${a.toFixed(4)})`
+        // Slightly tinted glow, closer to Maze.
+        ctx.fillStyle = `rgba(240, 246, 255, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * (1.35 + 0.20 * center), 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * (1.65 + 0.35 * center), 0, Math.PI * 2)
         ctx.fill()
       }
 
-      // Pass 3: 4 brighter "guide" points with subtle drift (so they feel alive)
+      // Pass 3: bloom veil (helps everything feel more luminous)
+      {
+        const veil = ctx.createRadialGradient(px, py, state.R * 0.08, px, py, state.R * 0.95)
+        veil.addColorStop(0, 'rgba(235, 244, 255, 0.028)')
+        veil.addColorStop(0.45, 'rgba(235, 244, 255, 0.014)')
+        veil.addColorStop(1, 'rgba(235, 244, 255, 0.0)')
+        ctx.fillStyle = veil
+        ctx.fillRect(0, 0, state.w, state.h)
+      }
+
+      // Pass 4: 4 brighter "guide" points with subtle drift (so they feel alive)
       ctx.globalCompositeOperation = 'source-over'
       const t = performance.now() * 0.00018
       const guides = [
