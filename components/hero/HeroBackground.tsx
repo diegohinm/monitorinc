@@ -48,6 +48,7 @@ import SoftMass from './SoftMass'
 import OrbitingHotspot from './OrbitingHotspot'
 import EmergingLabel from './EmergingLabel'
 import { ParticleSphere } from './ParticleSphere'
+import { ParticleLabels } from './ParticleLabels'
 import type { LabelStatus } from './types'
 
 // ─── Timing system ──────────────────────────────────────────────────────────
@@ -217,6 +218,15 @@ export function HeroBackground() {
 
   const ms = isMobile ? 0.55 : 1
 
+  const [particleFrame, setParticleFrame] = useState<{
+    anchors: { x: number; y: number }[]
+    cx: number
+    cy: number
+    R: number
+    ox: number
+    oy: number
+  } | null>(null)
+
   return (
     <div
       aria-hidden="true"
@@ -230,7 +240,23 @@ export function HeroBackground() {
       }}
     >
       {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
-      <ParticleSphere density={isMobile ? 140 : 260} scale={isMobile ? 1.05 : 1.12} />
+      <ParticleSphere
+        density={isMobile ? 140 : 260}
+        scale={isMobile ? 1.05 : 1.12}
+        onFrame={setParticleFrame}
+      />
+
+      {particleFrame && (
+        <ParticleLabels
+          anchors={particleFrame.anchors}
+          centerX={particleFrame.cx}
+          centerY={particleFrame.cy}
+          radius={particleFrame.R}
+          parallaxX={particleFrame.ox}
+          parallaxY={particleFrame.oy}
+          isMobile={isMobile}
+        />
+      )}
 
       {/* ── 1. Left mass — ultra-soft (supporting glow) ───────────────── */}
       <SoftMass

@@ -25,7 +25,22 @@ function mulberry32(seed: number) {
   }
 }
 
-export function ParticleSphere({ density = 190, scale = 1 }: { density?: number; scale?: number }) {
+export function ParticleSphere({
+  density = 190,
+  scale = 1,
+  onFrame,
+}: {
+  density?: number
+  scale?: number
+  onFrame?: (s: {
+    anchors: { x: number; y: number }[]
+    cx: number
+    cy: number
+    R: number
+    ox: number
+    oy: number
+  }) => void
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const reducedMotion = useReducedMotionSafe()
 
@@ -154,6 +169,17 @@ export function ParticleSphere({ density = 190, scale = 1 }: { density?: number;
       // Parallax offsets.
       const ox = state.mx * 10
       const oy = state.my * 8
+
+      // Let callers attach DOM labels to real particle anchors.
+      if (onFrame) {
+        // Send a small subset of anchors near the core.
+        // (We keep this stable across frames; positions drift slowly.)
+        const anchors = particles.slice(0, Math.min(80, particles.length)).map((p) => ({
+          x: p.x,
+          y: p.y,
+        }))
+        onFrame({ anchors, cx: state.cx, cy: state.cy, R: state.R, ox, oy })
+      }
 
       // A touch of additive blend like Maze's "particle mass".
       // Keep it subtle: we'll do a two-pass render.
