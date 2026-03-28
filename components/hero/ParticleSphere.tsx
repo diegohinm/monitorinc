@@ -28,10 +28,13 @@ function mulberry32(seed: number) {
 export function ParticleSphere({
   density = 190,
   scale = 1,
+  edgeBias = 0,
   onFrame,
 }: {
   density?: number
   scale?: number
+  edgeBias?: number
+  edgeBias?: number
   onFrame?: (s: {
     anchors: { x: number; y: number }[]
     cx: number
@@ -56,7 +59,13 @@ export function ParticleSphere({
       const theta = u * Math.PI * 2
 
       // Strong centre bias (closer to Maze): tighter core, softer halo.
-      const rr = Math.pow(v, 0.38)
+      // Optionally bias some particles toward the edge to define the sphere silhouette.
+      const rrBase = Math.pow(v, 0.38)
+      const rr = edgeBias > 0
+        ? (rand() < edgeBias
+            ? Math.pow(v, 0.10) // pushes toward edge (closer to 1)
+            : rrBase)
+        : rrBase
 
       // Slightly squash vertically to feel like an orb in perspective.
       const x = Math.cos(theta) * rr
@@ -80,7 +89,7 @@ export function ParticleSphere({
       })
     }
     return out
-  }, [density])
+  }, [density, edgeBias])
 
   useEffect(() => {
     const canvas = canvasRef.current

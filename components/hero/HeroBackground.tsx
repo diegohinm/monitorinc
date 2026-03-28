@@ -241,8 +241,9 @@ export function HeroBackground() {
     >
       {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
       <ParticleSphere
-        density={isMobile ? 140 : 260}
+        density={isMobile ? 150 : 290}
         scale={isMobile ? 1.05 : 1.12}
+        edgeBias={isMobile ? 0.08 : 0.12}
         onFrame={setParticleFrame}
       />
 
@@ -336,7 +337,7 @@ export function HeroBackground() {
         style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.055,
+          opacity: 0.04,
           mixBlendMode: 'soft-light',
           filter: 'blur(0.25px)',
           backgroundImage: `
