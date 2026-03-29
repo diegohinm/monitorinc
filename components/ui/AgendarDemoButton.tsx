@@ -34,8 +34,8 @@ export function AgendarDemoButton({
         fontWeight: 500,
         letterSpacing: '0.01em',
         textDecoration: 'none',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
+        backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
         boxShadow: 'none',
         ...style,
       }}
