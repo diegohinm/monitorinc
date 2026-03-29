@@ -1,0 +1,38 @@
+/* Maze-like hero text entrance (blur -> crisp, slight rise, stagger) */
+
+@keyframes hero-reveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    filter: blur(10px);
+  }
+  55% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0px);
+  }
+}
+
+.hero-anim {
+  animation: hero-reveal 0.9s var(--easing, cubic-bezier(0.5, 0, 0.2, 1)) both;
+  will-change: transform, filter, opacity;
+}
+
+.hero-anim--1 { animation-delay: 80ms; }
+.hero-anim--2 { animation-delay: 220ms; }
+.hero-anim--3 { animation-delay: 360ms; }
+.hero-anim--4 { animation-delay: 520ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

@@ -27,6 +27,7 @@
  */
 
 import { HeroBackground } from './HeroBackground'
+import './hero-text-anim.css'
 
 const CLIENTS = ['Hogares', 'Empresas', 'Fincas', 'Instituciones']
 
@@ -62,7 +63,7 @@ export function Hero() {
         }}
       >
         {/* Badge pill — very subtle, almost atmospheric itself */}
-        <div
+        <div className="hero-anim hero-anim--1"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -100,7 +101,7 @@ export function Hero() {
         </div>
 
         {/* Headline */}
-        <h1
+        <h1 className="hero-anim hero-anim--2"
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(2.8rem, 7.5vw, 5.2rem)',
@@ -126,7 +127,7 @@ export function Hero() {
         </h1>
 
         {/* Subtitle */}
-        <p
+        <p className="hero-anim hero-anim--3"
           style={{
             fontFamily: 'var(--font-body)',
             fontSize: 'clamp(15px, 2vw, 17px)',
@@ -143,7 +144,7 @@ export function Hero() {
         </p>
 
         {/* CTAs */}
-        <div
+        <div className="hero-anim hero-anim--4"
           style={{
             display: 'flex',
             gap: 12,

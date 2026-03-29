@@ -72,7 +72,7 @@ export function ParticleSphere({
       const z = rand() // 0..1 (closer to 1 = closer to camera)
 
       // Slow drift overall; slightly faster for closer particles.
-      const speed = (0.00007 + 0.00016 * edge) * (0.75 + 0.55 * z)
+      const speed = (0.00014 + 0.00032 * edge) * (0.75 + 0.55 * z)
 
       // Make dots more "crisp" and layered.
       const radiusPx = (0.68 + rand() * 1.10) * (0.85 + 0.55 * z)
@@ -219,9 +219,9 @@ export function ParticleSphere({
 
       // Maze-like color: cool white with subtle blue/lavender shift over time.
       const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.00018)
-      const cool = { r: 228, g: 236, b: 255 }
-      const blue = { r: 206, g: 224, b: 255 }
-      const lav = { r: 218, g: 214, b: 255 }
+      const cool = { r: 236, g: 242, b: 255 }
+      const blue = { r: 228, g: 238, b: 255 }
+      const lav = { r: 238, g: 234, b: 255 }
 
       function mix(a: number, b: number, t: number) {
         return a + (b - a) * t
@@ -269,21 +269,21 @@ export function ParticleSphere({
 
         const falloff = 1 - clamp(rr, 0, 1)
         const center = Math.pow(falloff, 1.6)
-        const a = (p.a * 0.42) * (0.40 + 0.75 * p.z) * (0.40 + 0.75 * center)
+        const a = (p.a * 0.52) * (0.40 + 0.75 * p.z) * (0.40 + 0.75 * center)
 
-        // Slightly tinted glow, closer to Maze.
-        ctx.fillStyle = `rgba(240, 246, 255, ${a.toFixed(4)})`
+        // Warmer/whiter glow (less blue).
+        ctx.fillStyle = `rgba(248, 248, 248, ${a.toFixed(4)})`
         ctx.beginPath()
-        ctx.arc(sx, sy, p.r * (1.65 + 0.35 * center), 0, Math.PI * 2)
+        ctx.arc(sx, sy, p.r * (1.85 + 0.45 * center), 0, Math.PI * 2)
         ctx.fill()
       }
 
       // Pass 3: bloom veil (helps everything feel more luminous)
       {
         const veil = ctx.createRadialGradient(px, py, state.R * 0.08, px, py, state.R * 0.95)
-        veil.addColorStop(0, 'rgba(235, 244, 255, 0.028)')
-        veil.addColorStop(0.45, 'rgba(235, 244, 255, 0.014)')
-        veil.addColorStop(1, 'rgba(235, 244, 255, 0.0)')
+        veil.addColorStop(0, 'rgba(250, 250, 250, 0.036)')
+        veil.addColorStop(0.45, 'rgba(250, 250, 250, 0.018)')
+        veil.addColorStop(1, 'rgba(250, 250, 250, 0.0)')
         ctx.fillStyle = veil
         ctx.fillRect(0, 0, state.w, state.h)
       }
