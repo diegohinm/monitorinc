@@ -26,9 +26,9 @@ export function AgendarDemoButton({
         gap: 10,
         padding: '11px 22px',
         borderRadius: 999,
-        background: 'rgba(255, 255, 255, 0.92)',
-        border: '1px solid rgba(255, 255, 255, 0.22)',
-        color: 'rgba(15, 21, 35, 0.92)',
+        background: 'linear-gradient(to right, #00E7FB, #e628ff)',
+        border: 'none',
+        color: '#000',
         fontFamily: 'var(--font-sans)',
         fontSize: 14,
         fontWeight: 500,
@@ -36,12 +36,12 @@ export function AgendarDemoButton({
         textDecoration: 'none',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        boxShadow: '0 0 0 1px rgba(0,0,0,0.20), 0 18px 42px rgba(0,0,0,0.35)',
+        boxShadow: 'none',
         ...style,
       }}
     >
       <img
-        src="/whatsapp-icon.jpg"
+        src="/whatsapp-icon-hero.jpg"
         alt=""
         width={18}
         height={18}
@@ -49,7 +49,7 @@ export function AgendarDemoButton({
           display: 'block',
           borderRadius: 4,
           filter: 'none',
-          opacity: 0.98,
+          opacity: 1,
         }}
       />
       <span>{children}</span>
