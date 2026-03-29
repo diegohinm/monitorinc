@@ -234,9 +234,30 @@ export default function Home() {
             <p className="m-story__body" style={{ maxWidth: '85ch' }}>
               {PDF_BRANDS.body}
             </p>
-            <p className="m-story__body" style={{ maxWidth: '85ch' }}>
-              {PDF_BRANDS.note}
-            </p>
+            {PDF_BRANDS.list?.length ? (
+              <div
+                aria-label="Marcas"
+                style={{
+                  marginTop: '1.25rem',
+                  border: '1px solid var(--card-border)',
+                  borderRadius: 10,
+                  background: 'rgba(242,244,245,0.02)',
+                  overflow: 'hidden',
+                }}
+              >
+                <div className="m-marquee">
+                  <div className="m-marquee__track">
+                    {[...PDF_BRANDS.list, ...PDF_BRANDS.list].map((name, i) => (
+                      <span key={name + i} className="m-marquee__item">{name}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="m-story__body" style={{ maxWidth: '85ch' }}>
+                Lista concreta de marcas: No especificado.
+              </p>
+            )}
           </div>
         </section>
 

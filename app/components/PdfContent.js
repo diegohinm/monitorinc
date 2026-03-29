@@ -77,7 +77,16 @@ export const PDF_BRANDS = {
   title: 'Marcas',
   body:
     'Estas son algunas de las marcas que distribuimos y usamos, para hacer de cada lugar un espacio más seguro.',
-  note: 'Lista concreta de marcas: No especificado en el PDF.',
+  // Provided by the user (pending PDF verification)
+  list: [
+    'Samsung',
+    'Bosch',
+    'ZKTeco',
+    'Dahua Technology',
+    'Axis Communications',
+    'Hikvision',
+    'Paradox Security Systems',
+  ],
 }
 
 export const PDF_CONTACT = {
