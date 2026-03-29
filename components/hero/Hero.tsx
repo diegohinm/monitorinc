@@ -96,12 +96,12 @@ export function Hero() {
         {/* Headline */}
         <h1 className="hero-anim hero-anim--2"
           style={{
-            fontFamily: 'var(--font-sans)',
+            fontFamily: "var(--font-sans, 'Space Grotesk')",
             fontSize: 'clamp(2.8rem, 7.5vw, 5.2rem)',
             fontWeight: 700,
             lineHeight: 1.02,
             letterSpacing: '-0.038em',
-            color: 'rgba(245, 248, 255, 0.96)',
+            color: 'rgba(245, 248, 255, 0.98)',
             margin: '0 0 24px',
           }}
         >
@@ -122,11 +122,11 @@ export function Hero() {
         {/* Subtitle */}
         <p className="hero-anim hero-anim--3"
           style={{
-            fontFamily: 'var(--font-body)',
+            fontFamily: "var(--font-sans, 'Space Grotesk')",
             fontSize: 'clamp(15px, 2vw, 17px)',
             fontWeight: 300,
             lineHeight: 1.72,
-            color: 'rgba(245, 248, 255, 0.64)',
+            color: 'rgba(245, 248, 255, 0.58)',
             maxWidth: 420,
             margin: '0 0 48px',
           }}
