@@ -28,9 +28,12 @@
 
 import { HeroBackground } from './HeroBackground'
 import { BrandsMarquee } from './BrandsMarquee'
+import { AgendarDemoButton } from '../ui/AgendarDemoButton'
 import './hero-text-anim.css'
 
 const CLIENTS = ['Hogares', 'Empresas', 'Fincas', 'Instituciones']
+
+const PROVIDERS = ['Samsung', 'Bosch', 'ZKTeco', 'Dahua Technology', 'Axis Communications', 'Hikvision', 'Paradox Security Systems']
 
 export function Hero() {
   return (
@@ -98,7 +101,7 @@ export function Hero() {
             fontWeight: 700,
             lineHeight: 1.02,
             letterSpacing: '-0.038em',
-            color: '#eff0f0',
+            color: 'rgba(245, 248, 255, 0.96)',
             margin: '0 0 24px',
           }}
         >
@@ -123,7 +126,7 @@ export function Hero() {
             fontSize: 'clamp(15px, 2vw, 17px)',
             fontWeight: 300,
             lineHeight: 1.72,
-            color: 'rgba(214, 216, 216, 0.40)',
+            color: 'rgba(245, 248, 255, 0.64)',
             maxWidth: 420,
             margin: '0 0 48px',
           }}
@@ -143,32 +146,40 @@ export function Hero() {
             marginBottom: 56,
           }}
         >
-          <a
-            href="https://wa.me/573138407090"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '11px 26px',
-              borderRadius: 999,
-              background: 'linear-gradient(to right, #00E7FB, #e628ff)',
-              color: '#000',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 14,
-              fontWeight: 600,
-              textDecoration: 'none',
-            }}
-          >
-            WhatsApp 313&nbsp;8407090
-          </a>
+          {/* Unified CTA button */}
+          <AgendarDemoButton />
 
         </div>
 
-        {/* Client strip — supporting texture, not competing content */}
+        {/* Providers label + brands marquee */}
         <div
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 16,
+            flexWrap: 'wrap',
+          }}
+        >
+          <span
+            style={{
+              fontSize: 11,
+              color: 'rgba(255,255,255,0.14)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              fontFamily: 'var(--font-sans)',
+            }}
+          >
+            Proveedores:
+          </span>
+        </div>
+
+        <BrandsMarquee />
+
+        {/* Client strip — below brands */}
+        <div
+          style={{
+            marginTop: 12,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -200,9 +211,6 @@ export function Hero() {
             </span>
           ))}
         </div>
-
-        {/* Brands marquee — directly under "Atendemos a" */}
-        <BrandsMarquee />
       </div>
 
       {/* Scroll cue */}

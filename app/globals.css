@@ -292,37 +292,34 @@ h1, h2, h3, h4, .font-sans {
 }
 
 /* Secondary — dark pill with subtle border (Maze default) */
-.a-button--secondary {
-  background: var(--btn-dark-bg);
-  color: var(--text);
-  border: 1px solid rgba(242, 244, 245, 0.20);
-}
-
-.a-button--secondary:hover {
-  border-color: rgba(242, 244, 245, 0.35);
-  background: #0d1118;
-}
-
-/* Primary — gradient pill */
+.a-button--secondary,
 .a-button--primary {
-  background: var(--gradient);
-  color: #000;
-  font-weight: 600;
-  border: none;
+  background: rgba(242, 244, 245, 0.06);
+  border: 1px solid rgba(242, 244, 245, 0.14);
+  color: rgba(245, 248, 255, 0.92);
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.20), 0 18px 42px rgba(0,0,0,0.35);
 }
 
+.a-button--secondary:hover,
 .a-button--primary:hover {
-  opacity: 0.88;
+  background: rgba(242, 244, 245, 0.08);
+  border-color: rgba(242, 244, 245, 0.18);
   transform: translateY(-1px);
 }
 
 /* Animated dot inside primary button (Maze style) */
 .a-button__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-image: conic-gradient(from 90deg, #00E7FB, #E628FF);
-  animation: spin 2s linear infinite;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background-image: url('/whatsapp-icon.jpg');
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  filter: invert(1);
+  opacity: 0.92;
   flex-shrink: 0;
 }
 
