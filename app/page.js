@@ -137,12 +137,6 @@ function SectionLabel({ num, text }) {
 export default function Home() {
   return (
     <>
-      {/* ── Alert bar ─────────────────────────────────────── */}
-      <div className="s-alert">
-        <span className="s-alert__dot" />
-        <span>Distribuimos e integramos equipos de seguridad electrónica y de comunicación</span>
-        <span className="s-alert__accent">Somos los mejores en seguridad electrónica</span>
-      </div>
 
       {/* ── Header ────────────────────────────────────────── */}
       <header className="s-header">
