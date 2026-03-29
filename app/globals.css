@@ -958,8 +958,11 @@ h1, h2, h3, h4, .font-sans {
   }
 
   /* All two-column inline grids in page.js become single column */
-  .wrap [style*="grid-template-columns: 1fr 1fr"],
-  .wrap [style*="gridTemplateColumns: '1fr 1fr'"] {
+  /* Make any inline 2-col grids stack on smaller screens */
+  .wrap [style*="gridTemplateColumns: '1fr 1fr'"],
+  .wrap [style*="gridTemplateColumns: \"1fr 1fr\""],
+  .wrap [style*="gridTemplateColumns: 1fr 1fr"],
+  .wrap [style*="grid-template-columns: 1fr 1fr"] {
     grid-template-columns: 1fr !important;
   }
 
@@ -980,8 +983,18 @@ h1, h2, h3, h4, .font-sans {
   .m-marquee__track { gap: 26px; padding: 0 18px; animation-duration: 20s; }
   .m-marquee__item { font-size: 12px; letter-spacing: 0.10em; }
 
-  /* Testimonials: 1 col */
+  /* 3-col grids -> 1-col */
   .wrap [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 4-col grids -> 2-col */
+  .wrap [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Generic: any 2-col repeat grid -> 1-col */
+  .wrap [style*="repeat(2, 1fr)"] {
     grid-template-columns: 1fr !important;
   }
 

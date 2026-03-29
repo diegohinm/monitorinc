@@ -153,7 +153,7 @@ export default function Home() {
             <ul className="s-header__nav">
               <li><a href="#quienes-somos">Quiénes somos</a></li>
               <li><a href="#servicios">Servicios</a></li>
-              <li><a href="#marcas">Marcas</a></li>
+
               <li><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
