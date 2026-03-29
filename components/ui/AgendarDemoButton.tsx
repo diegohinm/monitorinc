@@ -26,9 +26,9 @@ export function AgendarDemoButton({
         gap: 10,
         padding: '11px 22px',
         borderRadius: 999,
-        background: 'rgba(242, 244, 245, 0.06)',
-        border: '1px solid rgba(242, 244, 245, 0.14)',
-        color: 'rgba(245, 248, 255, 0.92)',
+        background: 'rgba(255, 255, 255, 0.92)',
+        border: '1px solid rgba(255, 255, 255, 0.22)',
+        color: 'rgba(15, 21, 35, 0.92)',
         fontFamily: 'var(--font-sans)',
         fontSize: 14,
         fontWeight: 500,
@@ -48,8 +48,8 @@ export function AgendarDemoButton({
         style={{
           display: 'block',
           borderRadius: 4,
-          filter: 'invert(1)',
-          opacity: 0.92,
+          filter: 'none',
+          opacity: 0.98,
         }}
       />
       <span>{children}</span>
