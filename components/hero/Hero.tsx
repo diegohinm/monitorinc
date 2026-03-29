@@ -87,18 +87,7 @@ export function Hero() {
               flexShrink: 0,
             }}
           />
-          <span
-            style={{
-              fontSize: 11,
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 500,
-              color: 'rgba(214, 216, 216, 0.44)',
-              letterSpacing: '0.09em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Seguridad electrónica · Colombia
-          </span>
+
         </div>
 
         {/* Headline */}
@@ -174,24 +163,7 @@ export function Hero() {
           >
             WhatsApp 313&nbsp;8407090
           </a>
-          <a
-            href="#servicios"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '11px 26px',
-              borderRadius: 999,
-              background: 'rgba(242, 244, 245, 0.04)',
-              border: '1px solid rgba(242, 244, 245, 0.10)',
-              color: 'rgba(214, 216, 216, 0.65)',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 14,
-              fontWeight: 400,
-              textDecoration: 'none',
-            }}
-          >
-            Ver servicios →
-          </a>
+
         </div>
 
         {/* Client strip — supporting texture, not competing content */}

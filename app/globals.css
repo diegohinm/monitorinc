@@ -973,6 +973,13 @@ h1, h2, h3, h4, .font-sans {
     grid-template-columns: 1fr !important;
   }
 
+  /* Brands marquee in hero: reduce height and fade width */
+  .m-marquee { padding: 14px 0; }
+  .m-marquee::before,
+  .m-marquee::after { width: 42px; }
+  .m-marquee__track { gap: 26px; padding: 0 18px; animation-duration: 20s; }
+  .m-marquee__item { font-size: 12px; letter-spacing: 0.10em; }
+
   /* Testimonials: 1 col */
   .wrap [style*="repeat(3, 1fr)"] {
     grid-template-columns: 1fr !important;
