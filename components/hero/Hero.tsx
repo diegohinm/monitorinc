@@ -27,6 +27,7 @@
  */
 
 import { HeroBackground } from './HeroBackground'
+import { BrandsMarquee } from './BrandsMarquee'
 import './hero-text-anim.css'
 
 const CLIENTS = ['Hogares', 'Empresas', 'Fincas', 'Instituciones']
@@ -227,6 +228,9 @@ export function Hero() {
             </span>
           ))}
         </div>
+
+        {/* Brands marquee — directly under "Atendemos a" */}
+        <BrandsMarquee />
       </div>
 
       {/* Scroll cue */}

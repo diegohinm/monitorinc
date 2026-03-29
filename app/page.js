@@ -224,42 +224,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════
-            MARCAS (PDF)
-        ══════════════════════════════════════════════════ */}
-        <section className="module--story" id="marcas">
-          <div className="wrap">
-            <SectionLabel num="03" text={PDF_BRANDS.title} />
-            <h2 className="m-story__title">{PDF_BRANDS.title}</h2>
-            <p className="m-story__body" style={{ maxWidth: '85ch' }}>
-              {PDF_BRANDS.body}
-            </p>
-            {PDF_BRANDS.list?.length ? (
-              <div
-                aria-label="Marcas"
-                style={{
-                  marginTop: '1.25rem',
-                  border: '1px solid var(--card-border)',
-                  borderRadius: 10,
-                  background: 'rgba(242,244,245,0.02)',
-                  overflow: 'hidden',
-                }}
-              >
-                <div className="m-marquee">
-                  <div className="m-marquee__track">
-                    {[...PDF_BRANDS.list, ...PDF_BRANDS.list].map((name, i) => (
-                      <span key={name + i} className="m-marquee__item">{name}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <p className="m-story__body" style={{ maxWidth: '85ch' }}>
-                Lista concreta de marcas: No especificado.
-              </p>
-            )}
-          </div>
-        </section>
+        {/* Nota: marcas se muestran en el HERO directamente bajo "Atendemos a". */}
 
         {/* Nota: el PDF no incluye testimonios. Se omite sección de testimonios. */}
 
