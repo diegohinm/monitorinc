@@ -5,8 +5,8 @@
 :root {
   /* Exact Maze colors */
   --bg:          #0F1523;
-  --text:        #D6D8D8;
-  --text-dim:    rgba(214, 216, 216, 0.55);
+  --text:        rgba(245, 248, 255, 0.92);
+  --text-dim:    rgba(245, 248, 255, 0.60);
   --cyan:        #00E7FB;
   --magenta:     #E628FF;
   --red:         #E42269;
@@ -26,7 +26,7 @@
 
   /* Card surfaces */
   --card-bg:     rgba(242, 244, 245, 0.04);
-  --card-border: rgba(242, 244, 245, 0.10);
+  --card-border: rgba(242, 244, 245, 0.12);
 
   /* Button */
   --btn-dark-bg: #080B0B;
