@@ -109,10 +109,7 @@ export function Hero() {
           <br />
           <span
             style={{
-              background: 'linear-gradient(to right, #00E7FB, #e628ff)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: 'rgba(245, 248, 255, 0.98)',
             }}
           >
             un lugar seguro.
