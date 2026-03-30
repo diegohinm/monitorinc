@@ -66,33 +66,7 @@ export function Hero() {
           alignItems: 'center',
         }}
       >
-        {/* Badge pill — very subtle, almost atmospheric itself */}
-        <div className="hero-anim hero-anim--1"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '5px 14px',
-            borderRadius: 999,
-            border: '1px solid rgba(2, 232, 255, 0.12)',
-            background: 'rgba(2, 232, 255, 0.04)',
-            backdropFilter: 'blur(8px)',
-            marginBottom: 28,
-          }}
-        >
-          <span
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: '50%',
-              background: '#02E8FF',
-              boxShadow: '0 0 6px rgba(2, 232, 255, 0.5)',
-              flexShrink: 0,
-            }}
-          />
-
-        </div>
-
+  
         {/* Headline */}
         <h1 className="hero-anim hero-anim--2"
           style={{

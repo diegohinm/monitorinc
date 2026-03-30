@@ -41,7 +41,7 @@ export function AgendarDemoButton({
       }}
     >
       <img
-        src="/whatsapp-icon-hero.jpg"
+        src="/whatsapp-icon-hero.png"
         alt=""
         width={18}
         height={18}
