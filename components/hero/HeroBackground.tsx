@@ -43,13 +43,27 @@
  * ═══════════════════════════════════════════════════════════════════
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import SoftMass from './SoftMass'
 import OrbitingHotspot from './OrbitingHotspot'
 import EmergingLabel from './EmergingLabel'
 import { ParticleSphere } from './ParticleSphere'
 import { ParticleLabels } from './ParticleLabels'
 import type { LabelStatus } from './types'
+
+// ─── Client-only wrapper ────────────────────────────────────────────────────
+// Framer Motion's motion.div expands CSS shorthand differently on server vs
+// client (inset → top/right/bottom/left, borderRadius → individual corners,
+// transform precision). This causes hydration mismatches. Since the entire
+// background is decorative (aria-hidden), we skip it during SSR and render
+// only after mount.
+
+function ClientOnly({ children, fallback }: { children: ReactNode; fallback?: ReactNode }) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return <>{fallback}</>
+  return <>{children}</>
+}
 
 // ─── Timing system ──────────────────────────────────────────────────────────
 //
@@ -239,81 +253,83 @@ export function HeroBackground() {
         background: '#0B0F17',
       }}
     >
-      {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
-      <ParticleSphere
-        density={isMobile ? 600 : 1160}
-        scale={isMobile ? 1.05 : 1.12}
-        onFrame={setParticleFrame}
-      />
-
-      {particleFrame && (
-        <ParticleLabels
-          anchors={particleFrame.anchors}
-          centerX={particleFrame.cx}
-          centerY={particleFrame.cy}
-          radius={particleFrame.R}
-          parallaxX={particleFrame.ox}
-          parallaxY={particleFrame.oy}
-          isMobile={isMobile}
+      <ClientOnly>
+        {/* ── Particle sphere field (Maze-like) ─────────────────────────── */}
+        <ParticleSphere
+          density={isMobile ? 600 : 1160}
+          scale={isMobile ? 1.05 : 1.12}
+          onFrame={setParticleFrame}
         />
-      )}
 
-      {/* ── 1. Left mass — ultra-soft (supporting glow) ───────────────── */}
-      <SoftMass
-        x={isMobile ? '18%' : '24%'}
-        y="56%"
-        size={Math.round(520 * ms)}
-        colorA="rgba(90, 120, 255, 0.16)"
-        colorB="rgba(90, 120, 255, 0.04)"
-        opacity={isMobile ? 0.05 : 0.06}
-        blur={isMobile ? 96 : 160}
-        orbitRadiusX={24}
-        orbitRadiusY={16}
-        duration={28}
-        delay={0}
-        scaleMin={0.985}
-        scaleMax={1.035}
-      >
-        <MassLabels labels={leftLabels} />
-      </SoftMass>
+        {particleFrame && (
+          <ParticleLabels
+            anchors={particleFrame.anchors}
+            centerX={particleFrame.cx}
+            centerY={particleFrame.cy}
+            radius={particleFrame.R}
+            parallaxX={particleFrame.ox}
+            parallaxY={particleFrame.oy}
+            isMobile={isMobile}
+          />
+        )}
 
-      {/* ── 2. Right mass — ultra-soft (supporting glow) ─────────────── */}
-      <SoftMass
-        x={isMobile ? '82%' : '76%'}
-        y="44%"
-        size={Math.round(460 * ms)}
-        colorA="rgba(190, 210, 255, 0.12)"
-        colorB="rgba(190, 210, 255, 0.03)"
-        opacity={isMobile ? 0.05 : 0.06}
-        blur={isMobile ? 96 : 160}
-        orbitRadiusX={18}
-        orbitRadiusY={28}
-        duration={22}
-        delay={8}
-        scaleMin={0.985}
-        scaleMax={1.030}
-      >
-        <MassLabels labels={rightLabels} />
-      </SoftMass>
-
-      {/* ── 3. Bottom-centre mass — purple (desktop only, no labels) ── */}
-      {!isMobile && (
+        {/* ── 1. Left mass — ultra-soft (supporting glow) ───────────────── */}
         <SoftMass
-          x="50%"
-          y="76%"
-          size={340}
-          colorA="rgba(140, 120, 255, 0.42)"
-          colorB="rgba(140, 120, 255, 0.10)"
-          opacity={0.14}
-          blur={114}
-          orbitRadiusX={30}
-          orbitRadiusY={12}
-          duration={26}
-          delay={5}
+          x={isMobile ? '18%' : '24%'}
+          y="56%"
+          size={Math.round(520 * ms)}
+          colorA="rgba(90, 120, 255, 0.16)"
+          colorB="rgba(90, 120, 255, 0.04)"
+          opacity={isMobile ? 0.05 : 0.06}
+          blur={isMobile ? 96 : 160}
+          orbitRadiusX={24}
+          orbitRadiusY={16}
+          duration={28}
+          delay={0}
           scaleMin={0.985}
           scaleMax={1.035}
-        />
-      )}
+        >
+          <MassLabels labels={leftLabels} />
+        </SoftMass>
+
+        {/* ── 2. Right mass — ultra-soft (supporting glow) ─────────────── */}
+        <SoftMass
+          x={isMobile ? '82%' : '76%'}
+          y="44%"
+          size={Math.round(460 * ms)}
+          colorA="rgba(190, 210, 255, 0.12)"
+          colorB="rgba(190, 210, 255, 0.03)"
+          opacity={isMobile ? 0.05 : 0.06}
+          blur={isMobile ? 96 : 160}
+          orbitRadiusX={18}
+          orbitRadiusY={28}
+          duration={22}
+          delay={8}
+          scaleMin={0.985}
+          scaleMax={1.030}
+        >
+          <MassLabels labels={rightLabels} />
+        </SoftMass>
+
+        {/* ── 3. Bottom-centre mass — purple (desktop only, no labels) ── */}
+        {!isMobile && (
+          <SoftMass
+            x="50%"
+            y="76%"
+            size={340}
+            colorA="rgba(140, 120, 255, 0.42)"
+            colorB="rgba(140, 120, 255, 0.10)"
+            opacity={0.14}
+            blur={114}
+            orbitRadiusX={30}
+            orbitRadiusY={12}
+            duration={26}
+            delay={5}
+            scaleMin={0.985}
+            scaleMax={1.035}
+          />
+        )}
+      </ClientOnly>
 
       {/* ── 4. Subtle centre glow ────────────────────────────────────── */}
       <div
