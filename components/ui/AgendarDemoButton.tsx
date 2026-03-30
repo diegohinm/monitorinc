@@ -1,58 +1,48 @@
 'use client'
 
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties } from 'react'
 
+/**
+ * Reusable "Agendar Demo" CTA button — Maze-style pill with WhatsApp icon.
+ *
+ * Uses the existing `.a-button` / `.a-button--primary` / `.a-button--secondary`
+ * CSS classes from globals.css. Pass `variant` to choose the style.
+ */
 export function AgendarDemoButton({
   href = 'https://wa.me/573138407090',
-  children = 'Agendar Demo',
+  label = 'Agendar Demo',
+  variant = 'primary',
+  external,
   className,
   style,
 }: {
   href?: string
-  children?: ReactNode
+  label?: string
+  /** 'primary' (default) or 'secondary' */
+  variant?: 'primary' | 'secondary'
+  /** Force target="_blank". Defaults to true for http(s) links. */
+  external?: boolean
   className?: string
   style?: CSSProperties
 }) {
+  const isExternal = external ?? href.startsWith('http')
+
   return (
     <a
       href={href}
-      target="_blank"
-      rel="noreferrer"
-      className={className}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 10,
-        padding: '11px 22px',
-        borderRadius: 999,
-        background: 'rgba(242, 244, 245, 0.06)',
-        border: '1px solid rgba(242, 244, 245, 0.14)',
-        color: 'rgba(245, 248, 255, 0.92)',
-        fontFamily: 'var(--font-sans)',
-        fontSize: 14,
-        fontWeight: 600,
-        letterSpacing: '0.01em',
-        textDecoration: 'none',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        boxShadow: '0 0 0 1px rgba(0,0,0,0.20), 0 18px 42px rgba(0,0,0,0.35)',
-        ...style,
-      }}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noreferrer' : undefined}
+      className={`a-button a-button--${variant}${className ? ` ${className}` : ''}`}
+      style={style}
     >
       <img
-        src="/whatsapp-icon-hero.png"
+        src="/whatsapp-icon-black2.svg"
         alt=""
-        width={18}
-        height={18}
-        style={{
-          display: 'block',
-          borderRadius: 4,
-          filter: 'none',
-          opacity: 1,
-        }}
+        width={16}
+        height={16}
+        className="a-button__wsp-icon"
       />
-      <span>{children}</span>
+      {label}
     </a>
   )
 }

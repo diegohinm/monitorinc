@@ -28,7 +28,7 @@
 
 import { HeroBackground } from './HeroBackground'
 import { BrandsMarquee } from './BrandsMarquee'
-import { AgendarDemoButton } from '../ui/AgendarDemoButton'
+
 import './hero-text-anim.css'
 
 const CLIENTS = ['Hogares', 'Empresas', 'Fincas', 'Instituciones']
@@ -108,7 +108,7 @@ export function Hero() {
         </p>
 
         {/* CTAs */}
-        <div className="hero-anim hero-anim--4"
+        <div className="hero-anim hero-anim--4" id="wsp-button-hero"
           style={{
             display: 'flex',
             gap: 12,
@@ -117,8 +117,40 @@ export function Hero() {
             marginBottom: 56,
           }}
         >
-          {/* Unified CTA button */}
-          <AgendarDemoButton />
+          {/* Unified CTA button — original hero style, not shared component */}
+          <a
+            href="https://wa.me/573138407090"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              padding: '11px 22px',
+              borderRadius: 999,
+              background: 'rgba(242, 244, 245, 0.06)',
+              border: '1px solid rgba(242, 244, 245, 0.14)',
+              color: 'rgba(245, 248, 255, 0.92)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 14,
+              fontWeight: 600,
+              letterSpacing: '0.01em',
+              textDecoration: 'none',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: '0 0 0 1px rgba(0,0,0,0.20), 0 18px 42px rgba(0,0,0,0.35)',
+            }}
+          >
+            <img
+              src="/whatsapp-icon-hero.png"
+              alt=""
+              width={18}
+              height={18}
+              style={{ display: 'block', borderRadius: 4 }}
+            />
+            <span>Agendar Demo</span>
+          </a>
 
         </div>
 

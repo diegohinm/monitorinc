@@ -3,6 +3,7 @@
    ───────────────────────────────────────────────────────────── */
 import { Hero } from '../components/hero/Hero'
 import { Header } from '../components/Header'
+import { AgendarDemoButton } from '../components/ui/AgendarDemoButton'
 import { PDF_ABOUT, PDF_SERVICES, PDF_BRANDS, PDF_CONTACT } from './components/PdfContent'
 
 const SERVICES = PDF_SERVICES.map((s, idx) => {
@@ -230,21 +231,11 @@ export default function Home() {
                 </p>
 
                 <div className="m-cta__actions">
-                  <a
-                    href="https://wa.me/573138407090"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="a-button a-button--primary"
-                  >
-                    <span className="a-button__dot" />
-                    Agendar Demo
-                  </a>
-                  <a
+                  <AgendarDemoButton />
+                  <AgendarDemoButton
                     href="mailto:info@monitorinc.com.co"
-                    className="a-button a-button--secondary"
-                  >
-                    Agendar Demo
-                  </a>
+                    variant="secondary"
+                  />
                 </div>
               </div>
             </div>
@@ -318,13 +309,12 @@ export default function Home() {
 
                 {/* Contact quick links */}
                 <div className="c-ui-box" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                  <a href="https://wa.me/573138407090" target="_blank" rel="noreferrer" className="a-button a-button--primary" style={{ flex: 1, minWidth: 'fit-content', justifyContent: 'center' }}>
-                    <span className="a-button__dot" />
-                    Agendar Demo
-                  </a>
-                  <a href="mailto:info@monitorinc.com.co" className="a-button a-button--secondary" style={{ flex: 1, minWidth: 'fit-content', justifyContent: 'center' }}>
-                    Agendar Demo
-                  </a>
+                  <AgendarDemoButton style={{ flex: 1, minWidth: 'fit-content', justifyContent: 'center' }} />
+                  <AgendarDemoButton
+                    href="mailto:info@monitorinc.com.co"
+                    variant="secondary"
+                    style={{ flex: 1, minWidth: 'fit-content', justifyContent: 'center' }}
+                  />
                 </div>
               </div>
             </div>
