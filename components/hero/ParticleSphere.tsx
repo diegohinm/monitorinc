@@ -185,7 +185,12 @@ export function ParticleSphere({
     const alphas = new Float32Array(COUNT)
 
     const tempVec = new THREE.Vector3()
-    const unitAnchors: { x: number; y: number }[] = []
+
+    // Track which particle the label follows — pick a new random one every 5s
+    let trackedParticleIdx = Math.floor(Math.random() * COUNT)
+    const pickInterval = setInterval(() => {
+      trackedParticleIdx = Math.floor(Math.random() * COUNT)
+    }, 5200)
 
     for (let i = 0; i < COUNT; i++) {
       const i3 = i * 3
@@ -196,8 +201,6 @@ export function ParticleSphere({
       positions[i3] = tempVec.x
       positions[i3 + 1] = tempVec.y
       positions[i3 + 2] = tempVec.z
-
-      if (i < 80) unitAnchors.push({ x: tempVec.x, y: tempVec.y })
 
       // Colour from 5-palette with slight HSL jitter
       const col = pickColour(rand).clone()
@@ -269,15 +272,31 @@ export function ParticleSphere({
       }
 
       camera.lookAt(scene.position)
+      points.updateMatrixWorld(true)
       renderer.render(scene, camera)
 
+      // Project the tracked particle to screen-space every frame
       if (onFrame) {
+        const cw = container!.clientWidth
+        const ch = container!.clientHeight
+        const projVec = new THREE.Vector3()
+        const i3 = trackedParticleIdx * 3
+
+        projVec.set(positions[i3], positions[i3 + 1], positions[i3 + 2])
+        projVec.applyMatrix4(points.matrixWorld)
+
+        const frontness = projVec.z / RADIUS // >0 = front face
+        projVec.project(camera)
+
+        const screenX = (projVec.x * 0.5 + 0.5) * cw
+        const screenY = (-projVec.y * 0.5 + 0.5) * ch
+
         onFrame({
-          anchors: unitAnchors,
+          anchors: [{ x: screenX, y: screenY }],
           cx: 0.5,
           cy: 0.48,
           R: RADIUS,
-          ox: 0,
+          ox: frontness,  // repurpose ox to pass frontness
           oy: 0,
         })
       }
@@ -287,6 +306,7 @@ export function ParticleSphere({
 
     return () => {
       cancelAnimationFrame(raf)
+      clearInterval(pickInterval)
       window.removeEventListener('resize', onResize)
       document.removeEventListener('visibilitychange', onVisibility)
       geometry.dispose()

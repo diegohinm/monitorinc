@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import EmergingLabel from './EmergingLabel'
 import type { LabelStatus } from './types'
 import { useReducedMotionSafe } from './useReducedMotionSafe'
 
 export type ParticleAnchor = {
-  // normalized particle position in unit space (-1..1)
   x: number
   y: number
 }
@@ -35,16 +34,16 @@ export function ParticleLabels({
   isMobile,
 }: {
   anchors: ParticleAnchor[]
-  centerX: number // 0..1
-  centerY: number // 0..1
-  radius: number // px
-  parallaxX: number // px
-  parallaxY: number // px
+  centerX: number
+  centerY: number
+  radius: number
+  parallaxX: number // repurposed: carries frontness from ParticleSphere
+  parallaxY: number
   isMobile: boolean
 }) {
   const reducedMotion = useReducedMotionSafe()
 
-  // show exactly one label at a time
+  // Cycle through labels — synced with ParticleSphere's 5.2s particle pick
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -56,22 +55,13 @@ export function ParticleLabels({
     return () => clearInterval(t)
   }, [reducedMotion, isMobile])
 
-  // Choose stable anchor per label index (so it feels attached to a particle)
-  const anchorIndex = useMemo(() => {
-    if (!anchors.length) return 0
-    // deterministic spread
-    return Math.floor((index * 37) % anchors.length)
-  }, [anchors.length, index])
+  // anchors[0] is the single projected screen-space position
+  const anchor = anchors[0]
+  if (!anchor) return null
 
-  const a = anchors[anchorIndex] ?? { x: 0, y: 0 }
-
-  const left = centerX * 100
-  const top = centerY * 100
-
-  // Convert particle space to % using radius and current parallax.
-  // We'll position with translate so we don't trigger layout.
-  const xPx = a.x * radius + parallaxX
-  const yPx = a.y * radius + parallaxY
+  // frontness is passed via parallaxX (ox field)
+  const frontness = parallaxX
+  const visible = frontness > 0.1
 
   const label = LABELS[index]
 
@@ -85,24 +75,25 @@ export function ParticleLabels({
         zIndex: 2,
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          left: `${left}%`,
-          top: `${top}%`,
-          transform: `translate3d(${xPx}px, ${yPx}px, 0)`,
-          willChange: 'transform',
-        }}
-      >
-        <EmergingLabel
-          text={label.text}
-          status={label.status}
-          // long enough to be read, but only one at a time
-          activeDuration={isMobile ? 2200 : 2600}
-          idleDuration={isMobile ? 3800 : 2600}
-          delay={0}
-        />
-      </div>
+      {visible && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            transform: `translate3d(${anchor.x}px, ${anchor.y}px, 0)`,
+            willChange: 'transform',
+          }}
+        >
+          <EmergingLabel
+            text={label.text}
+            status={label.status}
+            activeDuration={isMobile ? 2200 : 2600}
+            idleDuration={isMobile ? 3800 : 2600}
+            delay={0}
+          />
+        </div>
+      )}
     </div>
   )
 }
