@@ -47,7 +47,10 @@ export function Hero() {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        padding: 'clamp(96px, 14vw, 140px) 24px clamp(72px, 12vw, 108px)',
+        paddingTop: 'clamp(96px, 14vw, 140px)',
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingBottom: 200,
         background: '#0B0F17',
       }}
     >
