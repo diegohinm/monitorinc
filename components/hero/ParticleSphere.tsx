@@ -1,17 +1,26 @@
 'use client'
 
-import { useEffect, useMemo, useRef } from 'react'
-import { useReducedMotionSafe } from './useReducedMotionSafe'
+/**
+ * ═══════════════════════════════════════════════════════════════════
+ *  Particle Sphere — matched to mazehq.com's actual implementation
+ * ═══════════════════════════════════════════════════════════════════
+ *
+ *  Source analysis of Maze's JS bundle:
+ *    - 16 384 particles, shell-only (rejection sampling + normalize)
+ *    - Custom ShaderMaterial with soft particle texture
+ *    - NormalBlending (NOT Additive)
+ *    - Camera: FOV 45°, Z = 400
+ *    - Y rotation: 0.001 rad/frame, no mouse interaction
+ *    - 5-colour palette: #EFF0F0, #02E8FF, #42A4FE, #8958FF, #D409FE
+ *    - Scale: ~115% of viewport height (overflows intentionally)
+ *    - depthTest: false, transparent: true
+ *    - No post-processing — glow from soft texture + transparency
+ * ═══════════════════════════════════════════════════════════════════
+ */
 
-type Particle = {
-  x: number
-  y: number
-  z: number
-  vx: number
-  vy: number
-  r: number
-  a: number
-}
+import { useEffect, useRef } from 'react'
+import * as THREE from 'three'
+import { useReducedMotionSafe } from './useReducedMotionSafe'
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n))
@@ -26,10 +35,99 @@ function mulberry32(seed: number) {
   }
 }
 
-export function ParticleSphere({
-  density = 190,
-  scale = 1,
+// ── Maze exact values ────────────────────────────────────────────
+const COUNT = 16_384
+const ROT_Y = 0.001 // rad/frame — Maze exact
 
+// 5-colour palette from Maze's source (weighted probability)
+const PALETTE: { color: THREE.Color; weight: number }[] = [
+  { color: new THREE.Color('#EFF0F0'), weight: 0.05 }, // near-white
+  { color: new THREE.Color('#02E8FF'), weight: 0.30 }, // cyan
+  { color: new THREE.Color('#42A4FE'), weight: 0.30 }, // blue
+  { color: new THREE.Color('#8958FF'), weight: 0.10 }, // purple
+  { color: new THREE.Color('#D409FE'), weight: 0.10 }, // magenta
+]
+
+function pickColour(rand: () => number): THREE.Color {
+  let r = rand()
+  for (const entry of PALETTE) {
+    r -= entry.weight
+    if (r <= 0) return entry.color
+  }
+  return PALETTE[PALETTE.length - 1].color
+}
+
+// ── Create soft circle texture (replaces Maze's particle.png) ────
+function createParticleTexture(): THREE.Texture {
+  const size = 64
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')!
+
+  // Radial gradient: solid center → soft falloff → transparent edge
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
+  g.addColorStop(0, 'rgba(255, 255, 255, 1)')
+  g.addColorStop(0.15, 'rgba(255, 255, 255, 0.8)')
+  g.addColorStop(0.4, 'rgba(255, 255, 255, 0.35)')
+  g.addColorStop(0.7, 'rgba(255, 255, 255, 0.08)')
+  g.addColorStop(1, 'rgba(255, 255, 255, 0)')
+
+  ctx.fillStyle = g
+  ctx.fillRect(0, 0, size, size)
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.needsUpdate = true
+  return texture
+}
+
+// ── Maze's shell distribution: rejection sampling + normalize ────
+// Random point in [-1,1]^3, reject if outside unit sphere,
+// then normalize to project onto surface
+function shellPoint(rand: () => number, out: THREE.Vector3): void {
+  do {
+    out.set(rand() * 2 - 1, rand() * 2 - 1, rand() * 2 - 1)
+  } while (out.length() > 1)
+  out.normalize()
+}
+
+// ── Vertex shader ────────────────────────────────────────────────
+const vertexShader = /* glsl */ `
+  attribute float aAlpha;
+  varying float vAlpha;
+  varying vec3 vColor;
+
+  void main() {
+    vColor = color;
+    vAlpha = aAlpha;
+
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    float dist = -mvPosition.z;
+
+    // Size attenuation: closer = larger (Maze uses 100/distance)
+    gl_PointSize = 8.0 * (100.0 / dist);
+    gl_PointSize = clamp(gl_PointSize, 1.0, 80.0);
+
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`
+
+// ── Fragment shader ──────────────────────────────────────────────
+const fragmentShader = /* glsl */ `
+  uniform sampler2D pointTexture;
+  varying float vAlpha;
+  varying vec3 vColor;
+
+  void main() {
+    vec4 texel = texture2D(pointTexture, gl_PointCoord);
+    gl_FragColor = vec4(vColor, vAlpha) * texel;
+    if (gl_FragColor.a < 0.01) discard;
+  }
+`
+
+export function ParticleSphere({
+  density: _density,
+  scale = 1,
   onFrame,
 }: {
   density?: number
@@ -43,322 +141,159 @@ export function ParticleSphere({
     oy: number
   }) => void
 }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const reducedMotion = useReducedMotionSafe()
 
-  const particles = useMemo<Particle[]>(() => {
-    const seed = 1337
-    const rand = mulberry32(seed)
-
-    const out: Particle[] = []
-    for (let i = 0; i < density; i++) {
-      // Sample a "sphere" distribution: much more density in the core
-      const u = rand()
-      const v = rand()
-      const theta = u * Math.PI * 2
-
-      // Cloud-like distribution (no sphere silhouette).
-      const rr = Math.pow(v, 0.45)
-
-      // Slightly squash vertically to feel like an orb in perspective.
-      const x = Math.cos(theta) * rr
-      const y = Math.sin(theta) * rr * 0.76
-
-      // Small drift; more drift at edges than core.
-      const edge = rr
-      const angle = rand() * Math.PI * 2
-
-      // Depth (front/back) like Maze: affects size + alpha.
-      const z = rand() // 0..1 (closer to 1 = closer to camera)
-
-      // Slow drift overall; slightly faster for closer particles.
-      const speed = (0.00014 + 0.00032 * edge) * (0.75 + 0.55 * z)
-
-      // Make dots more "crisp" and layered.
-      const radiusPx = (0.68 + rand() * 1.10) * (0.85 + 0.55 * z)
-      const alpha = (0.14 + rand() * 0.22) * (0.65 + 1.05 * z)
-
-      out.push({
-        x,
-        y,
-        z,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        r: radiusPx,
-        a: alpha,
-      })
-    }
-    return out
-  }, [density])
-
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const container = containerRef.current
+    if (!container) return
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const w = container.clientWidth
+    const h = container.clientHeight
 
+    // ── Scene — Maze exact: FOV 45, Z 400 ────────────────────────
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(45, w / h, 80, 10000)
+    camera.position.set(0, 0, 400)
+    camera.lookAt(scene.position)
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    renderer.setPixelRatio(clamp(window.devicePixelRatio, 1, 2))
+    renderer.setSize(w, h)
+    renderer.setClearColor(0x000000, 0)
+    container.appendChild(renderer.domElement)
+
+    // ── Sphere scale — Maze fills ~115% of viewport height ───────
+    // sceneUnits = 2 * Z * tan(FOV/2) ≈ 331
+    const sceneUnits = 2 * 400 * Math.tan((45 / 2) * Math.PI / 180)
+    // Maze: scale = sceneUnits / geometryDiameter * scaleFactor
+    // geometryDiameter = 2 (unit sphere), scaleFactor = 1.15
+    const sphereScale = (sceneUnits / 2) * 1.15 * scale
+    const RADIUS = sphereScale // for onFrame callback
+
+    // ── Generate particles — shell-only, Maze exact ──────────────
+    const rand = mulberry32(1337)
+    const positions = new Float32Array(COUNT * 3)
+    const colors = new Float32Array(COUNT * 3)
+    const alphas = new Float32Array(COUNT)
+
+    const tempVec = new THREE.Vector3()
+    const unitAnchors: { x: number; y: number }[] = []
+
+    for (let i = 0; i < COUNT; i++) {
+      const i3 = i * 3
+
+      // Shell distribution — exact Maze algorithm
+      shellPoint(rand, tempVec)
+
+      positions[i3] = tempVec.x
+      positions[i3 + 1] = tempVec.y
+      positions[i3 + 2] = tempVec.z
+
+      if (i < 80) unitAnchors.push({ x: tempVec.x, y: tempVec.y })
+
+      // Colour from 5-palette with slight HSL jitter
+      const col = pickColour(rand).clone()
+      // Tiny hue/lightness jitter (Maze: T=0.01, w=0.01)
+      const hsl = { h: 0, s: 0, l: 0 }
+      col.getHSL(hsl)
+      hsl.h += (rand() - 0.5) * 0.02
+      hsl.l += (rand() - 0.5) * 0.02
+      col.setHSL(hsl.h, clamp(hsl.s, 0, 1), clamp(hsl.l, 0, 1))
+
+      colors[i3] = col.r
+      colors[i3 + 1] = col.g
+      colors[i3 + 2] = col.b
+
+      // Per-particle alpha: 0.4–1.0 random
+      alphas[i] = 0.4 + rand() * 0.6
+    }
+
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    geometry.setAttribute('aAlpha', new THREE.BufferAttribute(alphas, 1))
+
+    // ── Material — custom shader, NormalBlending, Maze exact ─────
+    const particleTexture = createParticleTexture()
+
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        pointTexture: { value: particleTexture },
+      },
+      vertexShader,
+      fragmentShader,
+      depthTest: false,
+      depthWrite: false,
+      transparent: true,
+      vertexColors: true,
+      blending: THREE.NormalBlending,
+    })
+
+    const points = new THREE.Points(geometry, material)
+    points.scale.set(sphereScale, sphereScale, sphereScale)
+    scene.add(points)
+
+    // ── Resize ───────────────────────────────────────────────────
+    const onResize = () => {
+      const w2 = container.clientWidth
+      const h2 = container.clientHeight
+      camera.aspect = w2 / h2
+      camera.updateProjectionMatrix()
+      renderer.setSize(w2, h2)
+    }
+    window.addEventListener('resize', onResize)
+
+    // ── Visibility ───────────────────────────────────────────────
     let raf = 0
-
-    const state = {
-      w: 0,
-      h: 0,
-      dpr: 1,
-      // centre of sphere (0..1)
-      cx: 0.5,
-      cy: 0.48,
-      // sphere radius in px (computed per resize)
-      R: 420,
-      // subtle pointer parallax
-      mx: 0,
-      my: 0,
-    }
-
-    function resize() {
-      const rect = canvas.getBoundingClientRect()
-      const dpr = clamp(window.devicePixelRatio || 1, 1, 2)
-      state.dpr = dpr
-      state.w = Math.floor(rect.width)
-      state.h = Math.floor(rect.height)
-      canvas.width = Math.floor(rect.width * dpr)
-      canvas.height = Math.floor(rect.height * dpr)
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      // Sphere radius relative to viewport.
-      const base = Math.min(state.w, state.h)
-      state.R = clamp(base * 0.42 * scale, 240, 520)
-    }
-
-    const onPointerMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect()
-      const nx = (e.clientX - rect.left) / rect.width
-      const ny = (e.clientY - rect.top) / rect.height
-      // Smooth pointer drift for less jitter.
-      state.mx += ((nx - 0.5) * 2 - state.mx) * 0.12
-      state.my += ((ny - 0.5) * 2 - state.my) * 0.12
-    }
-
     const onVisibility = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(raf)
-      } else if (!reducedMotion) {
-        raf = requestAnimationFrame(tick)
-      } else {
-        drawStatic()
-      }
+      if (document.hidden) cancelAnimationFrame(raf)
+      else raf = requestAnimationFrame(animate)
     }
-
-    window.addEventListener('resize', resize)
-    window.addEventListener('pointermove', onPointerMove, { passive: true })
     document.addEventListener('visibilitychange', onVisibility)
 
-    resize()
+    // ── Animation — Y rotation only, no mouse, Maze exact ────────
+    function animate() {
+      raf = requestAnimationFrame(animate)
 
-    function clear() {
-      ctx.clearRect(0, 0, state.w, state.h)
-    }
+      if (!reducedMotion) {
+        points.rotation.y += ROT_Y
+      }
 
-    function drawBackdrop(t: number) {
-      // Very subtle radial fog like Maze, with tiny temperature shift.
-      const x = state.cx * state.w
-      const y = state.cy * state.h
-      const pulse = 0.5 + 0.5 * Math.sin(t * 0.00022)
+      camera.lookAt(scene.position)
+      renderer.render(scene, camera)
 
-      const g = ctx.createRadialGradient(x, y, state.R * 0.05, x, y, state.R)
-      // cool white -> slightly lavendar-ish as it pulses
-      g.addColorStop(0, `rgba(236, 242, 255, ${(0.060 + 0.010 * pulse).toFixed(4)})`)
-      g.addColorStop(0.55, `rgba(230, 236, 255, ${(0.014 + 0.004 * pulse).toFixed(4)})`)
-      g.addColorStop(1, 'rgba(240, 244, 255, 0.0)')
-
-      ctx.fillStyle = g
-      ctx.fillRect(0, 0, state.w, state.h)
-    }
-
-    function drawParticles() {
-      const px = state.cx * state.w
-      const py = state.cy * state.h
-
-      // Parallax offsets (Maze-like: a bit more pronounced but still subtle).
-      const ox = state.mx * 16
-      const oy = state.my * 12
-
-      // Let callers attach DOM labels to real particle anchors.
       if (onFrame) {
-        // Send a small subset of anchors near the core.
-        // (We keep this stable across frames; positions drift slowly.)
-        const anchors = particles.slice(0, Math.min(80, particles.length)).map((p) => ({
-          x: p.x,
-          y: p.y,
-        }))
-        onFrame({ anchors, cx: state.cx, cy: state.cy, R: state.R, ox, oy })
+        onFrame({
+          anchors: unitAnchors,
+          cx: 0.5,
+          cy: 0.48,
+          R: RADIUS,
+          ox: 0,
+          oy: 0,
+        })
       }
-
-      // A touch of additive blend like Maze's "particle mass".
-      // Keep it subtle: we'll do a two-pass render.
-      ctx.globalCompositeOperation = 'source-over'
-
-
-      // Sort so farther particles render first (depth).
-      // Only re-sort occasionally (reduces per-frame overhead).
-      const now = performance.now()
-      // @ts-expect-error internal cache
-      state._sortT = state._sortT ?? 0
-      // @ts-expect-error internal cache
-      state._sorted = state._sorted ?? particles.slice()
-
-      // @ts-expect-error internal cache
-      if (now - state._sortT > 180) {
-        // @ts-expect-error internal cache
-        state._sorted = particles.slice().sort((a, b) => a.z - b.z)
-        // @ts-expect-error internal cache
-        state._sortT = now
-      }
-
-      // @ts-expect-error internal cache
-      const sorted = state._sorted as Particle[]
-
-      // Maze-like color: cool white with subtle blue/lavender shift over time.
-      const pulse = 0.5 + 0.5 * Math.sin(performance.now() * 0.00018)
-      const cool = { r: 236, g: 242, b: 255 }
-      const blue = { r: 228, g: 238, b: 255 }
-      const lav = { r: 238, g: 234, b: 255 }
-
-      function mix(a: number, b: number, t: number) {
-        return a + (b - a) * t
-      }
-
-      // Pass 1: crisp points + tiny chroma variation by depth/center.
-      for (const p of sorted) {
-        const sx = px + (p.x * state.R + ox)
-        const sy = py + (p.y * state.R + oy)
-
-        const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
-        const falloff = 1 - clamp(rr, 0, 1)
-
-        const depth = 0.45 + 0.95 * p.z
-        const center = Math.pow(falloff, 1.6)
-
-        // Hue shift target: center leans slightly blue/lavender.
-        const hueT = clamp(0.20 + 0.55 * center + 0.25 * pulse, 0, 1)
-        const midR = mix(blue.r, lav.r, pulse)
-        const midG = mix(blue.g, lav.g, pulse)
-        const midB = mix(blue.b, lav.b, pulse)
-
-        const r = mix(cool.r, midR, hueT)
-        const g = mix(cool.g, midG, hueT)
-        const b = mix(cool.b, midB, hueT)
-
-        // Sharper points: slightly smaller, higher alpha. Front particles brighter.
-        const a = p.a * (0.82 + 0.38 * center) * depth
-
-        ctx.fillStyle = `rgba(${r.toFixed(0)}, ${g.toFixed(0)}, ${b.toFixed(0)}, ${a.toFixed(4)})`
-        ctx.beginPath()
-        ctx.arc(sx, sy, Math.max(0.55, p.r * 0.92), 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      // Pass 2: additive micro-glow (gives cluster bloom).
-      ctx.globalCompositeOperation = 'lighter'
-      for (const p of sorted) {
-
-        const rr = Math.sqrt(p.x * p.x + (p.y / 0.76) * (p.y / 0.76))
-        if (rr > 0.78) continue
-
-        const sx = px + (p.x * state.R + ox)
-        const sy = py + (p.y * state.R + oy)
-
-        const falloff = 1 - clamp(rr, 0, 1)
-        const center = Math.pow(falloff, 1.6)
-        const a = (p.a * 0.52) * (0.40 + 0.75 * p.z) * (0.40 + 0.75 * center)
-
-        // Warmer/whiter glow (less blue).
-        ctx.fillStyle = `rgba(248, 248, 248, ${a.toFixed(4)})`
-        ctx.beginPath()
-        ctx.arc(sx, sy, p.r * (1.85 + 0.45 * center), 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      // Pass 3: bloom veil (helps everything feel more luminous)
-      {
-        const veil = ctx.createRadialGradient(px, py, state.R * 0.08, px, py, state.R * 0.95)
-        veil.addColorStop(0, 'rgba(250, 250, 250, 0.036)')
-        veil.addColorStop(0.45, 'rgba(250, 250, 250, 0.018)')
-        veil.addColorStop(1, 'rgba(250, 250, 250, 0.0)')
-        ctx.fillStyle = veil
-        ctx.fillRect(0, 0, state.w, state.h)
-      }
-
-      // Pass 4: 4 brighter "guide" points with subtle drift (so they feel alive)
-      ctx.globalCompositeOperation = 'source-over'
-      const t = performance.now() * 0.00018
-      const guides = [
-        { x: -0.55 + 0.015 * Math.sin(t * 1.7), y: -0.18 + 0.012 * Math.cos(t * 1.3) },
-        { x:  0.52 + 0.014 * Math.cos(t * 1.4), y: -0.06 + 0.010 * Math.sin(t * 1.6) },
-        { x: -0.18 + 0.012 * Math.sin(t * 1.2), y:  0.42 + 0.014 * Math.cos(t * 1.5) },
-        { x:  0.22 + 0.010 * Math.cos(t * 1.1), y:  0.18 + 0.012 * Math.sin(t * 1.8) },
-      ]
-      for (const g of guides) {
-        const sx = px + (g.x * state.R + ox)
-        const sy = py + (g.y * state.R + oy)
-        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 9)
-        glow.addColorStop(0, 'rgba(255,255,255,0.92)')
-        glow.addColorStop(0.28, 'rgba(235,242,255,0.38)')
-        glow.addColorStop(1, 'rgba(235,242,255,0.0)')
-        ctx.fillStyle = glow
-        ctx.beginPath()
-        ctx.arc(sx, sy, 9, 0, Math.PI * 2)
-        ctx.fill()
-      }
-
-      ctx.globalCompositeOperation = 'source-over'
     }
 
-    function tick() {
-      clear()
-      drawBackdrop(performance.now())
-
-      // Update + draw.
-      for (const p of particles) {
-        p.x += p.vx
-        p.y += p.vy
-
-        // Slight depth bob (very subtle), affects size/alpha via z.
-        p.z = clamp(p.z + (p.vx - p.vy) * 28, 0, 1)
-
-        // Wrap inside unit bounds. Keep density stable.
-        if (p.x > 1.08) p.x = -1.08
-        if (p.x < -1.08) p.x = 1.08
-        if (p.y > 1.08) p.y = -1.08
-        if (p.y < -1.08) p.y = 1.08
-      }
-
-      drawParticles()
-      raf = requestAnimationFrame(tick)
-    }
-
-    function drawStatic() {
-      clear()
-      drawBackdrop(performance.now())
-      drawParticles()
-    }
-
-    if (reducedMotion) {
-      drawStatic()
-    } else {
-      raf = requestAnimationFrame(tick)
-    }
+    raf = requestAnimationFrame(animate)
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('resize', onResize)
       document.removeEventListener('visibilitychange', onVisibility)
+      geometry.dispose()
+      material.dispose()
+      particleTexture.dispose()
+      renderer.dispose()
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement)
+      }
     }
-  }, [particles, reducedMotion])
+  }, [scale, reducedMotion, onFrame])
 
   return (
-    <canvas
-      ref={canvasRef}
+    <div
+      ref={containerRef}
       aria-hidden="true"
       style={{
         position: 'absolute',
@@ -366,7 +301,6 @@ export function ParticleSphere({
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        opacity: 0.95,
       }}
     />
   )
