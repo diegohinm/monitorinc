@@ -152,12 +152,12 @@ export function ParticleSphere({
     const w = container.clientWidth
     const h = container.clientHeight
 
-    // ── Scene ────────────────────────────────────────────────────
-    const isMobile = w < 768
+    // ── Scene — FOV 45, Z=400 on all sizes ──────────────────────
     const scene = new THREE.Scene()
-    const camZ = isMobile ? 400 * 0.8 : 400  // Change 4: 20% closer on mobile
+
+    const cameraZ = 400
     const camera = new THREE.PerspectiveCamera(45, w / h, 1, 10000)
-    camera.position.set(0, 0, camZ)
+    camera.position.set(0, 0, cameraZ)
     camera.lookAt(scene.position)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -166,25 +166,28 @@ export function ParticleSphere({
     renderer.setClearColor(0x000000, 0)
     container.appendChild(renderer.domElement)
 
-    // ── Sphere scale ───────────────────────────────────────────────
-    // Change 1: on mobile, radius based on viewport width * 0.82
-    const sceneUnits = 2 * camZ * Math.tan((45 / 2) * Math.PI / 180)
-    const sphereScale = isMobile
-      ? w * 0.82 * scale   // width-based on mobile
-      : (sceneUnits / 2) * 1.15 * scale  // Maze default on desktop
+    // Visible height/width in scene units at z=0
+    const vFov = (45 / 2) * Math.PI / 180
+    const sceneHeight = 2 * cameraZ * Math.tan(vFov)
+    const sceneWidth = sceneHeight * (w / h)
+
+    // Sphere overflows: 115% of the SMALLER scene dimension
+    // On portrait (mobile): sphere fills width, overflows top/bottom
+    // On landscape (desktop): sphere fills height, overflows left/right
+    const minDim = Math.min(sceneWidth, sceneHeight)
+    const sphereScale = (minDim / 2) * 1.1 * scale
     const RADIUS = sphereScale
 
-    // ── Generate particles — fewer on mobile (Change 2) ───────────
-    const particleCount = isMobile ? 6000 : COUNT
+    // ── Generate particles — shell-only, Maze exact ──────────────
     const rand = mulberry32(1337)
-    const positions = new Float32Array(particleCount * 3)
-    const colors = new Float32Array(particleCount * 3)
-    const alphas = new Float32Array(particleCount)
+    const positions = new Float32Array(COUNT * 3)
+    const colors = new Float32Array(COUNT * 3)
+    const alphas = new Float32Array(COUNT)
 
     const tempVec = new THREE.Vector3()
     const unitAnchors: { x: number; y: number }[] = []
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < COUNT; i++) {
       const i3 = i * 3
 
       // Shell distribution — exact Maze algorithm
@@ -224,7 +227,7 @@ export function ParticleSphere({
     const material = new THREE.ShaderMaterial({
       uniforms: {
         pointTexture: { value: particleTexture },
-        uPointSize: { value: isMobile ? 3.5 : 12.0 },  // Change 3: larger dots on mobile
+        uPointSize: { value: 12.0 },
       },
       vertexShader,
       fragmentShader,
