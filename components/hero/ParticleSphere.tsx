@@ -93,6 +93,7 @@ function shellPoint(rand: () => number, out: THREE.Vector3): void {
 
 // ── Vertex shader ────────────────────────────────────────────────
 const vertexShader = /* glsl */ `
+  uniform float uPointSize;
   attribute float aAlpha;
   varying float vAlpha;
   varying vec3 vColor;
@@ -105,7 +106,7 @@ const vertexShader = /* glsl */ `
     float dist = -mvPosition.z;
 
     // Size attenuation: closer = larger (Maze uses 100/distance)
-    gl_PointSize = 12.0 * (100.0 / dist);
+    gl_PointSize = uPointSize * (100.0 / dist);
     gl_PointSize = clamp(gl_PointSize, 1.5, 100.0);
 
     gl_Position = projectionMatrix * mvPosition;
@@ -151,10 +152,12 @@ export function ParticleSphere({
     const w = container.clientWidth
     const h = container.clientHeight
 
-    // ── Scene — Maze exact: FOV 45, Z 400 ────────────────────────
+    // ── Scene ────────────────────────────────────────────────────
+    const isMobile = w < 768
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(45, w / h, 80, 10000)
-    camera.position.set(0, 0, 400)
+    const camZ = isMobile ? 400 * 0.8 : 400  // Change 4: 20% closer on mobile
+    const camera = new THREE.PerspectiveCamera(45, w / h, 1, 10000)
+    camera.position.set(0, 0, camZ)
     camera.lookAt(scene.position)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -163,24 +166,25 @@ export function ParticleSphere({
     renderer.setClearColor(0x000000, 0)
     container.appendChild(renderer.domElement)
 
-    // ── Sphere scale — Maze fills ~115% of viewport height ───────
-    // sceneUnits = 2 * Z * tan(FOV/2) ≈ 331
-    const sceneUnits = 2 * 400 * Math.tan((45 / 2) * Math.PI / 180)
-    // Maze: scale = sceneUnits / geometryDiameter * scaleFactor
-    // geometryDiameter = 2 (unit sphere), scaleFactor = 1.15
-    const sphereScale = (sceneUnits / 2) * 1.15 * scale
-    const RADIUS = sphereScale // for onFrame callback
+    // ── Sphere scale ───────────────────────────────────────────────
+    // Change 1: on mobile, radius based on viewport width * 0.82
+    const sceneUnits = 2 * camZ * Math.tan((45 / 2) * Math.PI / 180)
+    const sphereScale = isMobile
+      ? w * 0.82 * scale   // width-based on mobile
+      : (sceneUnits / 2) * 1.15 * scale  // Maze default on desktop
+    const RADIUS = sphereScale
 
-    // ── Generate particles — shell-only, Maze exact ──────────────
+    // ── Generate particles — fewer on mobile (Change 2) ───────────
+    const particleCount = isMobile ? 6000 : COUNT
     const rand = mulberry32(1337)
-    const positions = new Float32Array(COUNT * 3)
-    const colors = new Float32Array(COUNT * 3)
-    const alphas = new Float32Array(COUNT)
+    const positions = new Float32Array(particleCount * 3)
+    const colors = new Float32Array(particleCount * 3)
+    const alphas = new Float32Array(particleCount)
 
     const tempVec = new THREE.Vector3()
     const unitAnchors: { x: number; y: number }[] = []
 
-    for (let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3
 
       // Shell distribution — exact Maze algorithm
@@ -220,6 +224,7 @@ export function ParticleSphere({
     const material = new THREE.ShaderMaterial({
       uniforms: {
         pointTexture: { value: particleTexture },
+        uPointSize: { value: isMobile ? 3.5 : 12.0 },  // Change 3: larger dots on mobile
       },
       vertexShader,
       fragmentShader,
