@@ -2,6 +2,7 @@
    MONITORINC — design copied from mazehq.com
    ───────────────────────────────────────────────────────────── */
 import { Hero } from '../components/hero/Hero'
+import { Header } from '../components/Header'
 import { PDF_ABOUT, PDF_SERVICES, PDF_BRANDS, PDF_CONTACT } from './components/PdfContent'
 
 const SERVICES = PDF_SERVICES.map((s, idx) => {
@@ -139,24 +140,7 @@ export default function Home() {
     <>
 
       {/* ── Header ────────────────────────────────────────── */}
-      <header className="s-header">
-        <div className="wrap s-header__inner">
-          <a href="#inicio" className="s-header__logo">MONITORINC</a>
-
-          <nav>
-            <ul className="s-header__nav">
-              <li><a href="#quienes-somos">Quiénes somos</a></li>
-              <li><a href="#servicios">Servicios</a></li>
-
-              <li><a href="#contacto">Contacto</a></li>
-            </ul>
-          </nav>
-
-          <a href="#contacto" className="a-button a-button--secondary">
-            Agendar Demo
-          </a>
-        </div>
-      </header>
+      <Header />
 
       <main>
         {/* Anchor */}
