@@ -172,7 +172,7 @@ export function Hero() {
         {/* Providers label */}
         <span
           style={{
-            fontSize: 11,
+            fontSize: 14,
             color: 'rgba(235, 242, 255, 0.55)',
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -199,7 +199,7 @@ export function Hero() {
         >
           <span
             style={{
-              fontSize: 11,
+              fontSize: 14,
               color: 'rgba(235, 242, 255, 0.55)',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -212,7 +212,7 @@ export function Hero() {
             <span
               key={c}
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: 'rgba(235, 242, 255, 0.55)',
                 fontFamily: 'var(--font-sans)',
               }}
