@@ -974,12 +974,6 @@ h1, h2, h3, h4, .font-sans {
     grid-template-columns: 1fr !important;
   }
 
-  /* Brands marquee in hero: reduce height and fade width */
-  .m-marquee { padding: 14px 0; }
-  .m-marquee::before,
-  .m-marquee::after { width: 42px; }
-  .m-marquee__track { gap: 26px; padding: 0 18px; animation-duration: 20s; }
-  .m-marquee__item { font-size: 12px; letter-spacing: 0.10em; }
 
   /* 3-col grids -> 1-col */
   .wrap [style*="repeat(3, 1fr)"] {
@@ -1017,57 +1011,3 @@ h1, h2, h3, h4, .font-sans {
   .s-footer__links    { display: none; }
 }
 
-/* Brands marquee — Maze-like */
-.m-marquee {
-  position: relative;
-  width: 100%;
-  padding: 18px 0;
-}
-
-.m-marquee::before,
-.m-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.m-marquee::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(15,21,35,1), rgba(15,21,35,0));
-}
-
-.m-marquee::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(15,21,35,1), rgba(15,21,35,0));
-}
-
-.m-marquee__track {
-  display: inline-flex;
-  align-items: center;
-  gap: 44px;
-  padding: 0 28px;
-  white-space: nowrap;
-  will-change: transform;
-  animation: marquee-scroll 26s linear infinite;
-}
-
-.m-marquee:hover .m-marquee__track {
-  animation-play-state: paused;
-}
-
-.m-marquee__item {
-  font-family: var(--font-sans, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial);
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(235, 242, 255, 0.72);
-}
-
-@keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
-}

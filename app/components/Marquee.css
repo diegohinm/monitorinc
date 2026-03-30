@@ -1,55 +1,95 @@
-/* Brands marquee — Maze-like */
+/* ═══════════════════════════════════════════════════════════════
+   Brands marquee — cloned from ngrok.com's partner-logos section
+   ═══════════════════════════════════════════════════════════════ */
 
+/* ── Outer wrapper — edge-fade via CSS mask (ngrok uses mask-x) ── */
 .m-marquee {
   position: relative;
   width: 100%;
-  padding: 18px 0;
+  overflow: hidden;
+  /* Fade edges: 90%→100% at small, 70%→90% at md+ (mirrored ngrok) */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
 }
 
-.m-marquee::before,
-.m-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  pointer-events: none;
-  z-index: 2;
+/* ── Inner section (aria-label="Partner logos") ── */
+.m-marquee__section {
+  position: relative;
+  overflow-x: hidden;
 }
 
-.m-marquee::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(15,21,35,1), rgba(15,21,35,0));
-}
-
-.m-marquee::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(15,21,35,1), rgba(15,21,35,0));
-}
-
+/* ── Scrolling track — flex row holding both <ul> copies ── */
 .m-marquee__track {
-  display: inline-flex;
-  align-items: center;
-  gap: 44px;
-  padding: 0 28px;
-  white-space: nowrap;
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: max-content;
   will-change: transform;
-  animation: marquee-scroll 26s linear infinite;
+  user-select: none;
+  -webkit-user-select: none;
+  animation: logo-loop-scroll var(--logoloop-duration, 30s) linear infinite;
 }
 
 .m-marquee:hover .m-marquee__track {
   animation-play-state: paused;
 }
 
-.m-marquee__item {
-  font-family: var(--font-sans, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial);
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(235, 242, 255, 0.72);
+/* ── Each <ul> (visible + duplicate) ── */
+.m-marquee__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+/* ── Each <li> item ── */
+.m-marquee__item {
+  flex: none;
+  margin-right: var(--logoloop-gap, 50px);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(235, 242, 255, 0.55);
+  line-height: 1;
+  white-space: nowrap;
+  height: var(--logoloop-logoHeight, 48px);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Keyframe — translate the doubled track by -50% ── */
+@keyframes logo-loop-scroll {
+  0%  { transform: translate(0); }
+  to  { transform: translate(-50%); }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .m-marquee__track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ── Mobile adjustments ── */
+@media (max-width: 639px) {
+  .m-marquee__item {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
 }
