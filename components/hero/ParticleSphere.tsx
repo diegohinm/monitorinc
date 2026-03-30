@@ -65,12 +65,12 @@ function createParticleTexture(): THREE.Texture {
   canvas.height = size
   const ctx = canvas.getContext('2d')!
 
-  // Radial gradient: solid center → soft falloff → transparent edge
+  // Radial gradient: bright solid core → soft glow → transparent edge
   const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
   g.addColorStop(0, 'rgba(255, 255, 255, 1)')
-  g.addColorStop(0.15, 'rgba(255, 255, 255, 0.8)')
-  g.addColorStop(0.4, 'rgba(255, 255, 255, 0.35)')
-  g.addColorStop(0.7, 'rgba(255, 255, 255, 0.08)')
+  g.addColorStop(0.2, 'rgba(255, 255, 255, 0.95)')
+  g.addColorStop(0.4, 'rgba(255, 255, 255, 0.55)')
+  g.addColorStop(0.65, 'rgba(255, 255, 255, 0.18)')
   g.addColorStop(1, 'rgba(255, 255, 255, 0)')
 
   ctx.fillStyle = g
@@ -105,8 +105,8 @@ const vertexShader = /* glsl */ `
     float dist = -mvPosition.z;
 
     // Size attenuation: closer = larger (Maze uses 100/distance)
-    gl_PointSize = 8.0 * (100.0 / dist);
-    gl_PointSize = clamp(gl_PointSize, 1.0, 80.0);
+    gl_PointSize = 12.0 * (100.0 / dist);
+    gl_PointSize = clamp(gl_PointSize, 1.5, 100.0);
 
     gl_Position = projectionMatrix * mvPosition;
   }
@@ -205,8 +205,8 @@ export function ParticleSphere({
       colors[i3 + 1] = col.g
       colors[i3 + 2] = col.b
 
-      // Per-particle alpha: 0.4–1.0 random
-      alphas[i] = 0.4 + rand() * 0.6
+      // Per-particle alpha: 0.6–1.0 random (brighter base)
+      alphas[i] = 0.6 + rand() * 0.4
     }
 
     const geometry = new THREE.BufferGeometry()
