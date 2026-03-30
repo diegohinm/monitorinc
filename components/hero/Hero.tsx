@@ -212,7 +212,7 @@ export function Hero() {
             <span
               key={c}
               style={{
-                fontSize: 14,
+                fontSize: 12,
                 color: 'rgba(235, 242, 255, 0.55)',
                 fontFamily: 'var(--font-sans)',
               }}
