@@ -173,7 +173,7 @@ export function Hero() {
         <span
           style={{
             fontSize: 11,
-            color: 'rgba(255,255,255,0.14)',
+            color: 'rgba(235, 242, 255, 0.55)',
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             fontFamily: 'var(--font-sans)',
@@ -200,7 +200,7 @@ export function Hero() {
           <span
             style={{
               fontSize: 11,
-              color: 'rgba(255,255,255,0.12)',
+              color: 'rgba(235, 242, 255, 0.55)',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               fontFamily: 'var(--font-sans)',
@@ -213,7 +213,7 @@ export function Hero() {
               key={c}
               style={{
                 fontSize: 12,
-                color: 'rgba(255,255,255,0.18)',
+                color: 'rgba(235, 242, 255, 0.55)',
                 fontFamily: 'var(--font-sans)',
               }}
             >
