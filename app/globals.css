@@ -4,7 +4,7 @@
 
 :root {
   /* Exact Maze colors */
-  --bg:          #0F1523;
+  --bg:          #0B0F17;
   --text:        rgba(245, 248, 255, 0.92);
   --text-dim:    rgba(245, 248, 255, 0.60);
   --cyan:        #00E7FB;
@@ -416,6 +416,49 @@ h1, h2, h3, h4, .font-sans {
 }
 
 .dotted-line {
+  height: 1px;
+  width: 100%;
+  background-size: .1875rem .0625rem;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(242, 244, 245, 0.52) 0 .0625rem,
+    transparent .0625rem .1875rem
+  );
+}
+
+/* ── Scroll down — Maze exact clone ── */
+
+.m-welcome__scroll {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-sans, 'Space Grotesk'), sans-serif;
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  padding-block: .75rem;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.m-welcome__scroll span {
+  white-space: nowrap;
+  width: max-content;
+  pointer-events: all;
+  padding: .3125rem 1.5rem;
+  color: rgba(242, 244, 245, 0.5);
+  cursor: pointer;
+}
+
+.m-welcome__scroll::before,
+.m-welcome__scroll::after {
+  content: "";
+  display: block;
+  flex-grow: 1;
   height: 1px;
   width: 100%;
   background-size: .1875rem .0625rem;
@@ -942,6 +985,9 @@ h1, h2, h3, h4, .font-sans {
 
 .module--story {
   padding-block: 5rem;
+}
+
+.module--story + .module--story {
   border-top: 1px solid var(--card-border);
 }
 

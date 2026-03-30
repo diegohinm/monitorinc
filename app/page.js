@@ -144,9 +144,6 @@ export default function Home() {
       <Header />
 
       <main>
-        {/* Anchor */}
-        <div id="inicio" />
-
         {/* ══════════════════════════════════════════════════
             HERO — canvas particle halo
         ══════════════════════════════════════════════════ */}

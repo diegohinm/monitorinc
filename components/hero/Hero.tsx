@@ -41,7 +41,7 @@ export function Hero() {
       id="inicio"
       style={{
         position: 'relative',
-        minHeight: '92vh',
+        minHeight: '100svh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -153,40 +153,48 @@ export function Hero() {
 
         </div>
 
-        {/* Providers label + brands marquee */}
-        <div
+      </div>
+
+      {/* ── Bottom strip: Proveedores + Marquee + Atendemos + Scroll ── */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingBottom: 0,
+        }}
+      >
+        {/* Providers label */}
+        <span
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 16,
-            flexWrap: 'wrap',
+            fontSize: 11,
+            color: 'rgba(255,255,255,0.14)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            fontFamily: 'var(--font-sans)',
+            marginBottom: 4,
           }}
         >
-          <span
-            style={{
-              fontSize: 11,
-              color: 'rgba(255,255,255,0.14)',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              fontFamily: 'var(--font-sans)',
-            }}
-          >
-            Proveedores:
-          </span>
-        </div>
+          Proveedores:
+        </span>
 
         <BrandsMarquee />
 
-        {/* Client strip — below brands */}
+        {/* Client strip */}
         <div
           style={{
-            marginTop: 12,
+            marginTop: 8,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 20,
             flexWrap: 'wrap',
+            marginBottom: 16,
           }}
         >
           <span
@@ -213,41 +221,19 @@ export function Hero() {
             </span>
           ))}
         </div>
-      </div>
 
-      {/* Scroll cue */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 28,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 5,
-          zIndex: 10,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 10,
-            color: 'rgba(255,255,255,0.12)',
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-sans)',
+        {/* Scroll down — Maze-style: text flanked by dotted lines */}
+        <a
+          href="#quienes-somos"
+          className="m-welcome__scroll"
+          onClick={(e) => {
+            e.preventDefault()
+            const section = document.getElementById('quienes-somos')
+            if (section) section.scrollIntoView({ behavior: 'smooth' })
           }}
         >
-          Scroll
-        </span>
-        <div
-          style={{
-            width: 1,
-            height: 26,
-            background:
-              'linear-gradient(to bottom, rgba(2, 232, 255, 0.3), transparent)',
-          }}
-        />
+          <span>Scroll down</span>
+        </a>
       </div>
     </section>
   )
