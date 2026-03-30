@@ -268,7 +268,7 @@ export default function Home() {
                     { label: 'Correo adicional', val: PDF_CONTACT.emails[1], href: 'mailto:luquesarmiento@gmail.com' },
                     { label: 'Sitio web',        val: PDF_CONTACT.website, href: 'https://www.monitorinc.com.co', blank: true },
                   ].map((c) => (
-                    <div key={c.label} className="c-contact-line">
+                    <div key={c.href} className="c-contact-line">
                       <span className="c-contact-line__label">{c.label}</span>
                       <a
                         className="c-contact-line__value"
