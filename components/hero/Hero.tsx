@@ -103,8 +103,7 @@ export function Hero() {
           }}
         >
           Distribuimos e integramos equipos de seguridad electrónica y
-          comunicación: CCTV, control de acceso, alarmas, GPS, domótica y
-          proyectos especiales.
+          comunicación
         </p>
 
         {/* CTAs */}
