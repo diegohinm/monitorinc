@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { AgendarDemoButton } from './ui/AgendarDemoButton'
 
 /**
  * Header — exact clone of mazehq.com <header>
@@ -90,13 +91,7 @@ export function Header() {
 
           {/* CTA button */}
           <div className="s-header__button">
-            <a href="#contacto" className="a-button a-button--header">
-              <span className="a-button__dot" />
-              <span className="a-button__text">
-                <span className="primary">Agendar Demo</span>
-                <span className="secondary">Agendar Demo</span>
-              </span>
-            </a>
+            <AgendarDemoButton href="#contacto" />
           </div>
 
           {/* Hamburger — mobile only */}
