@@ -2,8 +2,11 @@
    MONITORINC — original editorial commercial landing page.
    Content sourced only from MONITORINC (see PdfContent.js).
    ───────────────────────────────────────────────────────────── */
+import { CONTACT } from '../config/contact'
+import { telHref } from '../lib/whatsapp'
 import { Hero } from '../components/hero/Hero'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
+import { AudienceStrip } from '../components/home/AudienceStrip'
 import { Header } from '../components/Header'
 import { AgendarDemoButton } from '../components/ui/AgendarDemoButton'
 import { ConsultationForm } from '../components/site/ConsultationForm'
@@ -11,7 +14,6 @@ import { Faq } from '../components/site/Faq'
 import {
   PDF_ABOUT,
   PDF_SERVICES,
-  PDF_CONTACT,
 } from './components/PdfContent'
 
 /* ─── Service grouping (editorial rows, not 11 giant cards) ──── */
@@ -71,10 +73,10 @@ function serviceNumber(groupIdx, itemIdx) {
 }
 
 const CONTACT_LINES = [
-  { k: 'Teléfono', v: PDF_CONTACT.phones[0], href: 'https://wa.me/573138407090', ext: true },
-  { k: 'Teléfono', v: PDF_CONTACT.phones[1], href: 'https://wa.me/573213002548', ext: true },
-  { k: 'Correo', v: 'info@monitorinc.com.co', href: 'mailto:info@monitorinc.com.co' },
-  { k: 'Web', v: PDF_CONTACT.website, href: 'https://www.monitorinc.com.co', ext: true },
+  { k: 'Teléfono', v: CONTACT.whatsappPrimary.label, href: telHref(CONTACT.whatsappPrimary.digits) },
+  { k: 'Teléfono', v: CONTACT.phoneSecondary.label, href: telHref(CONTACT.phoneSecondary.digits) },
+  { k: 'Correo', v: CONTACT.emailPrimary, href: `mailto:${CONTACT.emailPrimary}` },
+  { k: 'Web', v: CONTACT.website.label, href: CONTACT.website.url, ext: true },
 ]
 
 export default function Home() {
@@ -89,17 +91,8 @@ export default function Home() {
         {/* ── PROVEEDORES marquee ──────────────────────────── */}
         <SuppliersMarquee />
 
-        {/* ── ATENDEMOS A strip ────────────────────────────── */}
-        <div className="strip strip--sectors">
-          <div className="container strip__inner">
-            <span className="strip__label">Atendemos a</span>
-            <div className="strip__items">
-              {SECTORS.map((s) => (
-                <span key={s.title} className="strip__name">{s.title}</span>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* ── ATENDEMOS A band ─────────────────────────────── */}
+        <AudienceStrip />
 
         {/* ── CONSULTATION FORM ────────────────────────────── */}
         <section className="section consult" id="contacto" aria-labelledby="consult-title">
@@ -248,7 +241,7 @@ export default function Home() {
               <div className="final-cta__actions">
                 <AgendarDemoButton href="#contacto" label="Agenda una cita" />
                 <AgendarDemoButton
-                  href="mailto:info@monitorinc.com.co"
+                  href={`mailto:${CONTACT.emailPrimary}`}
                   label="Escríbenos"
                   variant="secondary"
                   arrow={false}
@@ -258,12 +251,12 @@ export default function Home() {
 
             <div className="final-cta__contact">
               <span className="k">Teléfonos</span>
-              <a href="https://wa.me/573138407090" target="_blank" rel="noreferrer">{PDF_CONTACT.phones[0]}</a>
-              <a href="https://wa.me/573213002548" target="_blank" rel="noreferrer">{PDF_CONTACT.phones[1]}</a>
+              <a href={telHref(CONTACT.whatsappPrimary.digits)}>{CONTACT.whatsappPrimary.label}</a>
+              <a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a>
               <span className="k">Correo</span>
-              <a href="mailto:info@monitorinc.com.co">info@monitorinc.com.co</a>
+              <a href={`mailto:${CONTACT.emailPrimary}`}>{CONTACT.emailPrimary}</a>
               <span className="k">Sitio web</span>
-              <a href="https://www.monitorinc.com.co" target="_blank" rel="noreferrer">{PDF_CONTACT.website}</a>
+              <a href={CONTACT.website.url} target="_blank" rel="noreferrer">{CONTACT.website.label}</a>
             </div>
           </div>
         </section>
@@ -308,10 +301,10 @@ export default function Home() {
             <div className="footer__col">
               <h4>Contacto</h4>
               <ul>
-                <li><a href="https://wa.me/573138407090" target="_blank" rel="noreferrer">{PDF_CONTACT.phones[0]}</a></li>
-                <li><a href="https://wa.me/573213002548" target="_blank" rel="noreferrer">{PDF_CONTACT.phones[1]}</a></li>
-                <li><a href="mailto:info@monitorinc.com.co">info@monitorinc.com.co</a></li>
-                <li><a href="https://www.monitorinc.com.co" target="_blank" rel="noreferrer">{PDF_CONTACT.website}</a></li>
+                <li><a href={telHref(CONTACT.whatsappPrimary.digits)}>{CONTACT.whatsappPrimary.label}</a></li>
+                <li><a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a></li>
+                <li><a href={`mailto:${CONTACT.emailPrimary}`}>{CONTACT.emailPrimary}</a></li>
+                <li><a href={CONTACT.website.url} target="_blank" rel="noreferrer">{CONTACT.website.label}</a></li>
               </ul>
             </div>
           </div>

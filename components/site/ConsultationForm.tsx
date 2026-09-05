@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import { CONTACT } from '../../config/contact'
+
 /**
  * Consultation form. Does NOT fake a successful backend submission —
  * on submit it opens the user's email client with a prefilled message
@@ -49,7 +51,7 @@ export function ConsultationForm() {
     ].join('\n')
 
     const mailto =
-      `mailto:info@monitorinc.com.co` +
+      `mailto:${CONTACT.emailPrimary}` +
       `?subject=${encodeURIComponent('Solicitud de asesoría — ' + (nombre || 'MONITORINC'))}` +
       `&body=${encodeURIComponent(body)}`
 
@@ -109,13 +111,13 @@ export function ConsultationForm() {
 
       <p className="form__note">
         Al enviar se abrirá tu correo con los datos listos para enviarnos a
-        info@monitorinc.com.co. También puedes escribirnos directamente por WhatsApp.
+        {CONTACT.emailPrimary}. También puedes escribirnos directamente por WhatsApp.
       </p>
 
       {sent && (
         <p className="form__status" role="status">
           Abrimos tu cliente de correo con la solicitud. Si no se abrió, escríbenos a
-          info@monitorinc.com.co.
+          {CONTACT.emailPrimary}.
         </p>
       )}
     </form>

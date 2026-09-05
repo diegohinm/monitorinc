@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- MONITORINC audience icon. Shared grid: content x 9-55, baseline y 51.
+       Solid pictogram, dark body + green accent. Cut-outs use evenodd so the
+       wrapper background shows through instead of a hard-coded light fill. -->
+  <path fill="#34363A" d="M10 27.5 32 12.5l22 15V34L32 19 10 34Z"/>
+  <path fill="#9ABD00" d="M32 22a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+  <path fill="#34363A" d="M12 34h40v5H12z"/>
+  <path fill="#34363A" d="M15.5 39h6.5v7h-6.5z M28.75 39h6.5v7h-6.5z M42 39h6.5v7H42z"/>
+  <path fill="#34363A" d="M13 46h38v2.5H13z M10 48.5h44V51H10z"/>
+</svg>

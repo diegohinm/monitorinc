@@ -284,6 +284,89 @@ h1, h2, h3, h4 {
 }
 .mobile-menu__cta { margin-top: 28px; }
 
+/* ─── Atendemos a ────────────────────────────────────────────── */
+.audience {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+  --audience-sep: 34px;
+}
+.audience__inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  padding-top: 26px;
+  padding-bottom: 26px;
+}
+.audience__label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  margin: 0;
+}
+.audience__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.audience__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Hairline divider sitting in the middle of the space between items. */
+.audience__item + .audience__item {
+  margin-left: var(--audience-sep);
+  padding-left: var(--audience-sep);
+}
+.audience__item + .audience__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 32px;
+  background: rgba(47, 49, 51, 0.10);
+}
+.audience__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  background: rgba(154, 189, 0, 0.06);
+  border: 1px solid rgba(154, 189, 0, 0.08);
+  transition: background 200ms ease;
+}
+.audience__icon img {
+  width: 32px;
+  height: 32px;
+  display: block;
+  transition: transform 200ms ease;
+}
+.audience__text {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: #303236;
+  white-space: nowrap;
+  transition: color 200ms ease;
+}
+.audience__item:hover .audience__icon { background: rgba(154, 189, 0, 0.10); }
+.audience__item:hover .audience__icon img { transform: translateY(-1px); }
+.audience__item:hover .audience__text { color: #1F2022; }
+
 /* ─── Proveedores marquee ────────────────────────────────────── */
 .suppliers {
   background: var(--bg);
@@ -988,4 +1071,100 @@ h1, h2, h3, h4 {
   .suppliers__group[aria-hidden="true"] { display: none; }
   .suppliers__group { padding-right: 0; }
   .suppliers__logo { transition: none; }
+}
+
+/* ─── Atendemos a — responsive ───────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Label moves above so the four items keep a single row. */
+  .audience { --audience-sep: 24px; }
+  .audience__inner { grid-template-columns: 1fr; gap: 16px; }
+}
+
+@media (max-width: 640px) {
+  .audience__inner { gap: 14px; padding-top: 22px; padding-bottom: 22px; }
+  .audience__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 16px;
+  }
+  .audience__item + .audience__item { margin-left: 0; padding-left: 0; }
+  .audience__item + .audience__item::before { display: none; }
+  .audience__icon { width: 46px; height: 46px; }
+  .audience__icon img { width: 28px; height: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audience__icon,
+  .audience__icon img,
+  .audience__text { transition: none; }
+  .audience__item:hover .audience__icon img { transform: none; }
+}
+
+/* ─── WhatsApp floating button ───────────────────────────────── */
+.wa-fab {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  /* Above page content, deliberately below the sticky header (100) and the
+     mobile menu overlay (99) so it never floats over an open nav. */
+  z-index: 60;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: background 200ms ease, transform 200ms ease;
+}
+.wa-fab:hover { background: #20BD5A; transform: translateY(-2px); }
+.wa-fab:focus-visible {
+  outline: 2px solid #25D366;
+  outline-offset: 3px;
+}
+.wa-fab__icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+/* Desktop-only hint; hidden where there is no real hover (touch). */
+.wa-fab__tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: rgba(24, 25, 27, 0.92);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 11px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+.wa-fab:hover .wa-fab__tip,
+.wa-fab:focus-visible .wa-fab__tip { opacity: 1; }
+@media (hover: none) {
+  .wa-fab__tip { display: none; }
+}
+
+@media (max-width: 640px) {
+  .wa-fab {
+    width: 54px;
+    height: 54px;
+    right: 18px;
+    /* Clear of the iOS home indicator / browser bottom bar. */
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+  .wa-fab__icon { width: 26px; height: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab, .wa-fab__tip { transition: none; }
+  .wa-fab:hover { transform: none; }
 }

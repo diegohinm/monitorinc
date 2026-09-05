@@ -1,5 +1,6 @@
 import { Fraunces, Inter } from 'next/font/google'
 import './globals.css'
+import { WhatsAppFloatingButton } from '../components/global/WhatsAppFloatingButton'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -25,7 +26,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <WhatsAppFloatingButton />
+      </body>
     </html>
   )
 }
