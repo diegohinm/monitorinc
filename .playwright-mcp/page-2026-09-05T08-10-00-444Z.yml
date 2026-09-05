@@ -1,0 +1,365 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "MONITORINC — inicio" [ref=e4] [cursor=pointer]:
+        - /url: "#inicio"
+        - text: MONITORINC
+      - navigation "Principal" [ref=e6]:
+        - link "Soluciones" [ref=e7] [cursor=pointer]:
+          - /url: "#soluciones"
+        - link "Sectores" [ref=e8] [cursor=pointer]:
+          - /url: "#sectores"
+        - link "Proyectos" [ref=e9] [cursor=pointer]:
+          - /url: "#proyectos"
+        - link "Nosotros" [ref=e10] [cursor=pointer]:
+          - /url: "#nosotros"
+        - link "Contacto" [ref=e11] [cursor=pointer]:
+          - /url: "#contacto"
+      - link "Agenda una cita" [ref=e13] [cursor=pointer]:
+        - /url: "#contacto"
+    - generic:
+      - link "Soluciones":
+        - /url: "#soluciones"
+      - link "Sectores":
+        - /url: "#sectores"
+      - link "Proyectos":
+        - /url: "#proyectos"
+      - link "Nosotros":
+        - /url: "#nosotros"
+      - link "Contacto":
+        - /url: "#contacto"
+      - link "Agenda una cita":
+        - /url: "#contacto"
+  - main [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]: Integrador de seguridad electrónica
+        - heading [level=1] [ref=e21]:
+          - text: Haz de cada espacio
+          - emphasis [ref=e22]: un lugar seguro.
+        - paragraph [ref=e23]: Distribuimos e integramos equipos de seguridad electrónica y comunicación para hogares, empresas, fincas e instituciones.
+        - generic [ref=e24]:
+          - link "Agenda una cita" [ref=e25] [cursor=pointer]:
+            - /url: "#contacto"
+          - link "Ver soluciones" [ref=e28] [cursor=pointer]:
+            - /url: "#soluciones"
+      - complementary "Áreas de monitoreo" [ref=e29]:
+        - generic [ref=e30]: Seguridad integrada
+        - generic [ref=e32]:
+          - generic [ref=e33]: CCTV
+          - generic [ref=e34]: IP · análogo
+        - generic [ref=e35]:
+          - generic [ref=e36]: Alarmas
+          - generic [ref=e37]: monitoreo remoto
+        - generic [ref=e38]:
+          - generic [ref=e39]: GPS
+          - generic [ref=e40]: posicionamiento
+    - generic [ref=e42]:
+      - generic [ref=e43]: Proveedores
+      - generic [ref=e44]:
+        - generic [ref=e45]: Samsung
+        - generic [ref=e46]: Bosch
+        - generic [ref=e47]: ZKTeco
+        - generic [ref=e48]: Dahua Technology
+        - generic [ref=e49]: Axis Communications
+        - generic [ref=e50]: Hikvision
+        - generic [ref=e51]: Paradox Security Systems
+    - generic [ref=e53]:
+      - generic [ref=e54]: Atendemos a
+      - generic [ref=e55]:
+        - generic [ref=e56]: Hogares
+        - generic [ref=e57]: Empresas
+        - generic [ref=e58]: Fincas
+        - generic [ref=e59]: Instituciones
+    - region [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]: Asesoría sin costo
+          - heading [level=2] [ref=e64]:
+            - text: Planifica tu sistema de
+            - emphasis [ref=e65]: seguridad.
+          - paragraph [ref=e66]: Cuéntanos qué espacio necesitas proteger y qué solución estás buscando. Te ayudamos a elegir e integrar la solución adecuada para tu espacio, operación o infraestructura.
+          - generic [ref=e67]:
+            - link [ref=e68] [cursor=pointer]:
+              - /url: https://wa.me/573138407090
+              - strong [ref=e69]: "Teléfono:"
+              - text: 313 8407090
+            - link [ref=e70] [cursor=pointer]:
+              - /url: https://wa.me/573213002548
+              - strong [ref=e71]: "Teléfono:"
+              - text: 321 3002548
+            - link [ref=e72] [cursor=pointer]:
+              - /url: mailto:info@monitorinc.com.co
+              - strong [ref=e73]: "Correo:"
+              - text: info@monitorinc.com.co
+            - link [ref=e74] [cursor=pointer]:
+              - /url: https://www.monitorinc.com.co
+              - strong [ref=e75]: "Web:"
+              - text: www.monitorinc.com.co
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: Nombre
+              - textbox "Nombre" [ref=e80]
+            - generic [ref=e81]:
+              - generic [ref=e82]: Empresa
+              - textbox "Empresa" [ref=e83]
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - generic [ref=e86]: Teléfono
+              - textbox "Teléfono" [ref=e87]
+            - generic [ref=e88]:
+              - generic [ref=e89]: Correo
+              - textbox "Correo" [ref=e90]
+          - generic [ref=e91]:
+            - generic [ref=e92]: Tipo de proyecto
+            - combobox "Tipo de proyecto" [ref=e93]:
+              - option "Selecciona una opción" [disabled] [selected]
+              - option "Hogar / vivienda"
+              - option "Empresa / oficina"
+              - option "Finca / conjunto cerrado"
+              - option "Institución"
+              - option "Proyecto especial"
+              - option "Otro"
+          - generic [ref=e94]:
+            - generic [ref=e95]: Mensaje
+            - textbox "Mensaje" [ref=e96]:
+              - /placeholder: Cuéntanos qué espacio necesitas proteger y qué solución estás buscando.
+          - button "Solicitar asesoría" [ref=e97] [cursor=pointer]
+          - paragraph [ref=e100]: Al enviar se abrirá tu correo con los datos listos para enviarnos a info@monitorinc.com.co. También puedes escribirnos directamente por WhatsApp.
+    - region [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]: 01 — Qué hacemos
+            - heading [level=2] [ref=e106]:
+              - text: Seguridad, acceso y monitoreo desde un solo
+              - emphasis [ref=e107]: integrador.
+          - paragraph [ref=e108]: Distribuimos e integramos equipos de seguridad electrónica y de comunicación. Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales en ciudades, pueblos, corregimientos e incluso en ambientes hostiles y de difícil acceso.
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e112]: Seguridad
+              - generic [ref=e113]: Vigilancia, intrusión y protección perimetral
+            - article [ref=e114]:
+              - generic [ref=e115]: "01"
+              - heading "Circuito cerrado de televisión (CCTV) y grabación" [level=3] [ref=e116]
+              - paragraph [ref=e117]: Ofrecemos cámaras de seguridad y grabadores de video con tecnología IP y análoga, óptimos para combatir la inseguridad en cualquier ambiente, pérdida de elementos, control de personal y de procesos.
+            - article [ref=e118]:
+              - generic [ref=e119]: "02"
+              - heading "Alarmas de intrusión" [level=3] [ref=e120]
+              - paragraph [ref=e121]: Contamos con sistemas de alarmas alámbricas e inalámbricas que se adaptan a cualquier tipo de infraestructura para interior o exterior y con las últimas tecnologías de monitoreo remoto desde su celular.
+            - article [ref=e122]:
+              - generic [ref=e123]: "03"
+              - heading "Seguridad perimetral" [level=3] [ref=e124]
+              - paragraph [ref=e125]: Las cercas eléctricas y concertinas con alarmas sonoras y control de usuarios son soluciones de alto nivel de protección perimetral de las propiedades como fincas, conjuntos cerrados e instituciones educativas.
+            - article [ref=e126]:
+              - generic [ref=e127]: "04"
+              - heading "Detección de incendios y alarmas de evacuación" [level=3] [ref=e128]
+              - paragraph [ref=e129]: Diseñamos e implementamos sistemas de detección automática de incendios y audio evacuación para una reacción inmediata. Contamos con equipos profesionales regidos por las normas y requerimientos europeos.
+          - generic [ref=e130]:
+            - generic [ref=e131]:
+              - generic [ref=e132]: Acceso
+              - generic [ref=e133]: Entrada de personas y comunicación
+            - article [ref=e134]:
+              - generic [ref=e135]: "05"
+              - heading "Control de acceso" [level=3] [ref=e136]
+              - paragraph [ref=e137]: Regulación y control para entrada y salida de personas y vehículos en diferentes instalaciones. Contamos con equipos que soportan desde tarjetas RFID y código de barras, hasta huellas dactilares y detección de rostros.
+            - article [ref=e138]:
+              - generic [ref=e139]: "06"
+              - heading "Citofonía y videocitofonía" [level=3] [ref=e140]
+              - paragraph [ref=e141]: Ofrecemos sistemas en tecnología IP y análoga, con video o sin video y sin límites de número de usuario para casas, apartamentos, oficinas, empresas, etc.
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]: Automatización
+              - generic [ref=e145]: Puertas y hogar inteligente
+            - article [ref=e146]:
+              - generic [ref=e147]: "07"
+              - heading "Automatización de puertas" [level=3] [ref=e148]
+              - paragraph [ref=e149]: Automatizamos cualquier tipo de puerta utilizando motores de última generación para aperturas y cierres rápidos y seguros con controles inalámbricos y transmisión de última tecnología. Diseñamos puertas automáticas batientes, basculantes y corredizas.
+            - article [ref=e150]:
+              - generic [ref=e151]: "08"
+              - heading "Domótica" [level=3] [ref=e152]
+              - paragraph [ref=e153]: Hacemos de tu hogar un lugar inteligente con tecnología inalámbrica, brindándote confort, seguridad y control de cualquier espacio. Controla luces, temperatura, electrodomésticos y sensores de intrusión. Mantén comunicación en tiempo real con tu hogar desde cualquier parte del mundo, gestiona y ahorra energía.
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - generic [ref=e156]: Monitoreo y proyectos
+              - generic [ref=e157]: Rastreo, aéreo e ingeniería especial
+            - article [ref=e158]:
+              - generic [ref=e159]: "09"
+              - heading "GPS (posicionamiento y rastreo)" [level=3] [ref=e160]
+              - paragraph [ref=e161]: Equipos de alta seguridad para posicionamiento y rastreo de automóviles, motos y bicicletas. Con monitoreo vía GSM mediante mensajes de texto o internet.
+            - article [ref=e162]:
+              - generic [ref=e163]: "10"
+              - heading "Drones" [level=3] [ref=e164]
+              - paragraph [ref=e165]: Contamos con vehículos aéreos no tripulados para control de eventos, vigilancia rural y urbana, video y cartografía aérea en alta definición, inspección de construcciones, etc.
+            - article [ref=e166]:
+              - generic [ref=e167]: "11"
+              - heading "Proyectos especiales" [level=3] [ref=e168]
+              - paragraph [ref=e169]: Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales en ciudades, pueblos, corregimientos e incluso en ambientes hostiles y de difícil acceso.
+    - region [ref=e170]:
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - generic [ref=e173]: 02 — Sectores
+          - heading [level=2] [ref=e174]:
+            - text: Sistemas de seguridad para los espacios que operas, habitas y
+            - emphasis [ref=e175]: proteges.
+        - generic [ref=e176]:
+          - generic [ref=e177]:
+            - generic [ref=e178]: "01"
+            - heading "Hogares" [level=3] [ref=e179]
+            - paragraph [ref=e180]: Cámaras, alarmas, domótica y citofonía para vivir con tranquilidad en casa.
+          - generic [ref=e181]:
+            - generic [ref=e182]: "02"
+            - heading "Empresas" [level=3] [ref=e183]
+            - paragraph [ref=e184]: CCTV, control de acceso y comunicación para proteger operación y personal.
+          - generic [ref=e185]:
+            - generic [ref=e186]: "03"
+            - heading "Fincas" [level=3] [ref=e187]
+            - paragraph [ref=e188]: Seguridad perimetral, cercas eléctricas y alarmas para propiedades y conjuntos cerrados.
+          - generic [ref=e189]:
+            - generic [ref=e190]: "04"
+            - heading "Instituciones" [level=3] [ref=e191]
+            - paragraph [ref=e192]: Detección de incendios, control de acceso y monitoreo para espacios educativos y públicos.
+    - region [ref=e193]:
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - generic [ref=e196]: 03 — Proyectos especiales
+          - heading [level=2] [ref=e197]:
+            - text: Ingeniería para proyectos que exigen más que una
+            - emphasis [ref=e198]: instalación estándar.
+          - paragraph [ref=e199]: Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales.
+        - generic [ref=e200]:
+          - article [ref=e201]:
+            - generic [aria-hidden] [ref=e202]: Ie
+            - heading "Ingeniería electrónica y de telecomunicaciones" [level=3] [ref=e203]
+            - paragraph [ref=e204]: Profesionales expertos que diseñan e implementan proyectos de alto nivel a la medida de cada operación e infraestructura.
+          - article [ref=e205]:
+            - generic [aria-hidden] [ref=e206]: Ec
+            - heading "Equipos y comunicaciones especiales" [level=3] [ref=e207]
+            - paragraph [ref=e208]: Integración de equipos y comunicaciones específicas para requerimientos que van más allá de una instalación estándar.
+          - article [ref=e209]:
+            - generic [aria-hidden] [ref=e210]: Ah
+            - heading "Ambientes hostiles y de difícil acceso" [level=3] [ref=e211]
+            - paragraph [ref=e212]: Soluciones para ciudades, pueblos, corregimientos e incluso ambientes hostiles y de difícil acceso.
+    - region [ref=e213]:
+      - generic [ref=e214]:
+        - generic [ref=e215]:
+          - generic [ref=e216]: Preguntas frecuentes
+          - heading [level=2] [ref=e217]:
+            - text: Resolvemos tus dudas antes de
+            - emphasis [ref=e218]: instalar.
+          - paragraph [ref=e219]: ¿Tienes otra pregunta? Escríbenos y con gusto te asesoramos.
+          - link "Agenda una cita" [ref=e220] [cursor=pointer]:
+            - /url: "#contacto"
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - button "¿Instalan cámaras de seguridad para mi espacio?" [expanded] [ref=e225] [cursor=pointer]
+            - region "¿Instalan cámaras de seguridad para mi espacio?" [ref=e322]:
+              - paragraph [ref=e228]: Sí. Ofrecemos cámaras y grabadores de video en tecnología IP y análoga, útiles para combatir la inseguridad, prevenir la pérdida de elementos y apoyar el control de personal y de procesos en distintos ambientes.
+          - generic [ref=e229]:
+            - button "¿Puedo monitorear mis alarmas desde el celular?" [ref=e230] [cursor=pointer]
+            - region "¿Puedo monitorear mis alarmas desde el celular?":
+              - paragraph [ref=e233]: Contamos con sistemas de alarmas de intrusión alámbricas e inalámbricas para interior o exterior, con tecnologías de monitoreo remoto que te permiten estar al tanto desde tu celular.
+          - generic [ref=e234]:
+            - button "¿Manejan control de acceso con huella o reconocimiento facial?" [ref=e235] [cursor=pointer]
+            - region "¿Manejan control de acceso con huella o reconocimiento facial?":
+              - paragraph [ref=e238]: Sí. Nuestros equipos de control de acceso regulan la entrada y salida de personas y vehículos, y soportan desde tarjetas RFID y código de barras hasta huellas dactilares y detección de rostros.
+          - generic [ref=e239]:
+            - button "¿Atienden fincas, conjuntos cerrados y empresas?" [ref=e240] [cursor=pointer]
+            - region "¿Atienden fincas, conjuntos cerrados y empresas?":
+              - paragraph [ref=e243]: Trabajamos con hogares, empresas, fincas e instituciones. Para propiedades como fincas, conjuntos cerrados e instituciones educativas ofrecemos seguridad perimetral con cercas eléctricas, concertinas, alarmas sonoras y control de usuarios.
+          - generic [ref=e244]:
+            - button "¿Pueden integrar cámaras, control de acceso y alarmas en un mismo proyecto?" [ref=e245] [cursor=pointer]
+            - region "¿Pueden integrar cámaras, control de acceso y alarmas en un mismo proyecto?":
+              - paragraph [ref=e248]: Sí. Distribuimos e integramos equipos de seguridad electrónica y comunicación, de manera que las soluciones de CCTV, control de acceso, alarmas y otras tecnologías trabajen de forma coordinada dentro de tu proyecto.
+          - generic [ref=e249]:
+            - button "¿Qué información necesitan para asesorarme?" [ref=e250] [cursor=pointer]
+            - region "¿Qué información necesitan para asesorarme?":
+              - paragraph [ref=e253]: Nos ayuda conocer qué espacio necesitas proteger, qué solución estás buscando y algunos datos de contacto. Con eso te ayudamos a elegir e integrar la solución adecuada para tu espacio, operación o infraestructura.
+    - region [ref=e254]:
+      - generic [ref=e255]:
+        - generic [ref=e256]:
+          - generic [ref=e257]: Hablemos
+          - heading [level=2] [ref=e258]:
+            - text: Planeemos la seguridad de tu
+            - emphasis [ref=e259]: espacio.
+          - paragraph [ref=e260]: Distribuimos e integramos equipos de seguridad electrónica y de comunicación. Agenda una cita y te ayudamos a elegir e integrar la solución adecuada.
+          - generic [ref=e261]:
+            - link "Agenda una cita" [ref=e262] [cursor=pointer]:
+              - /url: "#contacto"
+            - link "Escríbenos" [ref=e265] [cursor=pointer]:
+              - /url: mailto:info@monitorinc.com.co
+        - generic [ref=e266]:
+          - generic [ref=e267]: Teléfonos
+          - link "313 8407090" [ref=e268] [cursor=pointer]:
+            - /url: https://wa.me/573138407090
+          - link "321 3002548" [ref=e269] [cursor=pointer]:
+            - /url: https://wa.me/573213002548
+          - generic [ref=e270]: Correo
+          - link "info@monitorinc.com.co" [ref=e271] [cursor=pointer]:
+            - /url: mailto:info@monitorinc.com.co
+          - generic [ref=e272]: Sitio web
+          - link "www.monitorinc.com.co" [ref=e273] [cursor=pointer]:
+            - /url: https://www.monitorinc.com.co
+  - contentinfo [ref=e274]:
+    - generic [ref=e275]:
+      - generic [ref=e276]:
+        - generic [ref=e277]:
+          - generic [ref=e278]: MONITORINC
+          - paragraph [ref=e280]: Distribuimos e integramos equipos de seguridad electrónica y de comunicación para hacer de cada lugar un espacio más seguro.
+        - generic [ref=e281]:
+          - heading "Soluciones" [level=4] [ref=e282]
+          - list [ref=e283]:
+            - listitem [ref=e284]:
+              - link "CCTV y grabación" [ref=e285] [cursor=pointer]:
+                - /url: "#soluciones"
+            - listitem [ref=e286]:
+              - link "Control de acceso" [ref=e287] [cursor=pointer]:
+                - /url: "#soluciones"
+            - listitem [ref=e288]:
+              - link "Alarmas de intrusión" [ref=e289] [cursor=pointer]:
+                - /url: "#soluciones"
+            - listitem [ref=e290]:
+              - link "Seguridad perimetral" [ref=e291] [cursor=pointer]:
+                - /url: "#soluciones"
+            - listitem [ref=e292]:
+              - link "GPS y drones" [ref=e293] [cursor=pointer]:
+                - /url: "#soluciones"
+        - generic [ref=e294]:
+          - heading "Sectores" [level=4] [ref=e295]
+          - list [ref=e296]:
+            - listitem [ref=e297]:
+              - link "Hogares" [ref=e298] [cursor=pointer]:
+                - /url: "#sectores"
+            - listitem [ref=e299]:
+              - link "Empresas" [ref=e300] [cursor=pointer]:
+                - /url: "#sectores"
+            - listitem [ref=e301]:
+              - link "Fincas" [ref=e302] [cursor=pointer]:
+                - /url: "#sectores"
+            - listitem [ref=e303]:
+              - link "Instituciones" [ref=e304] [cursor=pointer]:
+                - /url: "#sectores"
+            - listitem [ref=e305]:
+              - link "Proyectos especiales" [ref=e306] [cursor=pointer]:
+                - /url: "#proyectos"
+        - generic [ref=e307]:
+          - heading "Contacto" [level=4] [ref=e308]
+          - list [ref=e309]:
+            - listitem [ref=e310]:
+              - link "313 8407090" [ref=e311] [cursor=pointer]:
+                - /url: https://wa.me/573138407090
+            - listitem [ref=e312]:
+              - link "321 3002548" [ref=e313] [cursor=pointer]:
+                - /url: https://wa.me/573213002548
+            - listitem [ref=e314]:
+              - link "info@monitorinc.com.co" [ref=e315] [cursor=pointer]:
+                - /url: mailto:info@monitorinc.com.co
+            - listitem [ref=e316]:
+              - link "www.monitorinc.com.co" [ref=e317] [cursor=pointer]:
+                - /url: https://www.monitorinc.com.co
+      - generic [ref=e318]:
+        - generic [ref=e319]: © 2026 MONITORINC. Seguridad electrónica y comunicación.
+        - generic [ref=e320]: Colombia
+  - alert [ref=e321]

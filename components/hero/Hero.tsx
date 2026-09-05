@@ -1,242 +1,57 @@
-'use client'
+import { AgendarDemoButton } from '../ui/AgendarDemoButton'
 
 /**
- * ═══════════════════════════════════════════════════════════════════
- *  WHAT CHANGED VS THE PREVIOUS VERSION AND WHY
- * ═══════════════════════════════════════════════════════════════════
- *
- *  1. Background darkened from #0F1523 → #0B0F17.
- *     Deeper base makes the soft masses read as glows rather than
- *     coloured circles and increases perceived depth.
- *
- *  2. Vertical padding increased (96→140 px top, 72→108 px bottom).
- *     More negative space keeps the fold from feeling crowded and
- *     lets the atmospheric background breathe around the headline.
- *
- *  3. Secondary elements (badge, clients, scroll cue) toned down.
- *     Lower opacity, thinner borders, subtler glow — so the eye
- *     goes:  headline → subtitle → CTA → atmosphere.
- *     Everything below the CTA is supporting texture, not content.
- *
- *  4. Spacing between CTA and client strip widened (48 → 56 px).
- *     Creates a clearer separation between the action area and the
- *     trust row, reducing visual density above the fold.
- *
- *  5. Removed unused `Image` import.
- * ═══════════════════════════════════════════════════════════════════
+ * MONITORINC hero — editorial commercial dark section.
+ * No WebGL / particle sphere. Optional status chips are secondary,
+ * kept to three and clearly subordinate to the headline and CTAs.
  */
 
-import { HeroBackground } from './HeroBackground'
-import { BrandsMarquee } from './BrandsMarquee'
-
-import './hero-text-anim.css'
-
-const CLIENTS = ['Hogares', 'Empresas', 'Fincas', 'Instituciones']
-
-const PROVIDERS = ['Samsung', 'Bosch', 'ZKTeco', 'Dahua Technology', 'Axis Communications', 'Hikvision', 'Paradox Security Systems']
+const CHIPS = [
+  { label: 'CCTV', status: 'IP · análogo' },
+  { label: 'Alarmas', status: 'monitoreo remoto' },
+  { label: 'GPS', status: 'posicionamiento' },
+]
 
 export function Hero() {
   return (
-    <section
-      id="inicio"
-      style={{
-        position: 'relative',
-        minHeight: '100svh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        paddingTop: 'clamp(96px, 14vw, 140px)',
-        paddingLeft: 24,
-        paddingRight: 24,
-        paddingBottom: 200,
-        background: '#0B0F17',
-      }}
-    >
-      <HeroBackground />
+    <section id="inicio" className="hero on-dark">
+      <div className="container hero__inner">
+        <div className="hero__content">
+          <span className="eyebrow hero__eyebrow">Integrador de seguridad electrónica</span>
 
-      {/* ── Content — z-10, always above the atmosphere ────────────── */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          textAlign: 'center',
-          maxWidth: '640px',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-  
-        {/* Headline */}
-        <h1 className="hero-anim hero-anim--2"
-          style={{
-            fontFamily: "var(--font-sans, 'Space Grotesk')",
-            fontSize: 'clamp(2.8rem, 7.5vw, 5.2rem)',
-            fontWeight: 700,
-            lineHeight: 1.02,
-            letterSpacing: '-0.038em',
-            color: 'rgba(245, 248, 255, 0.98)',
-            margin: '0 0 24px',
-          }}
-        >
-          Haz de cada espacio
-          <br />
-          <span
-            style={{
-              color: 'rgba(245, 248, 255, 0.98)',
-            }}
-          >
-            un lugar seguro.
-          </span>
-        </h1>
+          <h1>
+            Haz de cada espacio<br />
+            <em>un lugar seguro.</em>
+          </h1>
 
-        {/* Subtitle */}
-        <p className="hero-anim hero-anim--3"
-          style={{
-            fontFamily: "var(--font-sans, 'Space Grotesk')",
-            fontSize: 'clamp(15px, 2vw, 17px)',
-            fontWeight: 300,
-            lineHeight: 1.72,
-            color: 'rgba(245, 248, 255, 0.98)',
-            maxWidth: 420,
-            margin: '0 0 48px',
-          }}
-        >
-          Distribuimos e integramos equipos de seguridad electrónica y
-          comunicación
-        </p>
+          <p className="hero__sub">
+            Distribuimos e integramos equipos de seguridad electrónica y
+            comunicación para hogares, empresas, fincas e instituciones.
+          </p>
 
-        {/* CTAs */}
-        <div className="hero-anim hero-anim--4" id="wsp-button-hero"
-          style={{
-            display: 'flex',
-            gap: 12,
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            marginBottom: 56,
-          }}
-        >
-          {/* Unified CTA button — original hero style, not shared component */}
-          <a
-            href="https://wa.me/573138407090"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 10,
-              padding: '11px 22px',
-              borderRadius: 999,
-              background: 'rgba(242, 244, 245, 0.06)',
-              border: '1px solid rgba(242, 244, 245, 0.14)',
-              color: 'rgba(245, 248, 255, 0.92)',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 14,
-              fontWeight: 600,
-              letterSpacing: '0.01em',
-              textDecoration: 'none',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              boxShadow: '0 0 0 1px rgba(0,0,0,0.20), 0 18px 42px rgba(0,0,0,0.35)',
-            }}
-          >
-            <img
-              src="/whatsapp-icon-hero.png"
-              alt=""
-              width={18}
-              height={18}
-              style={{ display: 'block', borderRadius: 4 }}
+          <div className="hero__actions">
+            <AgendarDemoButton href="#contacto" label="Agenda una cita" />
+            <AgendarDemoButton
+              href="#soluciones"
+              label="Ver soluciones"
+              variant="secondary"
+              arrow={false}
             />
-            <span>Agendar Demo</span>
-          </a>
-
+          </div>
         </div>
 
-      </div>
-
-      {/* ── Bottom strip: Proveedores + Marquee + Atendemos + Scroll ── */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          paddingBottom: 0,
-        }}
-      >
-        {/* Providers label */}
-        <span
-          style={{
-            fontSize: 14,
-            color: 'rgba(235, 242, 255, 0.55)',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-sans)',
-            marginBottom: 4,
-          }}
-        >
-          Proveedores:
-        </span>
-
-        <BrandsMarquee />
-
-        {/* Client strip */}
-        <div
-          style={{
-            marginTop: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 20,
-            flexWrap: 'wrap',
-            marginBottom: 16,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 14,
-              color: 'rgba(235, 242, 255, 0.55)',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              fontFamily: 'var(--font-sans)',
-            }}
-          >
-            Atendemos a
-          </span>
-          {CLIENTS.map((c) => (
-            <span
-              key={c}
-              style={{
-                fontSize: 12,
-                color: 'rgba(235, 242, 255, 0.55)',
-                fontFamily: 'var(--font-sans)',
-              }}
-            >
-              {c}
-            </span>
+        <aside className="hero__panel" aria-label="Áreas de monitoreo">
+          <div className="hero__panel-head">
+            <span className="hero__panel-dot" aria-hidden="true" />
+            Seguridad integrada
+          </div>
+          {CHIPS.map((c) => (
+            <div key={c.label} className="chip">
+              <span className="chip__label">{c.label}</span>
+              <span className="chip__status">{c.status}</span>
+            </div>
           ))}
-        </div>
-
-        {/* Scroll down — Maze-style: text flanked by dotted lines */}
-        <a
-          href="#quienes-somos"
-          className="m-welcome__scroll"
-          onClick={(e) => {
-            e.preventDefault()
-            const section = document.getElementById('quienes-somos')
-            if (section) section.scrollIntoView({ behavior: 'smooth' })
-          }}
-        >
-          <span>Scroll down</span>
-        </a>
+        </aside>
       </div>
     </section>
   )

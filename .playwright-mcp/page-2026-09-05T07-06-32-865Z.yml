@@ -1,0 +1,532 @@
+- generic [active] [ref=f4e1]:
+  - link "Skip to main content" [ref=f4e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - link "Tec-Tel home" [ref=f4e5] [cursor=pointer]:
+        - /url: /
+        - img "Tec-Tel" [ref=f4e6]
+      - button "Open menu" [ref=f4e8] [cursor=pointer]
+  - main [ref=f4e12]:
+    - generic [ref=f4e13]:
+      - generic [ref=f4e17]:
+        - generic [ref=f4e18]: EST. 2011
+        - generic [aria-hidden] [ref=f4e19]: /
+        - generic [ref=f4e20]: Morganville, NJ
+      - generic [ref=f4e23]:
+        - paragraph [ref=f4e24]: AI-driven security integrator · 1,000+ deployments
+        - heading "Smart camera security, installed and serviced nationwide." [level=1] [ref=f4e26]
+        - paragraph [ref=f4e27]: Tec-Tel installs commercial cameras, access control, and cabling nationwide. We pair that field work with remote monitoring and AI video software for faster search, real-time alerts, and one view across every site.
+        - group "Get in touch" [ref=f4e30]:
+          - link "Book a free consultation" [ref=f4e31] [cursor=pointer]:
+            - /url: /audit
+          - generic [ref=f4e32]: or reach us directly
+          - generic [ref=f4e36]:
+            - link "Call 855-577-0400" [ref=f4e37] [cursor=pointer]:
+              - /url: tel:8555770400
+              - generic [ref=f4e38]: Call us
+              - generic [ref=f4e41]: 855-577-0400
+            - generic [ref=f4e42]:
+              - generic [aria-hidden] [ref=f4e43]:
+                - text: Website
+                - textbox [ref=f4e44]
+              - generic [ref=f4e45]: Request a demo
+              - generic [ref=f4e49]:
+                - textbox "Request a demo" [ref=f4e50]:
+                  - /placeholder: you@company.com
+                - button "Send email" [ref=f4e51]
+        - paragraph [ref=f4e54]:
+          - generic [ref=f4e55]: Field teams nationwide
+          - generic [ref=f4e56]: Offices in NJ · NY · IL
+    - generic [ref=f4e58]:
+      - generic [ref=f4e59]: Trusted by
+      - list "Customer logos" [ref=f4e62]:
+        - listitem [ref=f4e63]:
+          - img "Amazon" [ref=f4e64]
+        - listitem [ref=f4e65]:
+          - img "Bridgestone" [ref=f4e66]
+        - listitem [ref=f4e67]:
+          - img "Hilton" [ref=f4e68]
+        - listitem [ref=f4e69]:
+          - img "Dunkin'" [ref=f4e70]
+        - listitem [ref=f4e71]:
+          - img "TreeHouse Foods" [ref=f4e72]
+        - listitem [ref=f4e73]:
+          - img "ORBIS" [ref=f4e74]
+        - listitem [ref=f4e75]:
+          - img "Winland Foods" [ref=f4e76]
+        - listitem [ref=f4e77]:
+          - img "Menasha" [ref=f4e78]
+        - listitem [ref=f4e79]:
+          - img "JBSS" [ref=f4e80]
+    - generic [ref=f4e82]:
+      - generic [ref=f4e83]:
+        - paragraph [ref=f4e84]:
+          - generic [ref=f4e85]: §01
+          - text: What we do
+        - heading "Cameras, access control, and AI software from one integrator." [level=2] [ref=f4e86]
+        - paragraph [ref=f4e87]: We install new camera, access-control, and cabling systems, then configure monitoring and AI video analytics. Tec-Tel can also integrate compatible existing equipment and provide maintenance, repairs, and upgrades.
+      - generic [ref=f4e88]:
+        - generic [ref=f4e89]:
+          - paragraph [ref=f4e90]: What we install
+          - list [ref=f4e91]:
+            - listitem [ref=f4e92]:
+              - link "Security cameras Commercial IP cameras, recorders, and surveillance hardware selected for the site, network, and operating requirements." [ref=f4e93] [cursor=pointer]:
+                - /url: /products/security-cameras
+                - generic [ref=f4e94]:
+                  - generic [ref=f4e95]: Security cameras
+                  - generic [ref=f4e96]: Commercial IP cameras, recorders, and surveillance hardware selected for the site, network, and operating requirements.
+            - listitem [ref=f4e99]:
+              - link "AI video software AI video software from many platforms for search, real-time alerts, event detection, and operational analysis." [ref=f4e100] [cursor=pointer]:
+                - /url: /products/ai-software
+                - generic [ref=f4e101]:
+                  - generic [ref=f4e102]: AI video software
+                  - generic [ref=f4e103]: AI video software from many platforms for search, real-time alerts, event detection, and operational analysis.
+            - listitem [ref=f4e106]:
+              - link "Access control Badge, mobile, and biometric access systems integrated with video for door-event review." [ref=f4e107] [cursor=pointer]:
+                - /url: /products/access-control
+                - generic [ref=f4e108]:
+                  - generic [ref=f4e109]: Access control
+                  - generic [ref=f4e110]: Badge, mobile, and biometric access systems integrated with video for door-event review.
+            - listitem [ref=f4e113]:
+              - link "Video management Cloud, on-premises, and hybrid video management systems for single buildings and multi-site operations." [ref=f4e114] [cursor=pointer]:
+                - /url: /products/video-management
+                - generic [ref=f4e115]:
+                  - generic [ref=f4e116]: Video management
+                  - generic [ref=f4e117]: Cloud, on-premises, and hybrid video management systems for single buildings and multi-site operations.
+            - listitem [ref=f4e120]:
+              - link "Structured cabling Low-voltage cabling, network drops, fiber, racks, and equipment connections installed to the project specification." [ref=f4e121] [cursor=pointer]:
+                - /url: /products/structured-cabling
+                - generic [ref=f4e122]:
+                  - generic [ref=f4e123]: Structured cabling
+                  - generic [ref=f4e124]: Low-voltage cabling, network drops, fiber, racks, and equipment connections installed to the project specification.
+            - listitem [ref=f4e127]:
+              - link "Telecommunications Business phone and connectivity systems installed and supported for one location or a multi-site operation." [ref=f4e128] [cursor=pointer]:
+                - /url: /products/telecommunications
+                - generic [ref=f4e129]:
+                  - generic [ref=f4e130]: Telecommunications
+                  - generic [ref=f4e131]: Business phone and connectivity systems installed and supported for one location or a multi-site operation.
+          - link "View all products" [ref=f4e134] [cursor=pointer]:
+            - /url: /products
+        - generic [ref=f4e137]:
+          - paragraph [ref=f4e138]: Security and operations solutions
+          - list [ref=f4e139]:
+            - listitem [ref=f4e140]:
+              - link "AI video analytics integration Tec-Tel installs and configures AI video software from many platforms for compatible camera systems." [ref=f4e141] [cursor=pointer]:
+                - /url: /solutions/vision-intelligence
+                - generic [ref=f4e142]:
+                  - generic [ref=f4e143]: AI video analytics integration
+                  - generic [ref=f4e144]: Tec-Tel installs and configures AI video software from many platforms for compatible camera systems.
+            - listitem [ref=f4e147]:
+              - link "Remote monitoring Remote video monitoring with event verification and documented escalation procedures, available around the clock." [ref=f4e148] [cursor=pointer]:
+                - /url: /solutions/remote-monitoring
+                - generic [ref=f4e149]:
+                  - generic [ref=f4e150]: Remote monitoring
+                  - generic [ref=f4e151]: Remote video monitoring with event verification and documented escalation procedures, available around the clock.
+            - listitem [ref=f4e154]:
+              - link "License plate recognition Plate capture and allow / deny matching for gates, dock yards, and fleet entry." [ref=f4e155] [cursor=pointer]:
+                - /url: /solutions/license-plate
+                - generic [ref=f4e156]:
+                  - generic [ref=f4e157]: License plate recognition
+                  - generic [ref=f4e158]: Plate capture and allow / deny matching for gates, dock yards, and fleet entry.
+            - listitem [ref=f4e161]:
+              - link "Integrated security systems Cameras, access control, monitoring, cabling, and service managed under one Tec-Tel contract and invoice." [ref=f4e162] [cursor=pointer]:
+                - /url: /solutions/total-protection
+                - generic [ref=f4e163]:
+                  - generic [ref=f4e164]: Integrated security systems
+                  - generic [ref=f4e165]: Cameras, access control, monitoring, cabling, and service managed under one Tec-Tel contract and invoice.
+            - listitem [ref=f4e168]:
+              - link "Workplace safety Supported analytics for PPE detection, slip-and-fall events, and forklift proximity on compatible camera systems." [ref=f4e169] [cursor=pointer]:
+                - /url: /solutions/workplace-safety
+                - generic [ref=f4e170]:
+                  - generic [ref=f4e171]: Workplace safety
+                  - generic [ref=f4e172]: Supported analytics for PPE detection, slip-and-fall events, and forklift proximity on compatible camera systems.
+            - listitem [ref=f4e175]:
+              - link "Facility security Access control, intrusion detection, visitor management, and video coverage for designated doors and entry points." [ref=f4e176] [cursor=pointer]:
+                - /url: /solutions/facility-security
+                - generic [ref=f4e177]:
+                  - generic [ref=f4e178]: Facility security
+                  - generic [ref=f4e179]: Access control, intrusion detection, visitor management, and video coverage for designated doors and entry points.
+          - link "View all solutions" [ref=f4e182] [cursor=pointer]:
+            - /url: /solutions
+    - generic [ref=f4e186]:
+      - generic [ref=f4e187]:
+        - paragraph [ref=f4e188]:
+          - generic [ref=f4e189]: §02
+          - text: Who we serve
+        - heading "Commercial security systems for the facilities you operate." [level=2] [ref=f4e190]
+        - paragraph [ref=f4e191]: Tec-Tel specifies cameras, access control, monitoring, cabling, and AI video software for each facility type and operating requirement.
+      - generic [ref=f4e192]:
+        - generic [ref=f4e193]:
+          - paragraph [ref=f4e194]: Regulated & funded
+          - paragraph [ref=f4e195]: Controlled entry, recorded video, visitor management, and grant-supported projects where eligible.
+          - list [ref=f4e196]:
+            - listitem [ref=f4e197]:
+              - link "Healthcare" [ref=f4e198] [cursor=pointer]:
+                - /url: /industries/healthcare
+            - listitem [ref=f4e202]:
+              - link "Education" [ref=f4e203] [cursor=pointer]:
+                - /url: /industries/education
+            - listitem [ref=f4e207]:
+              - link "Houses of worship" [ref=f4e208] [cursor=pointer]:
+                - /url: /industries/houses-of-worship
+            - listitem [ref=f4e212]:
+              - link "Government" [ref=f4e213] [cursor=pointer]:
+                - /url: /industries/government
+        - generic [ref=f4e217]:
+          - paragraph [ref=f4e218]: Real estate & residential
+          - paragraph [ref=f4e219]: Access control, cameras, intercoms, and cabling for construction, turnover, and occupied properties.
+          - list [ref=f4e220]:
+            - listitem [ref=f4e221]:
+              - link "Real estate" [ref=f4e222] [cursor=pointer]:
+                - /url: /industries/real-estate
+            - listitem [ref=f4e226]:
+              - link "Multi-tenant residential" [ref=f4e227] [cursor=pointer]:
+                - /url: /industries/multi-tenant-residential
+            - listitem [ref=f4e231]:
+              - link "Self-storage" [ref=f4e232] [cursor=pointer]:
+                - /url: /industries/self-storage
+            - listitem [ref=f4e236]:
+              - link "Construction" [ref=f4e237] [cursor=pointer]:
+                - /url: /industries/construction
+        - generic [ref=f4e241]:
+          - paragraph [ref=f4e242]: Industrial & operations
+          - paragraph [ref=f4e243]: Cameras, access control, monitoring, and analytics for production areas, docks, yards, and controlled facilities.
+          - list [ref=f4e244]:
+            - listitem [ref=f4e245]:
+              - link "Manufacturing & warehousing" [ref=f4e246] [cursor=pointer]:
+                - /url: /industries/manufacturing
+            - listitem [ref=f4e250]:
+              - link "Logistics & warehousing" [ref=f4e251] [cursor=pointer]:
+                - /url: /industries/logistics-warehousing
+            - listitem [ref=f4e255]:
+              - link "Data centers" [ref=f4e256] [cursor=pointer]:
+                - /url: /industries/data-centers
+            - listitem [ref=f4e260]:
+              - link "Biotech & pharma" [ref=f4e261] [cursor=pointer]:
+                - /url: /industries/biotech-pharma
+        - generic [ref=f4e265]:
+          - paragraph [ref=f4e266]: Customer-facing & retail
+          - paragraph [ref=f4e267]: Video search, incident review, loss-prevention alerts, and multi-site visibility for public-facing locations.
+          - list [ref=f4e268]:
+            - listitem [ref=f4e269]:
+              - link "Retail" [ref=f4e270] [cursor=pointer]:
+                - /url: /industries/retail
+            - listitem [ref=f4e274]:
+              - link "Hospitality" [ref=f4e275] [cursor=pointer]:
+                - /url: /industries/hospitality
+            - listitem [ref=f4e279]:
+              - link "Auto dealerships" [ref=f4e280] [cursor=pointer]:
+                - /url: /industries/auto-dealerships
+      - link "See all 25 industries" [ref=f4e285] [cursor=pointer]:
+        - /url: /industries
+    - generic [ref=f4e291]:
+      - generic [ref=f4e292]:
+        - paragraph [ref=f4e293]:
+          - generic [ref=f4e294]: §03
+          - text: Nationwide installation and service
+        - heading "15 years. Nationwide. One integrator." [level=2] [ref=f4e295]
+        - paragraph [ref=f4e296]: Tec-Tel has designed, installed, and serviced commercial security systems nationwide for more than 15 years. Multi-site projects use one project manager and consistent installation standards.
+        - paragraph [ref=f4e297]: Field teams install cameras, access control, monitoring equipment, cabling, and supported AI video platforms. Tec-Tel also maintains, repairs, and upgrades the installed systems.
+        - generic [ref=f4e298]:
+          - generic [ref=f4e299]:
+            - term [ref=f4e300]: 15+ yrs
+            - definition [ref=f4e301]: Installing & servicing nationwide
+          - generic [ref=f4e302]:
+            - term [ref=f4e303]: 1,000+
+            - definition [ref=f4e304]: Commercial security deployments
+          - generic [ref=f4e305]:
+            - term [ref=f4e306]: 99.9%
+            - definition [ref=f4e307]: System uptime
+        - paragraph [ref=f4e308]: Tec-Tel has completed security projects for Bridgestone, Hilton, Dunkin', TreeHouse Foods, ORBIS Corporation, and Menasha.
+      - figure [ref=f4e309]:
+        - img "Industrial facility with production and warehouse areas" [ref=f4e311]
+    - generic [ref=f4e313]:
+      - paragraph [ref=f4e314]: Commercial security questions
+      - heading "Planning an installation, upgrade, or rollout." [level=2] [ref=f4e315]
+      - generic [ref=f4e316]:
+        - group [ref=f4e318]:
+          - term [ref=f4e320] [cursor=pointer]: Can Tec-Tel integrate our existing cameras?
+        - group [ref=f4e325]:
+          - term [ref=f4e327] [cursor=pointer]: Can you handle multi-site rollouts across the country?
+        - group [ref=f4e332]:
+          - term [ref=f4e334] [cursor=pointer]: What hardware and software platforms do you work with?
+        - group [ref=f4e339]:
+          - term [ref=f4e341] [cursor=pointer]: Can grants pay for our security upgrade?
+        - group [ref=f4e346]:
+          - term [ref=f4e348] [cursor=pointer]: Do you service systems you didn't install?
+    - generic [ref=f4e353]:
+      - generic [ref=f4e354]:
+        - generic [ref=f4e355]:
+          - paragraph [ref=f4e356]: Book a free consultation
+          - heading "Plan your commercial security system." [level=2] [ref=f4e357]
+          - paragraph [ref=f4e358]: Book a consultation or leave your email. Tec-Tel can scope one site, a system upgrade, or a nationwide rollout.
+          - generic [ref=f4e361]:
+            - generic [aria-hidden] [ref=f4e362]:
+              - text: Website
+              - textbox [ref=f4e363]
+            - generic [ref=f4e364]:
+              - textbox "Your work email" [ref=f4e365]:
+                - /placeholder: you@company.com
+              - button "Have Tec-Tel contact me" [ref=f4e366]
+          - paragraph [ref=f4e367]:
+            - text: Prefer to talk now?
+            - link "855-577-0400" [ref=f4e368] [cursor=pointer]:
+              - /url: tel:8555770400
+          - list "Commercial security projects Tec-Tel can help with" [ref=f4e369]:
+            - listitem [ref=f4e370]:
+              - generic [ref=f4e373]: New security cameras, video management, access control, and structured cabling.
+            - listitem [ref=f4e374]:
+              - generic [ref=f4e377]: AI video search, real-time alerts, remote monitoring, and analytics from supported platforms.
+            - listitem [ref=f4e378]:
+              - generic [ref=f4e381]: Existing-system upgrades, multi-site rollouts, maintenance, and service.
+          - paragraph [ref=f4e382]: 15+ years · 1,000+ deployments nationwide · NDAA-compliant
+        - iframe [ref=f4e384]
+      - generic [ref=f4e385]:
+        - paragraph [ref=f4e386]:
+          - text: Call
+          - link "855-577-0400" [ref=f4e387] [cursor=pointer]:
+            - /url: tel:8555770400
+          - text: ", email"
+          - link "info@tec-tel.com" [ref=f4e388] [cursor=pointer]:
+            - /url: mailto:info@tec-tel.com
+          - text: ","
+          - link "review installation pricing" [ref=f4e389] [cursor=pointer]:
+            - /url: /pricing
+          - text: ", or submit project details."
+        - link "Contact Tec-Tel" [ref=f4e390] [cursor=pointer]:
+          - /url: /book
+  - contentinfo [ref=f4e394]:
+    - generic [ref=f4e395]:
+      - generic [ref=f4e396]:
+        - generic [ref=f4e397]:
+          - paragraph [ref=f4e398]: § Tec-Tel · Est. 2011 · Nationwide service
+          - paragraph [ref=f4e399]: One integrator for every site you operate.
+        - link "Book a free consultation" [ref=f4e400] [cursor=pointer]:
+          - /url: /audit
+          - text: Book a free consultation
+          - generic [aria-hidden] [ref=f4e401]: →
+      - generic [ref=f4e402]:
+        - generic [ref=f4e403]:
+          - img "Tec-Tel" [ref=f4e404]
+          - paragraph [ref=f4e405]: A nationwide integrator that designs, installs, runs, and reports on the cameras, access control, and intelligence that keep your buildings secure. One company to call, one invoice, one team accountable end to end. The same Tec-Tel team stays with your system for its whole life.
+          - list [ref=f4e406]:
+            - listitem [ref=f4e407]:
+              - generic [ref=f4e408]: Call
+              - link "855-577-0400" [ref=f4e409] [cursor=pointer]:
+                - /url: tel:8555770400
+            - listitem [ref=f4e410]:
+              - generic [ref=f4e411]: Sales
+              - link "info@tec-tel.com" [ref=f4e412] [cursor=pointer]:
+                - /url: mailto:info@tec-tel.com
+            - listitem [ref=f4e413]:
+              - generic [ref=f4e414]: Support
+              - link "support@tec-tel.com" [ref=f4e415] [cursor=pointer]:
+                - /url: mailto:support@tec-tel.com
+            - listitem [ref=f4e416]:
+              - generic [ref=f4e417]: Remote
+              - link "Remote Support" [ref=f4e418] [cursor=pointer]:
+                - /url: https://download.tec-tel.com/client-remote-support/TecTel.exe
+            - listitem [ref=f4e419]:
+              - generic [ref=f4e420]: HQ
+              - generic [ref=f4e421]: 275 State Hwy 79, Morganville, NJ
+        - navigation "Subscriptions" [ref=f4e422]:
+          - paragraph [ref=f4e423]: Subscriptions
+          - list [ref=f4e424]:
+            - listitem [ref=f4e425]:
+              - link "AI camera plans" [ref=f4e426] [cursor=pointer]:
+                - /url: /subscriptions
+            - listitem [ref=f4e427]:
+              - link "Gyms & fitness" [ref=f4e428] [cursor=pointer]:
+                - /url: /subscriptions/gym
+            - listitem [ref=f4e429]:
+              - link "QSRs & restaurants" [ref=f4e430] [cursor=pointer]:
+                - /url: /subscriptions/qsr
+            - listitem [ref=f4e431]:
+              - link "Retail" [ref=f4e432] [cursor=pointer]:
+                - /url: /subscriptions/retail
+            - listitem [ref=f4e433]:
+              - link "Convenience stores" [ref=f4e434] [cursor=pointer]:
+                - /url: /subscriptions/c-store
+            - listitem [ref=f4e435]:
+              - link "Enterprise pricing" [ref=f4e436] [cursor=pointer]:
+                - /url: /pricing
+            - listitem [ref=f4e437]:
+              - link "All subscriptions" [ref=f4e438] [cursor=pointer]:
+                - /url: /subscriptions
+                - text: All subscriptions →
+        - navigation "Products" [ref=f4e439]:
+          - paragraph [ref=f4e440]: Products
+          - list [ref=f4e441]:
+            - listitem [ref=f4e442]:
+              - link "Security cameras" [ref=f4e443] [cursor=pointer]:
+                - /url: /products/security-cameras
+            - listitem [ref=f4e444]:
+              - link "AI video software" [ref=f4e445] [cursor=pointer]:
+                - /url: /products/ai-software
+            - listitem [ref=f4e446]:
+              - link "Access control" [ref=f4e447] [cursor=pointer]:
+                - /url: /products/access-control
+            - listitem [ref=f4e448]:
+              - link "Video management" [ref=f4e449] [cursor=pointer]:
+                - /url: /products/video-management
+            - listitem [ref=f4e450]:
+              - link "Structured cabling" [ref=f4e451] [cursor=pointer]:
+                - /url: /products/structured-cabling
+            - listitem [ref=f4e452]:
+              - link "Telecommunications" [ref=f4e453] [cursor=pointer]:
+                - /url: /products/telecommunications
+            - listitem [ref=f4e454]:
+              - link "All products" [ref=f4e455] [cursor=pointer]:
+                - /url: /products
+                - text: All products →
+        - navigation "Solutions" [ref=f4e456]:
+          - paragraph [ref=f4e457]: Solutions
+          - list [ref=f4e458]:
+            - listitem [ref=f4e459]:
+              - link "Total Protection" [ref=f4e460] [cursor=pointer]:
+                - /url: /solutions/total-protection
+            - listitem [ref=f4e461]:
+              - link "Vision Intelligence" [ref=f4e462] [cursor=pointer]:
+                - /url: /solutions/vision-intelligence
+            - listitem [ref=f4e463]:
+              - link "Remote monitoring" [ref=f4e464] [cursor=pointer]:
+                - /url: /solutions/remote-monitoring
+            - listitem [ref=f4e465]:
+              - link "AI footage search" [ref=f4e466] [cursor=pointer]:
+                - /url: /solutions/ai-search
+            - listitem [ref=f4e467]:
+              - link "Threat detection" [ref=f4e468] [cursor=pointer]:
+                - /url: /solutions/threat-alerts
+            - listitem [ref=f4e469]:
+              - link "Facial recognition" [ref=f4e470] [cursor=pointer]:
+                - /url: /solutions/facial-recognition
+            - listitem [ref=f4e471]:
+              - link "All solutions" [ref=f4e472] [cursor=pointer]:
+                - /url: /solutions
+                - text: All solutions →
+        - navigation "Industries" [ref=f4e473]:
+          - paragraph [ref=f4e474]: Industries
+          - list [ref=f4e475]:
+            - listitem [ref=f4e476]:
+              - link "Manufacturing" [ref=f4e477] [cursor=pointer]:
+                - /url: /industries/manufacturing
+            - listitem [ref=f4e478]:
+              - link "Healthcare" [ref=f4e479] [cursor=pointer]:
+                - /url: /industries/healthcare
+            - listitem [ref=f4e480]:
+              - link "Retail" [ref=f4e481] [cursor=pointer]:
+                - /url: /industries/retail
+            - listitem [ref=f4e482]:
+              - link "Education" [ref=f4e483] [cursor=pointer]:
+                - /url: /industries/education
+            - listitem [ref=f4e484]:
+              - link "Houses of worship" [ref=f4e485] [cursor=pointer]:
+                - /url: /industries/houses-of-worship
+            - listitem [ref=f4e486]:
+              - link "Government" [ref=f4e487] [cursor=pointer]:
+                - /url: /industries/government
+            - listitem [ref=f4e488]:
+              - link "All industries" [ref=f4e489] [cursor=pointer]:
+                - /url: /industries
+                - text: All industries →
+      - generic [ref=f4e490]:
+        - generic [ref=f4e491]:
+          - paragraph [ref=f4e492]: By state
+          - paragraph [ref=f4e493]:
+            - link "NY" [ref=f4e494] [cursor=pointer]:
+              - /url: /states/new-york-security-regulations
+            - link "NJ" [ref=f4e495] [cursor=pointer]:
+              - /url: /states/new-jersey-security-regulations
+            - link "CA" [ref=f4e496] [cursor=pointer]:
+              - /url: /states/california-security-regulations
+            - link "TX" [ref=f4e497] [cursor=pointer]:
+              - /url: /states/texas-security-regulations
+            - link "FL" [ref=f4e498] [cursor=pointer]:
+              - /url: /states/florida-security-regulations
+            - link "IL" [ref=f4e499] [cursor=pointer]:
+              - /url: /states/illinois-security-regulations
+            - link "MA" [ref=f4e500] [cursor=pointer]:
+              - /url: /states/massachusetts-security-regulations
+            - link "PA" [ref=f4e501] [cursor=pointer]:
+              - /url: /states/pennsylvania-security-regulations
+            - link "GA" [ref=f4e502] [cursor=pointer]:
+              - /url: /states/georgia-security-regulations
+            - link "All states" [ref=f4e503] [cursor=pointer]:
+              - /url: /states
+              - text: All states →
+        - generic [ref=f4e504]:
+          - paragraph [ref=f4e505]: Platforms we install
+          - paragraph [ref=f4e506]:
+            - link "Verkada" [ref=f4e507] [cursor=pointer]:
+              - /url: /vendors/verkada-installation-guide
+            - link "Avigilon" [ref=f4e508] [cursor=pointer]:
+              - /url: /vendors/avigilon-migration
+            - link "Genetec" [ref=f4e509] [cursor=pointer]:
+              - /url: /vendors/genetec-for-healthcare
+            - link "Axis" [ref=f4e510] [cursor=pointer]:
+              - /url: /vendors/axis-camera-selection
+            - link "Hanwha" [ref=f4e511] [cursor=pointer]:
+              - /url: /vendors/hanwha-wisenet-overview
+            - link "All platforms" [ref=f4e512] [cursor=pointer]:
+              - /url: /vendors
+              - text: All platforms →
+        - generic [ref=f4e513]:
+          - paragraph [ref=f4e514]: Grants & funding
+          - paragraph [ref=f4e515]:
+            - link "NSGP" [ref=f4e516] [cursor=pointer]:
+              - /url: /resources/grants/nsgp-nonprofit-security-grant
+            - link "SVPP" [ref=f4e517] [cursor=pointer]:
+              - /url: /resources/grants/svpp-school-violence-prevention
+            - link "PSGP" [ref=f4e518] [cursor=pointer]:
+              - /url: /resources/grants/psgp-port-security-grant
+            - link "State NSGP" [ref=f4e519] [cursor=pointer]:
+              - /url: /resources/grants/state-nsgp-programs
+            - link "UASI" [ref=f4e520] [cursor=pointer]:
+              - /url: /resources/grants/uasi-urban-area-security
+            - link "All grants" [ref=f4e521] [cursor=pointer]:
+              - /url: /resources/grants
+              - text: All grants →
+        - generic [ref=f4e522]:
+          - paragraph [ref=f4e523]: Compliance
+          - paragraph [ref=f4e524]:
+            - link "NDAA 889" [ref=f4e525] [cursor=pointer]:
+              - /url: /resources/ndaa-section-889-camera-compliance
+            - link "HIPAA" [ref=f4e526] [cursor=pointer]:
+              - /url: /resources/hipaa-cameras-and-surveillance
+            - link "ISN" [ref=f4e527] [cursor=pointer]:
+              - /url: /resources/isn-certification-complete-guide
+            - link "OSHA" [ref=f4e528] [cursor=pointer]:
+              - /url: /use-cases/osha-workplace-safety-analytics
+      - generic [ref=f4e529]:
+        - generic [ref=f4e530]: © 2026 Tec-Tel Communications · Nationwide AI security integration
+        - navigation "Legal" [ref=f4e531]:
+          - link "About" [ref=f4e532] [cursor=pointer]:
+            - /url: /about
+          - link "Why Tec-Tel" [ref=f4e533] [cursor=pointer]:
+            - /url: /why-tec-tel
+          - link "Pricing" [ref=f4e534] [cursor=pointer]:
+            - /url: /pricing
+          - link "Partners" [ref=f4e535] [cursor=pointer]:
+            - /url: /partners
+          - link "Contact" [ref=f4e536] [cursor=pointer]:
+            - /url: /contact
+          - link "Remote Support" [ref=f4e537] [cursor=pointer]:
+            - /url: /remote-support
+          - link "Citations" [ref=f4e538] [cursor=pointer]:
+            - /url: /citations
+          - link "Privacy" [ref=f4e539] [cursor=pointer]:
+            - /url: /privacy
+          - link "SMS Terms" [ref=f4e540] [cursor=pointer]:
+            - /url: /sms-terms
+          - link "Terms" [ref=f4e541] [cursor=pointer]:
+            - /url: /terms
+  - region [aria-hidden]:
+    - generic [ref=f4e543]:
+      - link [ref=f4e544] [cursor=pointer]:
+        - /url: tel:8555770400
+        - text: Call now
+      - link [ref=f4e547] [cursor=pointer]:
+        - /url: /audit
+        - text: Book call
+      - button [ref=f4e550]

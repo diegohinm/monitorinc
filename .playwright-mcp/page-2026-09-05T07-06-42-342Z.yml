@@ -1,0 +1,210 @@
+- generic [active] [ref=f8e1]:
+  - banner:
+    - generic [ref=f8e2]:
+      - link "MONITORINC" [ref=f8e3] [cursor=pointer]:
+        - /url: "#inicio"
+      - link "Agendar Demo" [ref=f8e5] [cursor=pointer]:
+        - /url: "#contacto"
+      - button "Abrir menú" [ref=f8e6] [cursor=pointer]
+  - navigation:
+    - generic:
+      - list:
+        - listitem:
+          - link "Inicio":
+            - /url: "#inicio"
+        - listitem:
+          - link "Quiénes somos":
+            - /url: "#quienes-somos"
+        - listitem:
+          - link "Servicios":
+            - /url: "#servicios"
+        - listitem:
+          - link "Contacto":
+            - /url: "#contacto"
+  - main [ref=f8e11]:
+    - generic [ref=f8e12]:
+      - generic [ref=f8e13]:
+        - heading "Haz de cada espacio un lugar seguro." [level=1] [ref=f8e14]: Haz de cada espacioun lugar seguro.
+        - paragraph [ref=f8e15]: Distribuimos e integramos equipos de seguridad electrónica y comunicación
+        - link "Agendar Demo" [ref=f8e17] [cursor=pointer]:
+          - /url: https://wa.me/573138407090
+      - generic [ref=f8e19]:
+        - generic [ref=f8e20]: "Proveedores:"
+        - region "Partner logos" [ref=f8e22]:
+          - generic [ref=f8e23]:
+            - list [ref=f8e24]:
+              - listitem [ref=f8e25]: Samsung
+              - listitem [ref=f8e26]: Bosch
+              - listitem [ref=f8e27]: ZKTeco
+              - listitem [ref=f8e28]: Dahua Technology
+              - listitem [ref=f8e29]: Axis Communications
+              - listitem [ref=f8e30]: Hikvision
+              - listitem [ref=f8e31]: Paradox Security Systems
+            - list [aria-hidden] [ref=f8e32]:
+              - listitem [ref=f8e33]: Samsung
+              - listitem [ref=f8e34]: Bosch
+              - listitem [ref=f8e35]: ZKTeco
+              - listitem [ref=f8e36]: Dahua Technology
+              - listitem [ref=f8e37]: Axis Communications
+              - listitem [ref=f8e38]: Hikvision
+              - listitem [ref=f8e39]: Paradox Security Systems
+        - generic [ref=f8e40]:
+          - generic [ref=f8e41]: Atendemos a
+          - generic [ref=f8e42]: Hogares
+          - generic [ref=f8e43]: Empresas
+          - generic [ref=f8e44]: Fincas
+          - generic [ref=f8e45]: Instituciones
+        - link "Scroll down" [ref=f8e46] [cursor=pointer]:
+          - /url: "#quienes-somos"
+    - generic [ref=f8e49]:
+      - generic [ref=f8e50]: 01 — Quiénes somos
+      - heading "Quiénes somos" [level=2] [ref=f8e51]
+      - paragraph [ref=f8e52]: Distribuimos e integramos equipos de seguridad electrónica y de comunicación. Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales en ciudades, pueblos, corregimientos e incluso en ambientes hostiles y de difícil acceso.
+    - generic [ref=f8e54]:
+      - generic [ref=f8e55]:
+        - generic [ref=f8e56]:
+          - generic [ref=f8e57]: 02 — Servicios
+          - heading "Un portafolio completo para seguridad y monitoreo." [level=2] [ref=f8e58]
+        - paragraph [ref=f8e59]: Distribuimos e integramos equipos de seguridad electrónica y de comunicación. Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales en ciudades, pueblos, corregimientos e incluso en ambientes hostiles y de difícil acceso.
+      - generic [ref=f8e60]:
+        - article [ref=f8e61]:
+          - generic [ref=f8e62]:
+            - generic [ref=f8e63]: "01"
+            - generic [ref=f8e64]: SERVICIO
+          - generic [ref=f8e65]: Circuito cerrado de televisión (CCTV) y grabación
+          - paragraph [ref=f8e66]: Ofrecemos cámaras de seguridad y grabadores de video con tecnología IP y análoga, óptimos para combatir la inseguridad en cualquier ambiente, pérdida de elementos, control de personal y de procesos.
+        - article [ref=f8e67]:
+          - generic [ref=f8e68]:
+            - generic [ref=f8e69]: "02"
+            - generic [ref=f8e70]: SERVICIO
+          - generic [ref=f8e71]: Control de acceso
+          - paragraph [ref=f8e72]: Regulación y control para entrada y salida de personas y vehículos en diferentes instalaciones. Contamos con equipos que soportan desde tarjetas RFID y código de barras, hasta huellas dactilares y detección de rostros.
+        - article [ref=f8e73]:
+          - generic [ref=f8e74]:
+            - generic [ref=f8e75]: "03"
+            - generic [ref=f8e76]: SERVICIO
+          - generic [ref=f8e77]: Alarmas de intrusión
+          - paragraph [ref=f8e78]: Contamos con sistemas de alarmas alámbricas e inalámbricas que se adaptan a cualquier tipo de infraestructura para interior o exterior y con las últimas tecnologías de monitoreo remoto desde su celular.
+        - article [ref=f8e79]:
+          - generic [ref=f8e80]:
+            - generic [ref=f8e81]: "04"
+            - generic [ref=f8e82]: SERVICIO
+          - generic [ref=f8e83]: Seguridad perimetral
+          - paragraph [ref=f8e84]: Las cercas eléctricas y concertinas con alarmas sonoras y control de usuarios son soluciones de alto nivel de protección perimetral de las propiedades como fincas, conjuntos cerrados e instituciones educativas.
+        - article [ref=f8e85]:
+          - generic [ref=f8e86]:
+            - generic [ref=f8e87]: "05"
+            - generic [ref=f8e88]: SERVICIO
+          - generic [ref=f8e89]: Detección de incendios y alarmas de evacuación
+          - paragraph [ref=f8e90]: Diseñamos e implementamos sistemas de detección automática de incendios y audio evacuación para una reacción inmediata. Contamos con equipos profesionales regidos por las normas y requerimientos europeos.
+        - article [ref=f8e91]:
+          - generic [ref=f8e92]:
+            - generic [ref=f8e93]: "06"
+            - generic [ref=f8e94]: SERVICIO
+          - generic [ref=f8e95]: GPS (posicionamiento y rastreo)
+          - paragraph [ref=f8e96]: Equipos de alta seguridad para posicionamiento y rastreo de automóviles, motos y bicicletas. Con monitoreo vía GSM mediante mensajes de texto o internet.
+        - article [ref=f8e97]:
+          - generic [ref=f8e98]:
+            - generic [ref=f8e99]: "07"
+            - generic [ref=f8e100]: SERVICIO
+          - generic [ref=f8e101]: Automatización de puertas
+          - paragraph [ref=f8e102]: Automatizamos cualquier tipo de puerta utilizando motores de última generación para aperturas y cierres rápidos y seguros con controles inalámbricos y transmisión de última tecnología. Diseñamos puertas automáticas batientes, basculantes y corredizas.
+        - article [ref=f8e103]:
+          - generic [ref=f8e104]:
+            - generic [ref=f8e105]: "08"
+            - generic [ref=f8e106]: SERVICIO
+          - generic [ref=f8e107]: Domótica
+          - paragraph [ref=f8e108]: Hacemos de tu hogar un lugar inteligente con tecnología inalámbrica, brindándote confort, seguridad y control de cualquier espacio. Controla luces, temperatura, electrodomésticos y sensores de intrusión. Mantén comunicación en tiempo real con tu hogar desde cualquier parte del mundo, gestiona y ahorra energía.
+        - article [ref=f8e109]:
+          - generic [ref=f8e110]:
+            - generic [ref=f8e111]: "09"
+            - generic [ref=f8e112]: SERVICIO
+          - generic [ref=f8e113]: Citofonía y videocitofonía
+          - paragraph [ref=f8e114]: Ofrecemos sistemas en tecnología IP y análoga, con video o sin video y sin límites de número de usuario para casas, apartamentos, oficinas, empresas, etc.
+        - article [ref=f8e115]:
+          - generic [ref=f8e116]:
+            - generic [ref=f8e117]: "10"
+            - generic [ref=f8e118]: SERVICIO
+          - generic [ref=f8e119]: Drones
+          - paragraph [ref=f8e120]: Contamos con vehículos aéreos no tripulados para control de eventos, vigilancia rural y urbana, video y cartografía aérea en alta definición, inspección de construcciones, etc.
+        - article [ref=f8e121]:
+          - generic [ref=f8e122]:
+            - generic [ref=f8e123]: "11"
+            - generic [ref=f8e124]: SERVICIO
+          - generic [ref=f8e125]: Proyectos especiales
+          - paragraph [ref=f8e126]: Contamos con profesionales expertos en ingeniería electrónica y de telecomunicaciones para diseñar e implementar proyectos de alto nivel que requieran equipos y comunicaciones especiales en ciudades, pueblos, corregimientos e incluso en ambientes hostiles y de difícil acceso.
+    - generic [ref=f8e130]:
+      - generic [ref=f8e131]: Asesoría sin costo
+      - heading "Agenda una cita para asesorar tu proyecto." [level=2] [ref=f8e133]
+      - paragraph [ref=f8e134]: Cuéntanos qué necesitas y te ayudamos a elegir e integrar la solución adecuada para tu espacio, operación o infraestructura.
+      - generic [ref=f8e135]:
+        - link "Agendar Demo" [ref=f8e136] [cursor=pointer]:
+          - /url: https://wa.me/573138407090
+        - link "Agendar Demo" [ref=f8e137] [cursor=pointer]:
+          - /url: mailto:info@monitorinc.com.co
+    - generic [ref=f8e140]:
+      - generic [ref=f8e141]:
+        - generic [ref=f8e142]: 05 — Contacto
+        - heading "Estamos listos para hacer de cada lugar un espacio más seguro." [level=2] [ref=f8e143]
+        - paragraph [ref=f8e144]: Agenda una cita para asesorar tu proyecto
+        - generic [ref=f8e145]:
+          - generic [ref=f8e146]:
+            - generic [ref=f8e147]: Celular 1
+            - link "313 8407090" [ref=f8e148] [cursor=pointer]:
+              - /url: https://wa.me/573138407090
+          - generic [ref=f8e149]:
+            - generic [ref=f8e150]: Celular 2
+            - link "321 3002548" [ref=f8e151] [cursor=pointer]:
+              - /url: https://wa.me/573213002548
+          - generic [ref=f8e152]:
+            - generic [ref=f8e153]: Correo principal
+            - link "info@monitorinc.com.co" [ref=f8e154] [cursor=pointer]:
+              - /url: mailto:info@monitorinc.com.co
+          - generic [ref=f8e155]:
+            - generic [ref=f8e156]: Correo adicional
+            - link "ing.jimenez@outlook.com" [ref=f8e157] [cursor=pointer]:
+              - /url: mailto:ing.jimenez@outlook.com
+          - generic [ref=f8e158]:
+            - generic [ref=f8e159]: Correo adicional
+            - link "luquesarmiento@gmail.com" [ref=f8e160] [cursor=pointer]:
+              - /url: mailto:luquesarmiento@gmail.com
+          - generic [ref=f8e161]:
+            - generic [ref=f8e162]: Sitio web
+            - link "www.monitorinc.com.co" [ref=f8e163] [cursor=pointer]:
+              - /url: https://www.monitorinc.com.co
+      - generic [ref=f8e164]:
+        - generic [ref=f8e165]:
+          - generic [ref=f8e166]: Resumen de capacidades
+          - generic [ref=f8e167]:
+            - generic [ref=f8e168]:
+              - generic [ref=f8e169]:
+                - generic [ref=f8e170]: Seguridad
+                - generic [ref=f8e171]: ▸
+              - paragraph [ref=f8e172]: CCTV · Alarmas · Perimetral · Incendios
+            - generic [ref=f8e173]:
+              - generic [ref=f8e174]:
+                - generic [ref=f8e175]: Acceso
+                - generic [ref=f8e176]: ▸
+              - paragraph [ref=f8e177]: RFID · Biometría · Gestión vehicular
+            - generic [ref=f8e178]:
+              - generic [ref=f8e179]:
+                - generic [ref=f8e180]: Automatización
+                - generic [ref=f8e181]: ▸
+              - paragraph [ref=f8e182]: Puertas automáticas · Domótica
+            - generic [ref=f8e183]:
+              - generic [ref=f8e184]:
+                - generic [ref=f8e185]: Monitoreo
+                - generic [ref=f8e186]: ▸
+              - paragraph [ref=f8e187]: GPS · Drones · Comunicaciones especiales
+        - generic [ref=f8e188]:
+          - link "Agendar Demo" [ref=f8e189] [cursor=pointer]:
+            - /url: https://wa.me/573138407090
+          - link "Agendar Demo" [ref=f8e190] [cursor=pointer]:
+            - /url: mailto:info@monitorinc.com.co
+  - contentinfo [ref=f8e191]:
+    - generic [ref=f8e192]:
+      - generic [ref=f8e193]:
+        - generic [ref=f8e194]: MONITORINC
+        - generic [ref=f8e195]: Distribuimos e integramos equipos de seguridad electrónica y comunicación.
+      - navigation
+      - generic [ref=f8e196]: © 2026 MONITORINC

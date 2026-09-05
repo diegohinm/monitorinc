@@ -1,48 +1,58 @@
-'use client'
-
 import type { CSSProperties } from 'react'
 
 /**
- * Reusable "Agendar Demo" CTA button — Maze-style pill with WhatsApp icon.
+ * Reusable MONITORINC CTA button.
  *
- * Uses the existing `.a-button` / `.a-button--primary` / `.a-button--secondary`
- * CSS classes from globals.css. Pass `variant` to choose the style.
+ * Renders the editorial `.btn` / `.btn--primary` / `.btn--secondary`
+ * classes from globals.css. Defaults to the primary "Agenda una cita"
+ * call to action pointing at the on-page consultation form.
  */
 export function AgendarDemoButton({
-  href = 'https://wa.me/573138407090',
-  label = 'Agendar Demo',
+  href = '#contacto',
+  label = 'Agenda una cita',
   variant = 'primary',
+  arrow = true,
   external,
   className,
   style,
 }: {
   href?: string
   label?: string
-  /** 'primary' (default) or 'secondary' */
   variant?: 'primary' | 'secondary'
-  /** Force target="_blank". Defaults to true for http(s) links. */
+  arrow?: boolean
   external?: boolean
   className?: string
   style?: CSSProperties
 }) {
-  const isExternal = external ?? href.startsWith('http')
+  const isExternal = external ?? /^https?:/.test(href)
 
   return (
     <a
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noreferrer' : undefined}
-      className={`a-button a-button--${variant}${className ? ` ${className}` : ''}`}
+      className={`btn btn--${variant}${className ? ` ${className}` : ''}`}
       style={style}
     >
-      <img
-        src="/whatsapp-icon-black2.svg"
-        alt=""
-        width={16}
-        height={16}
-        className="a-button__wsp-icon"
-      />
       {label}
+      {arrow && (
+        <svg
+          className="btn__arrow"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M3 8h9M9 5l3 3-3 3"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
     </a>
   )
 }
