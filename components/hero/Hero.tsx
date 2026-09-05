@@ -1,4 +1,5 @@
 import { AgendarDemoButton } from '../ui/AgendarDemoButton'
+import { HeroVideoBackground } from './HeroVideoBackground'
 
 /**
  * MONITORINC hero — editorial commercial dark section.
@@ -15,6 +16,8 @@ const CHIPS = [
 export function Hero() {
   return (
     <section id="inicio" className="hero on-dark">
+      <HeroVideoBackground transitionMs={650} />
+
       <div className="container hero__inner">
         <div className="hero__content">
           <span className="eyebrow hero__eyebrow">Integrador de seguridad electrónica</span>

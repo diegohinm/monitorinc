@@ -204,13 +204,18 @@ h1, h2, h3, h4 {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+  flex: 0 0 auto;
 }
+/* Height drives the size; width:auto keeps the SVG's own aspect ratio. */
+.brand__logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  transition: opacity 0.18s var(--ease);
+}
+.brand:hover .brand__logo { opacity: 0.92; }
+
+/* Still used by the footer lockup. */
 .brand__mark {
   width: 12px; height: 12px;
   border-radius: 3px;
@@ -279,6 +284,95 @@ h1, h2, h3, h4 {
 }
 .mobile-menu__cta { margin-top: 28px; }
 
+/* ─── Proveedores marquee ────────────────────────────────────── */
+.suppliers {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  --suppliers-gap: 72px;
+  --suppliers-duration: 34s;
+  --brand-scale: 1;
+}
+.suppliers__inner {
+  min-height: 112px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+.suppliers__label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Masked window: the logos dissolve at both edges instead of being clipped. */
+.suppliers__viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+.suppliers__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: suppliers-marquee var(--suppliers-duration) linear infinite;
+}
+/* The group's own padding-right supplies the seam gap, so one group is
+   exactly half the track and -50% lands perfectly on the repeat. */
+.suppliers__group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--suppliers-gap);
+  padding: 0 var(--suppliers-gap) 0 0;
+  margin: 0;
+  list-style: none;
+}
+.suppliers__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  flex: 0 0 auto;
+}
+.suppliers__logo {
+  height: calc(var(--logo-h, 26) * 1px * var(--brand-scale));
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.62;
+  transition: opacity 220ms ease, filter 220ms ease;
+  user-select: none;
+}
+.suppliers__logo:hover { opacity: 1; filter: grayscale(0); }
+
+/* Brands with no publicly available vector logo: neutral wordmark, never an
+   invented mark. Sized to sit at the same optical weight as the real logos. */
+.suppliers__wordmark {
+  font-family: var(--font-sans);
+  font-size: calc(15px * var(--brand-scale));
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--ink-soft);
+  opacity: 0.62;
+  transition: opacity 220ms ease;
+}
+.suppliers__wordmark:hover { opacity: 1; }
+
+@keyframes suppliers-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
 /* ─── Hero ───────────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -298,15 +392,68 @@ h1, h2, h3, h4 {
   content: "";
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(120% 100% at 70% 0%, #000 30%, transparent 78%);
-  z-index: 0;
+  opacity: 0.85;
+  pointer-events: none;
+  /* above the video background, below the hero content */
+  z-index: 3;
+}
+
+/* ─── Hero video background (video1 ⇄ video2 crossfade) ──────── */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #111311;          /* fallback if the videos never load */
+  pointer-events: none;
+}
+.hero-video__el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0;
+  transition: opacity var(--hero-video-fade, 650ms) ease-in-out;
+  pointer-events: none;
+  border: 0;
+}
+.hero-video__el--active { opacity: 1; }
+.hero-video__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-video__overlay--flat { background: rgba(8, 10, 10, 0.16); }
+.hero-video__overlay--h {
+  background: linear-gradient(
+    90deg,
+    rgba(8,10,10,0.58) 0%,
+    rgba(8,10,10,0.34) 40%,
+    rgba(8,10,10,0.05) 70%,
+    rgba(8,10,10,0.16) 100%
+  );
+}
+.hero-video__overlay--v {
+  background: linear-gradient(
+    180deg,
+    rgba(8,10,10,0.42) 0%,
+    rgba(8,10,10,0.00) 26%,
+    rgba(8,10,10,0.00) 66%,
+    rgba(8,10,10,0.52) 100%
+  );
 }
 .hero__inner {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+  /* Soft shadow keeps the copy readable over a bright video without
+     forcing a heavy flat overlay that would hide the footage. */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.32), 0 6px 26px rgba(0,0,0,0.42);
   padding-top: clamp(72px, 12vw, 130px);
   padding-bottom: clamp(56px, 9vw, 104px);
   display: grid;
@@ -343,7 +490,7 @@ h1, h2, h3, h4 {
 .hero__panel {
   border: 1px solid var(--dark-border);
   border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.03);
+  background: rgba(10,12,12,0.42);
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -366,7 +513,7 @@ h1, h2, h3, h4 {
   padding: 12px 14px;
   border: 1px solid var(--dark-border);
   border-radius: 8px;
-  background: rgba(255,255,255,0.02);
+  background: rgba(10,12,12,0.34);
 }
 .chip__label { font-size: 14px; font-weight: 500; color: var(--dark-text); }
 .chip__status { font-size: 12px; color: var(--green); letter-spacing: 0.04em; }
@@ -766,6 +913,16 @@ h1, h2, h3, h4 {
 
 @media (max-width: 640px) {
   :root { --pad: 20px; --header-h: 66px; }
+  .brand__logo { height: 30px; }
+  .hero-video__overlay--flat { background: rgba(8, 10, 10, 0.28); }
+  .hero-video__overlay--h {
+    background: linear-gradient(
+      90deg,
+      rgba(8,10,10,0.40) 0%,
+      rgba(8,10,10,0.30) 55%,
+      rgba(8,10,10,0.34) 100%
+    );
+  }
   body { font-size: 16px; }
   .svc-row {
     grid-template-columns: 40px 1fr;
@@ -787,6 +944,48 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
+  .hero-video__el { transition: none; }
   .btn:hover { transform: none; }
   .proj-card:hover { transform: none; }
+}
+
+/* ─── Proveedores marquee — responsive ───────────────────────── */
+@media (max-width: 1024px) {
+  .suppliers {
+    --suppliers-gap: 56px;
+    --suppliers-duration: 30s;
+    --brand-scale: 0.88;
+  }
+  .suppliers__inner { gap: 32px; min-height: 104px; }
+}
+
+@media (max-width: 640px) {
+  .suppliers {
+    --suppliers-gap: 46px;
+    --suppliers-duration: 27s;
+    --brand-scale: 0.78;
+  }
+  .suppliers__inner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    min-height: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .suppliers__item { height: 34px; }
+}
+
+/* No infinite motion for users who ask for less of it: the strip becomes a
+   plain, fully readable row they can scroll themselves. */
+@media (prefers-reduced-motion: reduce) {
+  .suppliers__track { animation: none; }
+  .suppliers__viewport {
+    overflow-x: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+    scrollbar-width: thin;
+  }
+  .suppliers__group[aria-hidden="true"] { display: none; }
+  .suppliers__group { padding-right: 0; }
+  .suppliers__logo { transition: none; }
 }

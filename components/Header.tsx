@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { AgendarDemoButton } from './ui/AgendarDemoButton'
 
 const NAV_LINKS = [
@@ -33,8 +34,20 @@ export function Header() {
     <header className="header">
       <div className="container header__inner">
         <a href="#inicio" className="brand" onClick={close} aria-label="MONITORINC — inicio">
-          <span className="brand__mark" aria-hidden="true" />
-          MONITORINC
+          {/* `unoptimized` serves the SVG straight from /public: the image
+              optimizer refuses SVG unless `dangerouslyAllowSVG` is enabled
+              globally, and a vector logo gains nothing from raster resizing.
+              Height comes from CSS with width:auto, so the intrinsic ratio
+              always wins and the mark can never be stretched. */}
+          <Image
+            src="/logos/monitorinc-logo-horizontal.svg"
+            alt="MONITORINC"
+            width={168}
+            height={36}
+            priority
+            unoptimized
+            className="brand__logo"
+          />
         </a>
 
         <nav className="nav" aria-label="Principal">

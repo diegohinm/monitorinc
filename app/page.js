@@ -3,6 +3,7 @@
    Content sourced only from MONITORINC (see PdfContent.js).
    ───────────────────────────────────────────────────────────── */
 import { Hero } from '../components/hero/Hero'
+import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { Header } from '../components/Header'
 import { AgendarDemoButton } from '../components/ui/AgendarDemoButton'
 import { ConsultationForm } from '../components/site/ConsultationForm'
@@ -10,7 +11,6 @@ import { Faq } from '../components/site/Faq'
 import {
   PDF_ABOUT,
   PDF_SERVICES,
-  PDF_BRANDS,
   PDF_CONTACT,
 } from './components/PdfContent'
 
@@ -86,17 +86,8 @@ export default function Home() {
         {/* ── HERO ─────────────────────────────────────────── */}
         <Hero />
 
-        {/* ── PROVEEDORES strip ────────────────────────────── */}
-        <div className="strip">
-          <div className="container strip__inner">
-            <span className="strip__label">Proveedores</span>
-            <div className="strip__items">
-              {PDF_BRANDS.list.map((b) => (
-                <span key={b} className="strip__name">{b}</span>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* ── PROVEEDORES marquee ──────────────────────────── */}
+        <SuppliersMarquee />
 
         {/* ── ATENDEMOS A strip ────────────────────────────── */}
         <div className="strip strip--sectors">
