@@ -19,6 +19,23 @@ import { buildWhatsAppUrl } from '../../lib/whatsapp'
 
 const FORM_NAME = 'monitorinc-contact'
 
+/**
+ * Netlify's form handler lives on the static file, not on `/`.
+ *
+ * Verified against production:
+ *   POST /__forms.html  form-name=monitorinc-contact      -> 200 (accepted)
+ *   POST /__forms.html  form-name=<unknown>               -> 404 (validated)
+ *   POST /              form-name=<unknown>               -> 200 (just the page)
+ *
+ * That last line is the trap: posting to `/` always answers 200 because Next
+ * simply renders the page, so submissions would be dropped while the UI still
+ * reported success. Keep this pointing at the static file.
+ *
+ * `next dev` answers 405 here — it serves files in `public/` over GET only.
+ * That is expected locally and says nothing about production.
+ */
+const FORM_ENDPOINT = '/__forms.html'
+
 const PROJECT_TYPES = [
   'Hogar / vivienda',
   'Empresa / oficina',
@@ -62,7 +79,7 @@ export function ConsultationForm() {
       const body = new URLSearchParams()
       data.forEach((value, key) => body.append(key, String(value)))
 
-      const res = await fetch('/__forms.html', {
+      const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body.toString(),
