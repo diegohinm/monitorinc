@@ -1,5 +1,5 @@
 import { CONTACT } from '../../config/contact'
-import { telHref } from '../../lib/whatsapp'
+import { telHref, mailtoHref } from '../../lib/whatsapp'
 import { AgendarDemoButton } from '../ui/AgendarDemoButton'
 import { PDF_ABOUT } from '../../app/components/PdfContent'
 
@@ -23,7 +23,7 @@ export function FinalCta() {
           <div className="final-cta__actions">
             <AgendarDemoButton href="/contacto" label="Agenda una cita" />
             <AgendarDemoButton
-              href={`mailto:${CONTACT.emailPrimary}`}
+              href={mailtoHref()}
               label="Escríbenos"
               variant="secondary"
               arrow={false}
@@ -32,11 +32,13 @@ export function FinalCta() {
         </div>
 
         <div className="final-cta__contact">
-          <span className="k">Teléfonos</span>
+          <span className="k">{CONTACT.phoneSecondary ? 'Teléfonos' : 'Teléfono'}</span>
           <a href={telHref(CONTACT.whatsappPrimary.digits)}>{CONTACT.whatsappPrimary.label}</a>
-          <a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a>
+          {CONTACT.phoneSecondary && (
+            <a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a>
+          )}
           <span className="k">Correo</span>
-          <a href={`mailto:${CONTACT.emailPrimary}`}>{CONTACT.emailPrimary}</a>
+          <a href={mailtoHref()}>{CONTACT.emailPrimary}</a>
           <span className="k">Sitio web</span>
           <a href={CONTACT.website.url} target="_blank" rel="noreferrer">{CONTACT.website.label}</a>
         </div>

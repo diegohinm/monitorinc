@@ -15,3 +15,11 @@ export function buildWhatsAppUrl(message: string, digits: string = CONTACT.whats
 export function telHref(digits: string) {
   return `tel:+${digits}`
 }
+
+/**
+ * `mailto:` link for MONITORINC's address. Defaults to CONTACT.emailPrimary so
+ * the address itself is never retyped in a component.
+ */
+export function mailtoHref(email: string = CONTACT.emailPrimary) {
+  return `mailto:${email}`
+}

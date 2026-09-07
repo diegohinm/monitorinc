@@ -1,5 +1,5 @@
 import { CONTACT } from '../../config/contact'
-import { telHref, buildWhatsAppUrl } from '../../lib/whatsapp'
+import { telHref, mailtoHref, buildWhatsAppUrl } from '../../lib/whatsapp'
 import { ConsultationForm } from '../../components/site/ConsultationForm'
 import { AgendarDemoButton } from '../../components/ui/AgendarDemoButton'
 
@@ -19,15 +19,17 @@ const CHANNELS = [
     v: CONTACT.whatsappPrimary.label,
     href: telHref(CONTACT.whatsappPrimary.digits),
   },
-  {
-    k: 'Teléfono',
-    v: CONTACT.phoneSecondary.label,
-    href: telHref(CONTACT.phoneSecondary.digits),
-  },
+  ...(CONTACT.phoneSecondary
+    ? [{
+        k: 'Teléfono',
+        v: CONTACT.phoneSecondary.label,
+        href: telHref(CONTACT.phoneSecondary.digits),
+      }]
+    : []),
   {
     k: 'Correo',
     v: CONTACT.emailPrimary,
-    href: `mailto:${CONTACT.emailPrimary}`,
+    href: mailtoHref(),
   },
   {
     k: 'Sitio web',

@@ -4,9 +4,7 @@ export const PDF_HERO = {
   title: 'Distribuimos e integramos equipos de seguridad electrónica y de comunicación',
   cta: 'Agenda una cita para asesorar tu proyecto',
   claim: 'Somos los mejores en seguridad electrónica',
-  phones: ['313 8407090', '321 3002548'],
-  emails: ['Info@monitorinc.com.co', 'luquesarmiento@gmail.com', 'ing.jimenez@outlook.com'],
-  website: 'www.monitorinc.com.co',
+  // Contact details live in config/contact.ts — the single source of truth.
 }
 
 export const PDF_ABOUT = {
@@ -92,7 +90,5 @@ export const PDF_BRANDS = {
 export const PDF_CONTACT = {
   title: 'Contacto',
   cta: 'Agenda una cita para asesorar tu proyecto',
-  phones: ['313 8407090', '321 3002548'],
-  emails: ['Info@monitorinc.com.co', 'luquesarmiento@gmail.com', 'ing.jimenez@outlook.com'],
-  website: 'www.monitorinc.com.co',
+  // Contact details live in config/contact.ts — the single source of truth.
 }

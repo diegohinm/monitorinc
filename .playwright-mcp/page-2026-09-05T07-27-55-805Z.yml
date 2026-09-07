@@ -141,7 +141,7 @@
         - link "Agendar Demo" [ref=e136] [cursor=pointer]:
           - /url: https://wa.me/573138407090
         - link "Agendar Demo" [ref=e137] [cursor=pointer]:
-          - /url: mailto:info@monitorinc.com.co
+          - /url: mailto:gerencia@monitorinc.co
     - generic [ref=e140]:
       - generic [ref=e141]:
         - generic [ref=e142]: 05 — Contacto
@@ -158,8 +158,8 @@
               - /url: https://wa.me/573213002548
           - generic [ref=e152]:
             - generic [ref=e153]: Correo principal
-            - link "info@monitorinc.com.co" [ref=e154] [cursor=pointer]:
-              - /url: mailto:info@monitorinc.com.co
+            - link "gerencia@monitorinc.co" [ref=e154] [cursor=pointer]:
+              - /url: mailto:gerencia@monitorinc.co
           - generic [ref=e155]:
             - generic [ref=e156]: Correo adicional
             - link "ing.jimenez@outlook.com" [ref=e157] [cursor=pointer]:
@@ -200,7 +200,7 @@
           - link "Agendar Demo" [ref=e189] [cursor=pointer]:
             - /url: https://wa.me/573138407090
           - link "Agendar Demo" [ref=e190] [cursor=pointer]:
-            - /url: mailto:info@monitorinc.com.co
+            - /url: mailto:gerencia@monitorinc.co
   - contentinfo [ref=e191]:
     - generic [ref=e192]:
       - generic [ref=e193]:
@@ -218,7 +218,7 @@
             - link "Contacto" [ref=e203] [cursor=pointer]:
               - /url: "#contacto"
           - listitem [ref=e204]:
-            - link "info@monitorinc.com.co" [ref=e205] [cursor=pointer]:
-              - /url: mailto:info@monitorinc.com.co
+            - link "gerencia@monitorinc.co" [ref=e205] [cursor=pointer]:
+              - /url: mailto:gerencia@monitorinc.co
       - generic [ref=e206]: © 2026 MONITORINC
   - alert [ref=e207]

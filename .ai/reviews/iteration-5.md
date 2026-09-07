@@ -7,7 +7,7 @@ VISUAL SUMMARY:
 The complete page remains polished and recognizably inspired by Tec-Tel’s editorial design language without copying its assets. Header, hero, prominent consultation form, supplier/sector strips, §01–§03, FAQ, final CTA, and footer maintain strong hierarchy, balanced light/dark fields, compact content density, and restrained MONITORINC branding.
 
 CONTENT INTEGRITY:  
-PASS. Live MONITORINC confirms the displayed services, supplier names, sectors, phone numbers, WhatsApp destinations, and `info@monitorinc.com.co`. No Tec-Tel facts, metrics, customers, contact details, or USA claims were found.
+PASS. Live MONITORINC confirms the displayed services, supplier names, sectors, phone numbers, WhatsApp destinations, and `gerencia@monitorinc.co`. No Tec-Tel facts, metrics, customers, contact details, or USA claims were found.
 
 FUNCTIONAL SUMMARY:  
 CTA and navigation anchors resolve correctly. FAQ controls expand and reveal their associated regions. Blank submissions and malformed email addresses are blocked by native validation; required fields remain Nombre, Correo, and Tipo de proyecto. WhatsApp destinations match MONITORINC’s live contact information.

@@ -3,7 +3,7 @@
    Content sourced only from MONITORINC (see PdfContent.js).
    ───────────────────────────────────────────────────────────── */
 import { CONTACT } from '../config/contact'
-import { telHref } from '../lib/whatsapp'
+import { telHref, mailtoHref } from '../lib/whatsapp'
 import { Hero } from '../components/hero/Hero'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
@@ -49,8 +49,10 @@ function serviceNumber(groupIdx, itemIdx) {
 
 const CONTACT_LINES = [
   { k: 'Teléfono', v: CONTACT.whatsappPrimary.label, href: telHref(CONTACT.whatsappPrimary.digits) },
-  { k: 'Teléfono', v: CONTACT.phoneSecondary.label, href: telHref(CONTACT.phoneSecondary.digits) },
-  { k: 'Correo', v: CONTACT.emailPrimary, href: `mailto:${CONTACT.emailPrimary}` },
+  ...(CONTACT.phoneSecondary
+    ? [{ k: 'Teléfono', v: CONTACT.phoneSecondary.label, href: telHref(CONTACT.phoneSecondary.digits) }]
+    : []),
+  { k: 'Correo', v: CONTACT.emailPrimary, href: mailtoHref() },
   { k: 'Web', v: CONTACT.website.label, href: CONTACT.website.url, ext: true },
 ]
 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { CONTACT } from '../../config/contact'
-import { telHref } from '../../lib/whatsapp'
+import { telHref, mailtoHref } from '../../lib/whatsapp'
 import { SECTORS } from '../../content/site'
 
 /**
@@ -122,8 +122,10 @@ export function SiteFooter() {
             <h4>Contacto</h4>
             <ul>
               <li><a href={telHref(CONTACT.whatsappPrimary.digits)}>{CONTACT.whatsappPrimary.label}</a></li>
-              <li><a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a></li>
-              <li><a href={`mailto:${CONTACT.emailPrimary}`}>{CONTACT.emailPrimary}</a></li>
+              {CONTACT.phoneSecondary && (
+                <li><a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a></li>
+              )}
+              <li><a href={mailtoHref()}>{CONTACT.emailPrimary}</a></li>
               <li><a href={CONTACT.website.url} target="_blank" rel="noreferrer">{CONTACT.website.label}</a></li>
             </ul>
           </div>

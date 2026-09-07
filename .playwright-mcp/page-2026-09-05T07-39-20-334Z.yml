@@ -77,9 +77,9 @@
               - strong [ref=f2e65]: "Teléfono:"
               - text: 321 3002548
             - link [ref=f2e66] [cursor=pointer]:
-              - /url: mailto:info@monitorinc.com.co
+              - /url: mailto:gerencia@monitorinc.co
               - strong [ref=f2e67]: "Correo:"
-              - text: info@monitorinc.com.co
+              - text: gerencia@monitorinc.co
             - link [ref=f2e68] [cursor=pointer]:
               - /url: https://www.monitorinc.com.co
               - strong [ref=f2e69]: "Web:"
@@ -114,8 +114,8 @@
             - textbox "Mensaje" [ref=f2e90]:
               - /placeholder: Cuéntanos qué espacio necesitas proteger y qué solución estás buscando.
           - button "Solicitar asesoría" [active] [ref=f2e91] [cursor=pointer]
-          - paragraph [ref=f2e94]: Al enviar se abrirá tu correo con los datos listos para enviarnos a info@monitorinc.com.co. También puedes escribirnos directamente por WhatsApp.
-          - status [ref=f2e329]: Abrimos tu cliente de correo con la solicitud. Si no se abrió, escríbenos a info@monitorinc.com.co.
+          - paragraph [ref=f2e94]: Al enviar se abrirá tu correo con los datos listos para enviarnos a gerencia@monitorinc.co. También puedes escribirnos directamente por WhatsApp.
+          - status [ref=f2e329]: Abrimos tu cliente de correo con la solicitud. Si no se abrió, escríbenos a gerencia@monitorinc.co.
     - region [ref=f2e95]:
       - generic [ref=f2e96]:
         - generic [ref=f2e97]:
@@ -278,7 +278,7 @@
             - link "Agenda una cita" [ref=f2e256] [cursor=pointer]:
               - /url: "#contacto"
             - link "Escríbenos" [ref=f2e259] [cursor=pointer]:
-              - /url: mailto:info@monitorinc.com.co
+              - /url: mailto:gerencia@monitorinc.co
         - generic [ref=f2e260]:
           - generic [ref=f2e261]: Teléfonos
           - link "313 8407090" [ref=f2e262] [cursor=pointer]:
@@ -286,8 +286,8 @@
           - link "321 3002548" [ref=f2e263] [cursor=pointer]:
             - /url: https://wa.me/573213002548
           - generic [ref=f2e264]: Correo
-          - link "info@monitorinc.com.co" [ref=f2e265] [cursor=pointer]:
-            - /url: mailto:info@monitorinc.com.co
+          - link "gerencia@monitorinc.co" [ref=f2e265] [cursor=pointer]:
+            - /url: mailto:gerencia@monitorinc.co
           - generic [ref=f2e266]: Sitio web
           - link "www.monitorinc.com.co" [ref=f2e267] [cursor=pointer]:
             - /url: https://www.monitorinc.com.co
@@ -343,8 +343,8 @@
               - link "321 3002548" [ref=f2e307] [cursor=pointer]:
                 - /url: https://wa.me/573213002548
             - listitem [ref=f2e308]:
-              - link "info@monitorinc.com.co" [ref=f2e309] [cursor=pointer]:
-                - /url: mailto:info@monitorinc.com.co
+              - link "gerencia@monitorinc.co" [ref=f2e309] [cursor=pointer]:
+                - /url: mailto:gerencia@monitorinc.co
             - listitem [ref=f2e310]:
               - link "www.monitorinc.com.co" [ref=f2e311] [cursor=pointer]:
                 - /url: https://www.monitorinc.com.co

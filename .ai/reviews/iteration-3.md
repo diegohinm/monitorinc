@@ -26,7 +26,7 @@ OPEN FINDINGS:
 - Severity: P1
 - Area: Consultation form
 - Region: Near-hero “Planifica tu sistema de seguridad” form
-- Evidence: Submitting the untouched form launched `mailto:info@monitorinc.com.co` with blank values. Both required fields simultaneously reported `valid: false` and “Completa este campo,” but submission still proceeded. The component uses `noValidate`, calls `preventDefault()`, constructs the email without checking validity, and then renders its opened-email status.
+- Evidence: Submitting the untouched form launched `mailto:gerencia@monitorinc.co` with blank values. Both required fields simultaneously reported `valid: false` and “Completa este campo,” but submission still proceeded. The component uses `noValidate`, calls `preventDefault()`, constructs the email without checking validity, and then renders its opened-email status.
 - Reference behavior: A consultation form must reject incomplete required data before beginning its transparent submission action.
 - Current behavior: Empty required fields do not block an empty email draft or the success-like status.
 - Concrete instruction for Claude: Remove `noValidate` and allow native constraint validation, or call `e.currentTarget.reportValidity()` and return before creating the `mailto` when invalid. Only set `sent` after valid data begins the email action. Consider requiring project type if it is necessary to qualify a request.

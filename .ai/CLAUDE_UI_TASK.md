@@ -76,7 +76,7 @@ CTA:
 Contact:
 313 8407090
 321 3002548
-info@monitorinc.com.co
+gerencia@monitorinc.co
 ing.jimenez@outlook.com
 luquesarmiento@gmail.com
 www.monitorinc.com.co

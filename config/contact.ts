@@ -9,18 +9,36 @@
  * Deliberately a plain TS module rather than env vars: these are public
  * details, and keeping them typed and in-repo avoids a deploy-config step.
  */
-export const CONTACT = {
+type PhoneNumber = {
+  /** Shown to the user. */
+  label: string
+  /** E.164 payload for wa.me / tel: links — no +, no spaces. */
+  digits: string
+}
+
+type ContactConfig = {
+  whatsappPrimary: PhoneNumber
+  /**
+   * Optional. Comment the entry out (or delete it) and it disappears from the
+   * whole site: every consumer guards on it, so nothing breaks.
+   */
+  phoneSecondary?: PhoneNumber
+  emailPrimary: string
+  website: { label: string; url: string }
+}
+
+export const CONTACT: ContactConfig = {
   whatsappPrimary: {
-    label: '+57 313 840 7090',
-    digits: '573138407090',
-  },
-  phoneSecondary: {
-    label: '+57 321 300 2548',
+    label: '+57 321 3002548',
     digits: '573213002548',
   },
-  emailPrimary: 'info@monitorinc.com.co',
+  // phoneSecondary: {
+  //   label: '+57 321 300 2548',
+  //   digits: '573213002548',
+  // },
+  emailPrimary: 'gerencia@monitorinc.co',
   website: {
     label: 'www.monitorinc.com.co',
     url: 'https://www.monitorinc.com.co',
   },
-} as const
+}
