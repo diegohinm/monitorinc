@@ -34,9 +34,9 @@ export const CONTACT: ContactConfig = {
   },
   // phoneSecondary: {
   //   label: '+57 321 300 2548',
-  //   digits: '573213002548',
+  //   digits: '573213002548',  
   // },
-  emailPrimary: 'gerencia@monitorinc.co',
+  emailPrimary: 'dfhincapiem@gmail.com',
   website: {
     label: 'www.monitorinc.com.co',
     url: 'https://www.monitorinc.com.co',
