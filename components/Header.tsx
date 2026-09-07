@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { AgendarDemoButton } from './ui/AgendarDemoButton'
 
 const NAV_LINKS = [
-  { href: '/#soluciones', label: 'Soluciones' },
+  { href: '/', label: 'Home' },
   { href: '/sectores', label: 'Sectores' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/nosotros', label: 'Nosotros' },
@@ -18,7 +18,8 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const close = useCallback(() => setMenuOpen(false), [])
   const pathname = usePathname()
-  // Only the real routes get an active state; "/#soluciones" is a Home anchor.
+  // Active state is driven by pathname only, so a hash such as
+  // /proyectos#soluciones still marks "Proyectos", never "Home".
   const isActive = (href: string) => !href.includes('#') && pathname === href
 
   // Close menu when viewport grows past the mobile breakpoint

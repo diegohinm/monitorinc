@@ -44,23 +44,13 @@ const FOCUS = [
 export default function NosotrosPage() {
   return (
     <main>
-      <section className="section page-intro">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">MONITORINC</span>
-            <h1 className="h2" style={{ marginTop: 16 }}>
-              Seguridad electrónica e integración <em>tecnológica.</em>
-            </h1>
-            <p className="lede" style={{ marginTop: 18 }}>{PDF_ABOUT.body}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--tight" aria-labelledby="enfoque-title">
+      {/* The corporate statement now opens Home; this existing heading is
+          promoted to h1 so the page still has exactly one. */}
+      <section className="section page-intro" aria-labelledby="enfoque-title">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow eyebrow--num">{PDF_ABOUT.title}</span>
-            <h2 id="enfoque-title" className="h2">Cómo trabajamos</h2>
+            <h1 id="enfoque-title" className="h2">Cómo trabajamos</h1>
           </div>
           <div className="svc-group">
             {FOCUS.map((f, i) => (

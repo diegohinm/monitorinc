@@ -1,7 +1,6 @@
 import { PROJECTS } from '../../content/site'
-import { PDF_SERVICES } from '../components/PdfContent'
+import { SolutionsAccordion } from '../../components/home/SolutionsAccordion'
 import { FinalCta } from '../../components/site/FinalCta'
-import { AgendarDemoButton } from '../../components/ui/AgendarDemoButton'
 
 export const metadata = {
   title: 'MONITORINC | Proyectos especiales de seguridad electrónica',
@@ -9,16 +8,13 @@ export const metadata = {
     'Ingeniería electrónica y de telecomunicaciones para proyectos que requieren equipos y comunicaciones especiales, en ciudades, pueblos, corregimientos y ambientes de difícil acceso.',
 }
 
-/* Technologies MONITORINC already lists as part of its own offering. */
-const INTEGRABLE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 export default function ProyectosPage() {
   return (
     <main>
       <section className="section page-intro">
         <div className="container">
           <div className="section-head">
-            <span className="eyebrow eyebrow--num">Proyectos especiales</span>
+            <span className="eyebrow eyebrow--num">03 — Proyectos especiales</span>
             <h1 className="h2" style={{ marginTop: 16 }}>
               Ingeniería para proyectos que exigen más que una{' '}
               <em>instalación estándar.</em>
@@ -62,34 +58,8 @@ export default function ProyectosPage() {
         </div>
       </section>
 
-      <section className="section section--tight" aria-labelledby="tecnologias-title">
-        <div className="container">
-          <div className="section-head">
-            <h2 id="tecnologias-title" className="h2">Tecnologías integrables</h2>
-            <p className="lede">
-              Un proyecto especial combina las mismas soluciones que
-              distribuimos e integramos, ajustadas al requerimiento.
-            </p>
-          </div>
-          <div className="svc-group">
-            {INTEGRABLE.map((si, ii) => {
-              const svc = PDF_SERVICES[si]
-              return (
-                <article className="svc-row" key={svc.title}>
-                  <div className="svc-row__num">{String(ii + 1).padStart(2, '0')}</div>
-                  <h3 className="svc-row__title">{svc.title}</h3>
-                  <p className="svc-row__desc">{svc.desc}</p>
-                </article>
-              )
-            })}
-          </div>
-          <AgendarDemoButton
-            href="/contacto"
-            label="Hablemos de tu proyecto"
-            style={{ marginTop: 32 }}
-          />
-        </div>
-      </section>
+      {/* ── 02 — SOLUCIONES (desde Home) ─────────────────── */}
+      <SolutionsAccordion />
 
       <FinalCta />
     </main>

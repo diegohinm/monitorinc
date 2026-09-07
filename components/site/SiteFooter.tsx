@@ -100,7 +100,7 @@ export function SiteFooter() {
             <ul>
               {SOLUTION_LINKS.map((label) => (
                 <li key={label}>
-                  <Link href="/#soluciones">{label}</Link>
+                  <Link href="/proyectos#soluciones">{label}</Link>
                 </li>
               ))}
             </ul>
