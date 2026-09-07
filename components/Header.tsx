@@ -30,61 +30,86 @@ export function Header() {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  // Lock body scroll while the mobile menu is open
+  // Lock body scroll while the mobile menu is open. The body class is also how
+  // the floating WhatsApp button (a separate component) knows to get out of
+  // the way — see .wa-fab in globals.css.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    document.body.classList.toggle('has-mobile-menu', menuOpen)
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('has-mobile-menu')
+    }
+  }, [menuOpen])
+
+  // Escape closes the menu.
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [menuOpen])
 
   return (
-    <header className="header">
-      <div className="container header__inner">
-        <Link href="/" className="brand" onClick={close} aria-label="MONITORINC — inicio">
-          {/* `unoptimized` serves the SVG straight from /public: the image
-              optimizer refuses SVG unless `dangerouslyAllowSVG` is enabled
-              globally, and a vector logo gains nothing from raster resizing.
-              Height comes from CSS with width:auto, so the intrinsic ratio
-              always wins and the mark can never be stretched. */}
-          <Image
-            src="/logos/monitorinc-logo-horizontal.svg"
-            alt="MONITORINC"
-            width={168}
-            height={36}
-            priority
-            unoptimized
-            className="brand__logo"
-          />
-        </Link>
+    /* The panel is a sibling of <header>, never a child: the header carries a
+       backdrop-filter, which makes it the containing block for any
+       position:fixed descendant — that is what previously collapsed the menu
+       to the header's own height and spilled the links over the hero. */
+    <>
+      <header className="header">
+        <div className="container header__inner">
+          <Link href="/" className="brand" onClick={close} aria-label="MONITORINC — inicio">
+            {/* `unoptimized` serves the SVG straight from /public: the image
+                optimizer refuses SVG unless `dangerouslyAllowSVG` is enabled
+                globally, and a vector logo gains nothing from raster resizing.
+                Height comes from CSS with width:auto, so the intrinsic ratio
+                always wins and the mark can never be stretched. */}
+            <Image
+              src="/logos/monitorinc-logo-horizontal.svg"
+              alt="MONITORINC"
+              width={168}
+              height={36}
+              priority
+              unoptimized
+              className="brand__logo"
+            />
+          </Link>
 
-        <nav className="nav" aria-label="Principal">
-          {NAV_LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`nav__link${isActive(l.href) ? ' is-active' : ''}`}
-              aria-current={isActive(l.href) ? 'page' : undefined}
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className="nav" aria-label="Principal">
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`nav__link${isActive(l.href) ? ' is-active' : ''}`}
+                aria-current={isActive(l.href) ? 'page' : undefined}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
 
-        <div className="header__cta">
-          <AgendarDemoButton href="/contacto" />
+          <div className="header__cta">
+            <AgendarDemoButton href="/contacto" />
+          </div>
+
+          <button
+            className={`header__toggle ${menuOpen ? 'is-open' : ''}`}
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+          >
+            <span /><span /><span />
+          </button>
         </div>
+      </header>
 
-        <button
-          className={`header__toggle ${menuOpen ? 'is-open' : ''}`}
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
+      <nav
+        id="mobile-navigation"
+          className={`mobile-menu ${menuOpen ? 'is-open' : ''}`}
+          aria-label="Principal (móvil)"
+          aria-hidden={!menuOpen}
         >
-          <span /><span /><span />
-        </button>
-      </div>
-
-      <div id="mobile-menu" className={`mobile-menu ${menuOpen ? 'is-open' : ''}`}>
         {NAV_LINKS.map((l) => (
           <Link
             key={l.href}
@@ -97,7 +122,7 @@ export function Header() {
           </Link>
         ))}
         <AgendarDemoButton href="/contacto" className="mobile-menu__cta" onClick={close} />
-      </div>
-    </header>
-  )
-}
+      </nav>
+    </>
+    )
+  }

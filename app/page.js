@@ -9,7 +9,7 @@ import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
 import { CorporateIntro } from '../components/sections/CorporateIntro'
 import { WhatWeDo } from '../components/home/WhatWeDo'
-import { IntegrableTechnologies } from '../components/sections/IntegrableTechnologies'
+import { IntegrableTechnologiesSection } from '../components/sections/IntegrableTechnologiesSection'
 import { AgendarDemoButton } from '../components/ui/AgendarDemoButton'
 import { ConsultationForm } from '../components/site/ConsultationForm'
 import { Faq } from '../components/site/Faq'
@@ -81,7 +81,7 @@ export default function Home() {
         <WhatWeDo />
 
         {/* ── TECNOLOGÍAS INTEGRABLES (desde /proyectos) ───── */}
-        <IntegrableTechnologies />
+        <IntegrableTechnologiesSection />
 
         {/* ── FAQ ──────────────────────────────────────────── */}
         <section className="section faq" id="faq" aria-labelledby="faq-title">

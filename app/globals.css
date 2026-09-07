@@ -253,26 +253,43 @@ h1, h2, h3, h4 {
 .header__toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* Mobile menu */
+/* Full-viewport overlay below the header. Rendered as a sibling of <header>
+   (not a child) because the header's backdrop-filter would otherwise become
+   the containing block for this fixed element. */
 .mobile-menu {
   position: fixed;
-  inset: var(--header-h) 0 0 0;
-  z-index: 99;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  /* dvh so mobile browser chrome collapsing does not clip the panel. */
+  height: calc(100dvh - var(--header-h));
+  z-index: 90;
   background: var(--white);
   transform: translateY(-8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .22s var(--ease), transform .22s var(--ease);
-  padding: 24px var(--pad) 48px;
+  visibility: hidden;
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+  padding: 32px var(--pad) calc(32px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
-.mobile-menu.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.mobile-menu.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
 .mobile-menu__link {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 500;
-  padding: 16px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border);
   color: var(--ink);
 }
@@ -1421,8 +1438,9 @@ h1, h2, h3, h4 {
   overflow: hidden;
   min-height: 0;
 }
+/* Plain panel body: no photograph, keeps the editorial list rhythm. */
+.sol-item__body { padding-bottom: 4px; }
 .sol-item__desc {
-  grid-column: 2;
   max-width: 78ch;
   margin: 0 0 22px;
   padding-left: 64px;
@@ -1438,6 +1456,49 @@ h1, h2, h3, h4 {
   font-weight: 600;
   color: var(--green-dark);
 }
+
+/* Panel with a photograph behind the copy. The image is set inline by the
+   component only while the row is open, so a closed row never loads it. */
+.sol-item__body--media {
+  position: relative;
+  isolation: isolate;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 4px 0 24px;
+  padding: 30px 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.sol-item__body--media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, rgba(0,0,0,0.72), rgba(0,0,0,0.52));
+}
+.sol-item__body--media .sol-item__desc {
+  padding-left: 0;
+  margin-bottom: 0;
+  max-width: 62ch;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+}
+.sol-item__body--media .sol-item__link {
+  padding-left: 0;
+  margin: 16px 0 0;
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Fade the copy in slightly behind the row's own expansion. */
+.sol-item__body { opacity: 0; transition: opacity 260ms var(--ease); }
+.sol-item.is-open .sol-item__body { opacity: 1; }
 .sol-item__link:hover { text-decoration: underline; }
 
 @media (max-width: 640px) {
@@ -1449,10 +1510,29 @@ h1, h2, h3, h4 {
   .sol-item__desc,
   .sol-item__link { padding-left: 46px; }
   .sol-item__desc { font-size: 15px; }
+  .sol-item__body--media {
+    min-height: 170px;
+    padding: 24px 20px;
+  }
+  .sol-item__body--media .sol-item__desc,
+  .sol-item__body--media .sol-item__link { padding-left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sol-item__panel,
   .sol-item__icon,
-  .sol-item__title { transition: none; }
+  .sol-item__title,
+  .sol-item__body { transition: none; }
+}
+
+/* The floating WhatsApp button steps aside while the mobile menu is open, so
+   it can never sit on top of the overlay. */
+body.has-mobile-menu .wa-fab {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu { transition: none; }
 }
