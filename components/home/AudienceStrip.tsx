@@ -4,19 +4,14 @@
  * Server Component: static markup, no interaction. The icons are local SVGs
  * loaded with a plain <img>, decorative only (`alt=""` + `aria-hidden`), since
  * the visible label already names each audience.
+ *
+ * Each item now links into its section on /sectores, so this band doubles as
+ * the Home teaser for that page — no separate teaser block needed.
  */
 
-type Audience = {
-  label: string
-  icon: string
-}
+import Link from 'next/link'
 
-const AUDIENCES: Audience[] = [
-  { label: 'Hogares', icon: '/icons/audience/home.svg' },
-  { label: 'Empresas', icon: '/icons/audience/business.svg' },
-  { label: 'Fincas', icon: '/icons/audience/farm.svg' },
-  { label: 'Instituciones', icon: '/icons/audience/institution.svg' },
-]
+import { SECTORS } from '../../content/site'
 
 export function AudienceStrip() {
   return (
@@ -25,12 +20,14 @@ export function AudienceStrip() {
         <h2 className="audience__label" id="audience-label">Atendemos a</h2>
 
         <ul className="audience__items">
-          {AUDIENCES.map((a) => (
-            <li className="audience__item" key={a.label}>
-              <span className="audience__icon">
-                <img src={a.icon} alt="" aria-hidden="true" width={32} height={32} />
-              </span>
-              <span className="audience__text">{a.label}</span>
+          {SECTORS.map((s) => (
+            <li className="audience__item" key={s.slug}>
+              <Link className="audience__link" href={`/sectores#${s.slug}`}>
+                <span className="audience__icon">
+                  <img src={s.icon} alt="" aria-hidden="true" width={32} height={32} />
+                </span>
+                <span className="audience__text">{s.title}</span>
+              </Link>
             </li>
           ))}
         </ul>

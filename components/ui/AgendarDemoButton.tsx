@@ -1,4 +1,5 @@
-import type { CSSProperties } from 'react'
+import type { CSSProperties, MouseEventHandler } from 'react'
+import Link from 'next/link'
 
 /**
  * Reusable MONITORINC CTA button.
@@ -15,6 +16,7 @@ export function AgendarDemoButton({
   external,
   className,
   style,
+  onClick,
 }: {
   href?: string
   label?: string
@@ -23,16 +25,21 @@ export function AgendarDemoButton({
   external?: boolean
   className?: string
   style?: CSSProperties
+  onClick?: MouseEventHandler<HTMLAnchorElement>
 }) {
-  const isExternal = external ?? /^https?:/.test(href)
+  const isExternal = external ?? /^(https?:|mailto:|tel:)/.test(href)
+  // Internal routes go through next/link for client-side navigation;
+  // anchors, mail and tel stay as plain anchors.
+  const Tag = isExternal || href.startsWith('#') ? 'a' : Link
 
   return (
-    <a
+    <Tag
       href={href}
-      target={isExternal ? '_blank' : undefined}
-      rel={isExternal ? 'noreferrer' : undefined}
+      target={isExternal && /^https?:/.test(href) ? '_blank' : undefined}
+      rel={isExternal && /^https?:/.test(href) ? 'noreferrer' : undefined}
       className={`btn btn--${variant}${className ? ` ${className}` : ''}`}
       style={style}
+      onClick={onClick}
     >
       {label}
       {arrow && (
@@ -53,6 +60,6 @@ export function AgendarDemoButton({
           />
         </svg>
       )}
-    </a>
+    </Tag>
   )
 }

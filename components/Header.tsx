@@ -2,19 +2,24 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { AgendarDemoButton } from './ui/AgendarDemoButton'
 
 const NAV_LINKS = [
-  { href: '#soluciones', label: 'Soluciones' },
-  { href: '#sectores', label: 'Sectores' },
-  { href: '#proyectos', label: 'Proyectos' },
-  { href: '#nosotros', label: 'Nosotros' },
-  { href: '#contacto', label: 'Contacto' },
+  { href: '/#soluciones', label: 'Soluciones' },
+  { href: '/sectores', label: 'Sectores' },
+  { href: '/proyectos', label: 'Proyectos' },
+  { href: '/nosotros', label: 'Nosotros' },
+  { href: '/contacto', label: 'Contacto' },
 ]
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const close = useCallback(() => setMenuOpen(false), [])
+  const pathname = usePathname()
+  // Only the real routes get an active state; "/#soluciones" is a Home anchor.
+  const isActive = (href: string) => !href.includes('#') && pathname === href
 
   // Close menu when viewport grows past the mobile breakpoint
   useEffect(() => {
@@ -33,7 +38,7 @@ export function Header() {
   return (
     <header className="header">
       <div className="container header__inner">
-        <a href="#inicio" className="brand" onClick={close} aria-label="MONITORINC — inicio">
+        <Link href="/" className="brand" onClick={close} aria-label="MONITORINC — inicio">
           {/* `unoptimized` serves the SVG straight from /public: the image
               optimizer refuses SVG unless `dangerouslyAllowSVG` is enabled
               globally, and a vector logo gains nothing from raster resizing.
@@ -48,16 +53,23 @@ export function Header() {
             unoptimized
             className="brand__logo"
           />
-        </a>
+        </Link>
 
         <nav className="nav" aria-label="Principal">
           {NAV_LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="nav__link">{l.label}</a>
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`nav__link${isActive(l.href) ? ' is-active' : ''}`}
+              aria-current={isActive(l.href) ? 'page' : undefined}
+            >
+              {l.label}
+            </Link>
           ))}
         </nav>
 
         <div className="header__cta">
-          <AgendarDemoButton href="#contacto" />
+          <AgendarDemoButton href="/contacto" />
         </div>
 
         <button
@@ -73,11 +85,17 @@ export function Header() {
 
       <div id="mobile-menu" className={`mobile-menu ${menuOpen ? 'is-open' : ''}`}>
         {NAV_LINKS.map((l) => (
-          <a key={l.href} href={l.href} className="mobile-menu__link" onClick={close}>
+          <Link
+            key={l.href}
+            href={l.href}
+            className={`mobile-menu__link${isActive(l.href) ? ' is-active' : ''}`}
+            aria-current={isActive(l.href) ? 'page' : undefined}
+            onClick={close}
+          >
             {l.label}
-          </a>
+          </Link>
         ))}
-        <AgendarDemoButton href="#contacto" className="mobile-menu__cta" />
+        <AgendarDemoButton href="/contacto" className="mobile-menu__cta" onClick={close} />
       </div>
     </header>
   )

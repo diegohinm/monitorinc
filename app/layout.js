@@ -1,6 +1,8 @@
 import { Fraunces, Inter } from 'next/font/google'
 import './globals.css'
 import { WhatsAppFloatingButton } from '../components/global/WhatsAppFloatingButton'
+import { Header } from '../components/Header'
+import { SiteFooter } from '../components/site/SiteFooter'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -18,7 +20,10 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'MONITORINC | Seguridad electrónica y comunicación',
+  title: {
+    default: 'MONITORINC | Seguridad electrónica y comunicación',
+    template: '%s',
+  },
   description:
     'Distribuimos e integramos equipos de seguridad electrónica y de comunicación. CCTV, control de acceso, alarmas, seguridad perimetral, domótica, GPS, citofonía, drones y proyectos especiales.',
 }
@@ -27,7 +32,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
+        <Header />
         {children}
+        <SiteFooter />
         <WhatsAppFloatingButton />
       </body>
     </html>

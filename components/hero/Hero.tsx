@@ -33,7 +33,7 @@ export function Hero() {
           </p>
 
           <div className="hero__actions">
-            <AgendarDemoButton href="#contacto" label="Agenda una cita" />
+            <AgendarDemoButton href="/contacto" label="Agenda una cita" />
             <AgendarDemoButton
               href="#soluciones"
               label="Ver soluciones"

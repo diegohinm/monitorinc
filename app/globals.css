@@ -215,12 +215,6 @@ h1, h2, h3, h4 {
 }
 .brand:hover .brand__logo { opacity: 0.92; }
 
-/* Still used by the footer lockup. */
-.brand__mark {
-  width: 12px; height: 12px;
-  border-radius: 3px;
-  background: var(--green);
-}
 .nav {
   display: flex;
   align-items: center;
@@ -376,7 +370,7 @@ h1, h2, h3, h4 {
   --brand-scale: 1;
 }
 .suppliers__inner {
-  min-height: 112px;
+  min-height: 193px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -940,16 +934,17 @@ h1, h2, h3, h4 {
   border-bottom: 1px solid var(--dark-border);
 }
 .footer__brand {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-size: 22px;
-  color: #fff;
-  letter-spacing: -0.01em;
-  margin-bottom: 16px;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 18px;
 }
+.footer__logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  transition: opacity 180ms var(--ease);
+}
+.footer__brand:hover .footer__logo { opacity: 0.92; }
 .footer__desc { max-width: 34ch; font-size: 15px; line-height: 1.6; }
 .footer__col h4 {
   font-family: var(--font-sans);
@@ -1168,3 +1163,66 @@ h1, h2, h3, h4 {
   .wa-fab, .wa-fab__tip { transition: none; }
   .wa-fab:hover { transform: none; }
 }
+
+/* ─── Multi-page nav, active state ───────────────────────────── */
+.nav__link.is-active {
+  color: var(--ink);
+  font-weight: 600;
+  position: relative;
+}
+.nav__link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--green);
+}
+.mobile-menu__link.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ─── Sector detail sections (/sectores) ─────────────────────── */
+/* Clears the sticky header when landing on /sectores#hogares etc. */
+.sector-page { scroll-margin-top: calc(var(--header-h) + 24px); }
+.sector-page--alt { background: var(--bg-alt); }
+.sector-page__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  background: rgba(154, 189, 0, 0.06);
+  border: 1px solid rgba(154, 189, 0, 0.08);
+  margin-bottom: 18px;
+}
+.sector-page__icon img { display: block; width: 32px; height: 32px; }
+
+/* "Atendemos a" items are links into /sectores now. */
+.audience__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+}
+.audience__link:hover .audience__icon { background: rgba(154, 189, 0, 0.10); }
+.audience__link:hover .audience__icon img { transform: translateY(-1px); }
+.audience__link:hover .audience__text { color: #1F2022; }
+.audience__link:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+@media (max-width: 640px) {
+  .footer__logo { height: 34px; }
+}
+
+/* Page intro block on the inner routes: the section-head already provides
+   its own rhythm, so drop the duplicated bottom padding. */
+.page-intro { padding-bottom: 0; }
+.page-intro .section-head { margin-bottom: 0; }
