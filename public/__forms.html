@@ -1,0 +1,32 @@
+<html>
+  <head></head>
+  <body>
+    <!--
+      Netlify Forms detection file.
+
+      Netlify discovers forms by parsing static HTML at deploy time. With
+      Next.js the pages are rendered by a serverless function, so the React
+      form is never visible to that scanner — this static file is what
+      registers "monitorinc-contact" and its fields. The live form in
+      components/site/ConsultationForm.tsx POSTs here as urlencoded data.
+
+      Field names must stay in sync with that component.
+    -->
+    <form
+      name="monitorinc-contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="monitorinc-contact" />
+      <input name="bot-field" />
+      <input name="name" type="text" />
+      <input name="company" type="text" />
+      <input name="phone" type="tel" />
+      <input name="email" type="email" />
+      <input name="projectType" type="text" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>

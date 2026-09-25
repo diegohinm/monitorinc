@@ -1,0 +1,96 @@
+/* ═══════════════════════════════════════════════════════════════
+   Brands marquee — cloned from ngrok.com's partner-logos section
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Outer wrapper — edge-fade via CSS mask (ngrok uses mask-x) ── */
+.m-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Fade edges: 90%→100% at small, 70%→90% at md+ (mirrored ngrok) */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+/* ── Inner section (aria-label="Partner logos") ── */
+.m-marquee__section {
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Scrolling track — flex row holding both <ul> copies ── */
+.m-marquee__track {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  animation: logo-loop-scroll var(--logoloop-duration, 30s) linear infinite;
+}
+
+.m-marquee:hover .m-marquee__track {
+  animation-play-state: paused;
+}
+
+/* ── Each <ul> (visible + duplicate) ── */
+.m-marquee__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Each <li> item ── */
+.m-marquee__item {
+  flex: none;
+  margin-right: var(--logoloop-gap, 50px);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(235, 242, 255, 0.55);
+  line-height: 1;
+  white-space: nowrap;
+  height: var(--logoloop-logoHeight, 48px);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Keyframe — translate the doubled track by -50% ── */
+@keyframes logo-loop-scroll {
+  0%  { transform: translate(0); }
+  to  { transform: translate(-50%); }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .m-marquee__track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ── Mobile adjustments ── */
+@media (max-width: 639px) {
+  .m-marquee__item {
+    font-size: 24px;
+    letter-spacing: 0.06em;
+  }
+}
+
