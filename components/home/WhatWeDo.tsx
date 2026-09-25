@@ -2,10 +2,10 @@
 
 import { useEffect, useRef } from 'react'
 
-import { PDF_ABOUT } from '../../app/components/PdfContent'
-
 /**
- * "01 — Qué hacemos" — editorial statement over a parallaxed photograph.
+ * "01 — Qué hacemos" — the parallaxed photograph band on Home. Its copy
+ * (eyebrow, title, paragraph) now lives on /nosotros as WhatWeDoIntro; here
+ * only the image, its overlay and the motion remain.
  *
  * The image sits in an oversized absolute layer (inset -12%) so it can slide
  * without ever exposing an edge. Movement is written straight to the node's
@@ -102,22 +102,9 @@ export function WhatWeDo() {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="whatwedo on-dark"
-      id="que-hacemos"
-      aria-labelledby="whatwedo-title"
-    >
+    <section ref={sectionRef} className="whatwedo on-dark" id="que-hacemos">
       <div ref={layerRef} className="whatwedo__layer" aria-hidden="true" />
       <div className="whatwedo__overlay" aria-hidden="true" />
-
-      <div className="container whatwedo__inner">
-        <span className="eyebrow eyebrow--num whatwedo__eyebrow">01 — Qué hacemos</span>
-        <h2 id="whatwedo-title" className="h2 whatwedo__title">
-          Seguridad, acceso y monitoreo desde un solo <em>integrador.</em>
-        </h2>
-        <p className="whatwedo__body">{PDF_ABOUT.body}</p>
-      </div>
     </section>
   )
 }
