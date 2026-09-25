@@ -2,10 +2,10 @@ import { PDF_ABOUT } from '../../app/components/PdfContent'
 
 /**
  * "01 — Qué hacemos" as an editorial statement on /nosotros, between the
- * corporate intro and "Cómo trabajamos". The copy used to sit over the
- * parallax photograph on Home (components/home/WhatWeDo), which now renders
- * the image alone. Eyebrow and title are the same strings; the paragraph
- * comes straight from PDF_ABOUT, unchanged.
+ * corporate intro and "Cómo trabajamos". The copy used to sit over a
+ * parallax photograph on Home; that band has since become the solutions
+ * roulette (components/home/SolutionsRoulette). Eyebrow and title are the
+ * same strings; the paragraph comes straight from PDF_ABOUT, unchanged.
  *
  * Nothing follows the head inside this section, so its default bottom margin
  * is zeroed and the next section's own padding supplies the gap.

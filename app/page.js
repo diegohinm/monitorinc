@@ -7,8 +7,8 @@ import { telHref, mailtoHref } from '../lib/whatsapp'
 import { Hero } from '../components/hero/Hero'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
-import { WhatWeDo } from '../components/home/WhatWeDo'
-import { IntegrableTechnologiesSection } from '../components/sections/IntegrableTechnologiesSection'
+import { SolutionsRoulette } from '../components/home/SolutionsRoulette'
+import { SolutionsSection } from '../components/sections/SolutionsSection'
 import { ConsultationForm } from '../components/site/ConsultationForm'
 import { FinalCta } from '../components/site/FinalCta'
 
@@ -71,11 +71,11 @@ export default function Home() {
           </div>
         </section> */}
 
-        {/* ── §01 QUÉ HACEMOS (parallax) ───────────────── */}
-        <WhatWeDo />
+        {/* ── SOLUCIONES — roulette de categorías ─────────── */}
+        <SolutionsRoulette />
 
-        {/* ── TECNOLOGÍAS INTEGRABLES (desde /proyectos) ───── */}
-        <IntegrableTechnologiesSection />
+        {/* ── SOLUCIONES — Tecnologías integrables ────────── */}
+        <SolutionsSection />
 
         {/* FAQ now lives on /faq (components/sections/FaqSection). */}
         <FinalCta />
