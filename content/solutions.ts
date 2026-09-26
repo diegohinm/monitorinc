@@ -78,6 +78,86 @@ export const SOLUTION_CATEGORIES: SolutionCategory[] = [
   },
 ]
 
+/**
+ * Home "Soluciones" video storytelling — one slide per category, in the same
+ * order and with the same keys as SOLUTION_CATEGORIES. Everything a slide
+ * shows (index, title, subtitle, short list, clip and its still) lives here,
+ * so the component only renders whichever slide is active.
+ *
+ * `bullets` is editorial shorthand for the Home, not the service titles of
+ * the accordion (those stay in PDF_SERVICES).
+ */
+export type SolutionSlide = {
+  id: CategoryKey
+  index: string
+  title: string
+  subtitle: string
+  bullets: string[]
+  videoSrc: string
+  posterSrc: string
+  /**
+   * Only for a clip whose real picture does not fill its frame (black bars or
+   * padding baked into the pixels): the encoded frame and the centred picture
+   * inside it, in px. `object-fit: cover` treats the padding as picture, so
+   * the player zooms just enough to push it out of the box.
+   */
+  crop?: { frame: [number, number]; content: [number, number] }
+}
+
+export const SOLUTION_SLIDES: SolutionSlide[] = [
+  {
+    id: 'security',
+    index: '01',
+    title: 'Seguridad',
+    subtitle: 'Vigilancia, intrusión y protección perimetral.',
+    bullets: [
+      'CCTV y grabación',
+      'Alarmas de intrusión',
+      'Seguridad perimetral',
+      'Detección de incendios',
+    ],
+    videoSrc: '/videos/security-monitorinc.mp4',
+    posterSrc: '/images/security-monitorinc.jpg',
+    // The real picture is a 406×228 window centred in the 1280×720 frame —
+    // black bars above and below it, a blurred copy on either side (a vertical
+    // 360×640 phone clip re-exported into 16:9). Zooming to that window is the
+    // only way to show it full-bleed, and it will look soft until the clip is
+    // re-exported from the original footage at full frame; then drop `crop`.
+    crop: { frame: [1280, 720], content: [406, 228] },
+  },
+  {
+    id: 'automation',
+    index: '02',
+    title: 'Automatización',
+    subtitle: 'Acceso, puertas y hogar inteligente.',
+    bullets: [
+      'Control de acceso',
+      'Citofonía',
+      'Automatización de puertas',
+      'Domótica',
+    ],
+    videoSrc: '/videos/automation-monitorinc.mp4',
+    posterSrc: '/images/automation-monitorinc.jpg',
+  },
+  {
+    id: 'monitoring',
+    index: '03',
+    title: 'Monitoreo',
+    subtitle: 'Rastreo, drones e ingeniería especial.',
+    bullets: [
+      'GPS y rastreo',
+      'Drones',
+      'Monitoreo remoto',
+      'Proyectos especiales',
+    ],
+    videoSrc: '/videos/monitoring-monitorinc.mp4',
+    posterSrc: '/images/monitoring-monitorinc.jpg',
+    // 1280×576 picture letterboxed into a 1280×720 frame: 72 px of black
+    // above and below, measured off decoded frames and the poster.
+    crop: { frame: [1280, 720], content: [1280, 576] },
+  },
+]
+
 /** Running 01–11 across the categories, so numbering never restarts. */
 export function solutionNumber(categoryIndex: number, itemIndex: number) {
   let n = 0

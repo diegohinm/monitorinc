@@ -1360,121 +1360,217 @@ h1, h2, h3, h4 {
   .footer__social a { transition: none; }
 }
 
-/* ─── Soluciones — roulette (auto-rotating category intro) ───── */
+/* ─── Soluciones — video storytelling (Home) ─────────────────── */
+/* One fixed-height, full-bleed stage. Slides stack inside it, so switching
+   never reflows. Each slide carries its clip, a quiet overlay and an
+   editorial frame aligned to the site container: eyebrow + index across the
+   top, title / subtitle / short list anchored bottom-left, controls along the
+   bottom edge. */
 .roulette {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: #0F1011;
+  background: #0B0C0D;
+  color: #fff;
 }
-/* One fixed-height stage; slides stack inside it, so nothing ever reflows. */
 .roulette__stage {
   position: relative;
-  height: clamp(480px, 60vh, 720px);
+  height: clamp(560px, 86vh, 880px);
+  height: clamp(560px, 86svh, 880px);
 }
 /* Dissolve: the incoming slide fades in ON TOP of the outgoing one, which
    stays opaque underneath and only snaps out once the new one is solid —
-   the dark stage never shows through mid-transition. */
+   the dark stage never shows through mid-transition. 500 ms must match
+   FADE_MS in SolutionsRoulette.tsx. */
 .roulette__slide {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
   opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 0s linear .45s, transform .4s ease;
+  transition: opacity 0s linear .5s;
   pointer-events: none;
 }
 .roulette__slide.is-active {
   opacity: 1;
-  transform: scale(1);
-  transition: opacity .45s ease, transform .4s ease;
-  pointer-events: auto;
   z-index: 1;
+  transition: opacity .5s ease;
+  pointer-events: auto;
 }
-.roulette__image {
+.roulette__video {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #0B0C0D;
 }
+/* About 35 % black over the whole clip, deepening to about 55 % behind the
+   copy (bottom-left) — enough for the brightest frames, never a heavy veil. */
 .roulette__overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(8,10,10,0.74) 0%, rgba(8,10,10,0.56) 55%, rgba(8,10,10,0.40) 100%),
-    rgba(0, 0, 0, 0.26);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.08) 45%, rgba(0, 0, 0, 0) 70%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0) 55%),
+    rgba(0, 0, 0, 0.34);
 }
-.roulette__content {
+
+.roulette__frame {
   position: relative;
   z-index: 2;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "eyebrow index"
+    ".       .    "
+    "main    main ";
+  align-items: center;
+  padding-top: clamp(36px, 5vh, 56px);
+  /* Room for the controls row below the copy. */
+  padding-bottom: 116px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 26px rgba(0, 0, 0, 0.34);
 }
-/* Copy is staggered against the image dissolve: the outgoing text drops out
-   fast while the incoming one arrives slightly later, so two titles are never
-   readable at the same time. */
-.roulette__text {
-  max-width: 640px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .25s ease, transform .25s ease;
+.roulette__eyebrow {
+  grid-area: eyebrow;
+  color: rgba(255, 255, 255, 0.78);
 }
-.roulette__slide.is-active .roulette__text {
-  opacity: 1;
-  transform: none;
-  transition: opacity .4s ease .25s, transform .4s ease .25s;
+.roulette__eyebrow::before { background: var(--green); }
+.roulette__index {
+  grid-area: index;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.6);
+}
+.roulette__index-now { color: var(--green); }
+.roulette__main {
+  grid-area: main;
+  max-width: 620px;
 }
 .roulette__title {
-  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-size: clamp(2.75rem, 5.6vw, 5rem);
+  font-weight: 400;
   line-height: 0.98;
-  letter-spacing: -0.02em;
-  color: var(--green);
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  letter-spacing: -0.025em;
+  color: #fff;
 }
 .roulette__sub {
   margin-top: 18px;
-  max-width: 40ch;
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
 }
-/* Subtle position indicator: small dots, the active one stretches to a pill. */
-.roulette__dots {
+/* Short list: a hairline, then two quiet columns with a green tick each. */
+.roulette__list {
+  width: fit-content;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 44px;
+  row-gap: 10px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
+}
+.roulette__list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.roulette__list li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 12px;
+  height: 1px;
+  background: var(--green);
+}
+
+/* Copy is staggered against the video dissolve: the outgoing text drops out
+   in 200 ms, the incoming one rises in 350 ms after it, line by line, so two
+   titles are never readable at the same time. */
+.roulette__eyebrow,
+.roulette__index,
+.roulette__title,
+.roulette__sub,
+.roulette__list {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.roulette__slide.is-active .roulette__eyebrow,
+.roulette__slide.is-active .roulette__index,
+.roulette__slide.is-active .roulette__title,
+.roulette__slide.is-active .roulette__sub,
+.roulette__slide.is-active .roulette__list {
+  opacity: 1;
+  transform: none;
+  transition: opacity .35s ease .2s, transform .35s ease .2s;
+}
+.roulette__slide.is-active .roulette__sub { transition-delay: .26s; }
+.roulette__slide.is-active .roulette__list { transition-delay: .32s; }
+
+/* Controls: three hairline segments (the active one fills in green with the
+   rotation countdown) and a pause / play glyph. */
+.roulette__controls {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 26px;
+  bottom: 36px;
   z-index: 3;
 }
-.roulette__dots-inner {
+.roulette__controls-inner {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 14px;
 }
-.roulette__dot {
-  width: 28px;
+.roulette__segs {
+  display: flex;
+  gap: 6px;
+}
+.roulette__seg {
+  width: 44px;
   height: 28px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   padding: 0;
   border: 0;
   background: none;
 }
-.roulette__dot::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.45);
-  transition: width .3s ease, background .3s ease;
+.roulette__seg-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.28);
+  transition: background .2s ease;
 }
-.roulette__dot:hover::before { background: rgba(255, 255, 255, 0.8); }
-.roulette__dot.is-active::before { width: 22px; background: var(--green); }
-/* Pause / resume control, same footprint as a dot. */
+.roulette__seg:hover .roulette__seg-track { background: rgba(255, 255, 255, 0.5); }
+.roulette__seg-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--green);
+  transform-origin: left center;
+}
+.roulette__seg-fill.is-running {
+  transform: scaleX(0);
+  animation: roulette-progress linear forwards;
+}
+@keyframes roulette-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
 .roulette__toggle {
   width: 28px;
   height: 28px;
-  margin-left: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1486,27 +1582,63 @@ h1, h2, h3, h4 {
 }
 .roulette__toggle svg { width: 10px; height: 10px; fill: currentColor; }
 .roulette__toggle:hover { color: #fff; }
-.roulette__dot:focus-visible,
+.roulette__seg:focus-visible,
 .roulette__toggle:focus-visible {
   outline-color: var(--green);
   outline-offset: -2px;
   border-radius: 999px;
 }
 
-@media (max-width: 640px) {
-  .roulette__stage { height: clamp(300px, 48vh, 420px); }
+@media (max-width: 767px) {
+  .roulette__stage {
+    height: clamp(540px, 80vh, 660px);
+    height: clamp(540px, 80svh, 660px);
+  }
+  /* One column, everything anchored to the bottom in reading order:
+     eyebrow, title, subtitle, list, index. */
+  .roulette__frame {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto auto;
+    grid-template-areas:
+      "."
+      "eyebrow"
+      "main"
+      "index";
+    align-items: end;
+    padding-top: 28px;
+    padding-bottom: 84px;
+  }
+  .roulette__eyebrow { margin-bottom: 16px; }
+  .roulette__sub { margin-top: 12px; }
+  .roulette__list {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 20px;
+    padding-top: 14px;
+    row-gap: 6px;
+    font-size: 13.5px;
+  }
+  .roulette__index { margin-top: 20px; }
   .roulette__overlay {
     background:
-      linear-gradient(180deg, rgba(8,10,10,0.70) 0%, rgba(8,10,10,0.60) 100%),
-      rgba(0, 0, 0, 0.22);
+      linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.22) 45%, rgba(0, 0, 0, 0.40) 100%),
+      rgba(0, 0, 0, 0.30);
   }
-  .roulette__dots { bottom: 16px; }
+  .roulette__controls { bottom: 22px; }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .roulette__slide { transform: none; transition: opacity 0s linear .3s; }
+  .roulette__slide { transition: opacity 0s linear .3s; }
   .roulette__slide.is-active { transition: opacity .3s ease; }
-  .roulette__text { transform: none; transition: opacity .2s ease; }
-  .roulette__slide.is-active .roulette__text { transition: opacity .3s ease .15s; }
+  .roulette__eyebrow,
+  .roulette__index,
+  .roulette__title,
+  .roulette__sub,
+  .roulette__list { transform: none; transition: opacity .2s ease; }
+  .roulette__slide.is-active .roulette__eyebrow,
+  .roulette__slide.is-active .roulette__index,
+  .roulette__slide.is-active .roulette__title,
+  .roulette__slide.is-active .roulette__sub,
+  .roulette__slide.is-active .roulette__list { transition: opacity .3s ease .15s; }
 }
 
 /* ─── 02 — Soluciones (accordion) ────────────────────────────── */
