@@ -9,6 +9,7 @@ import { TopUtilityBar } from './TopUtilityBar'
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
+  { href: '/soluciones', label: 'Soluciones' },
   { href: '/sectores', label: 'Sectores' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/nosotros', label: 'Nosotros' },

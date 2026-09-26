@@ -8,7 +8,6 @@ import { Hero } from '../components/hero/Hero'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
 import { SolutionsRoulette } from '../components/home/SolutionsRoulette'
-import { SolutionsSection } from '../components/sections/SolutionsSection'
 import { ConsultationForm } from '../components/site/ConsultationForm'
 import { FinalCta } from '../components/site/FinalCta'
 
@@ -71,11 +70,8 @@ export default function Home() {
           </div>
         </section> */}
 
-        {/* ── SOLUCIONES — roulette de categorías ─────────── */}
+        {/* ── SOLUCIONES — roulette de categorías (la sección completa vive en /soluciones) ── */}
         <SolutionsRoulette />
-
-        {/* ── SOLUCIONES — Tecnologías integrables ────────── */}
-        <SolutionsSection />
 
         {/* FAQ now lives on /faq (components/sections/FaqSection). */}
         <FinalCta />

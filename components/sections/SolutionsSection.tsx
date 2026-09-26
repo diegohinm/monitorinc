@@ -1,22 +1,21 @@
 import { SolutionsAccordionList } from '../solutions/SolutionsAccordionList'
 
 /**
- * "Soluciones" on Home — the editorial section that contains "Tecnologías
- * integrables": the same eleven services as /proyectos, grouped into the
- * three categories the roulette above introduces, presented as accordions
- * whose expanded panel carries a photographic background.
- *
- * `id="soluciones"` is also the target of the hero's "Ver soluciones" link.
+ * "Soluciones" — the opening section of /soluciones: eyebrow, the page's h1
+ * "Tecnologías integrables", the intro line and the same eleven services as
+ * /proyectos, grouped into the three categories the Home roulette introduces,
+ * presented as accordions whose expanded panel carries a photographic
+ * background. It used to sit on Home; the roulette stayed there as the teaser.
  */
 export function SolutionsSection() {
   return (
-    <section className="section section--tight" id="soluciones" aria-labelledby="tecnologias-title">
+    <section className="section" id="soluciones" aria-labelledby="tecnologias-title">
       <div className="container">
         <div className="section-head">
           <span className="eyebrow">Soluciones</span>
-          <h2 id="tecnologias-title" className="h2" style={{ marginTop: 16 }}>
+          <h1 id="tecnologias-title" className="h2" style={{ marginTop: 16 }}>
             Tecnologías integrables
-          </h2>
+          </h1>
           <p className="lede" style={{ marginTop: 18 }}>
             Un proyecto especial combina las mismas soluciones que
             distribuimos e integramos, ajustadas al requerimiento.
