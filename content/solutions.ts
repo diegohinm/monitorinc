@@ -22,7 +22,7 @@ export type CategoryKey = 'security' | 'automation' | 'monitoring'
 // Partial on purpose: drop a category here and its panels fall back to the
 // plain text style, with no type error and no broken image.
 export const CATEGORY_BACKGROUNDS: Partial<Record<CategoryKey, string>> = {
-  security: '/images/solutions/cctv-camera.png',
+  security: '/images/tech-back.png',
   automation: '/images/technologies/automation-bg.png',
   monitoring: '/images/technologies/monitoring-bg.png',
 }

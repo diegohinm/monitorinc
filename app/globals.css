@@ -1360,78 +1360,153 @@ h1, h2, h3, h4 {
   .footer__social a { transition: none; }
 }
 
-/* ─── 01 — Qué hacemos (parallax) ────────────────────────────── */
-.whatwedo {
+/* ─── Soluciones — roulette (auto-rotating category intro) ───── */
+.roulette {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  /* A full-screen piece on laptops, capped so huge monitors stay sane. */
-  min-height: clamp(720px, 100vh, 900px);
-  display: flex;
-  align-items: center;
-  padding-block: clamp(72px, 9vw, 120px);
   background: #0F1011;
 }
-/* Oversized so the layer can travel without ever revealing an edge. */
-.whatwedo__layer {
+/* One fixed-height stage; slides stack inside it, so nothing ever reflows. */
+.roulette__stage {
+  position: relative;
+  height: clamp(480px, 60vh, 720px);
+}
+/* Dissolve: the incoming slide fades in ON TOP of the outgoing one, which
+   stays opaque underneath and only snaps out once the new one is solid —
+   the dark stage never shows through mid-transition. */
+.roulette__slide {
   position: absolute;
-  /* 12% of the section height above and below: enough overscan that a
-     ±65px travel can never reveal the flat background. */
-  inset: -12% 0;
-  z-index: 0;
-  background-image: url('/images/tech-back.png');
+  inset: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0s linear .45s, transform .4s ease;
+  pointer-events: none;
+}
+.roulette__slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .45s ease, transform .4s ease;
+  pointer-events: auto;
+  z-index: 1;
+}
+.roulette__image {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: transform;
 }
-.whatwedo__overlay {
+.roulette__overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
   background:
-    linear-gradient(90deg, rgba(8,10,10,0.74) 0%, rgba(8,10,10,0.58) 55%, rgba(8,10,10,0.44) 100%),
-    rgba(0, 0, 0, 0.28);
+    linear-gradient(90deg, rgba(8,10,10,0.74) 0%, rgba(8,10,10,0.56) 55%, rgba(8,10,10,0.40) 100%),
+    rgba(0, 0, 0, 0.26);
 }
-.whatwedo__inner {
+.roulette__content {
   position: relative;
   z-index: 2;
-  max-width: 980px;
 }
-.whatwedo__eyebrow { color: var(--green); }
-.whatwedo__eyebrow::before { background: var(--green); }
-.whatwedo__title {
-  color: #fff;
-  margin-top: 18px;
+/* Copy is staggered against the image dissolve: the outgoing text drops out
+   fast while the incoming one arrives slightly later, so two titles are never
+   readable at the same time. */
+.roulette__text {
+  max-width: 640px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.roulette__slide.is-active .roulette__text {
+  opacity: 1;
+  transform: none;
+  transition: opacity .4s ease .25s, transform .4s ease .25s;
+}
+.roulette__title {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--green);
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
 }
-.whatwedo__title em { color: var(--green); }
-.whatwedo__body {
-  margin-top: 26px;
-  max-width: 68ch;
-  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
-  line-height: 1.68;
-  color: rgba(255, 255, 255, 0.75);
+.roulette__sub {
+  margin-top: 18px;
+  max-width: 40ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+/* Subtle position indicator: small dots, the active one stretches to a pill. */
+.roulette__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 26px;
+  z-index: 3;
+}
+.roulette__dots-inner {
+  display: flex;
+  gap: 4px;
+}
+.roulette__dot {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.roulette__dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  transition: width .3s ease, background .3s ease;
+}
+.roulette__dot:hover::before { background: rgba(255, 255, 255, 0.8); }
+.roulette__dot.is-active::before { width: 22px; background: var(--green); }
+/* Pause / resume control, same footprint as a dot. */
+.roulette__toggle {
+  width: 28px;
+  height: 28px;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color .2s ease;
+}
+.roulette__toggle svg { width: 10px; height: 10px; fill: currentColor; }
+.roulette__toggle:hover { color: #fff; }
+.roulette__dot:focus-visible,
+.roulette__toggle:focus-visible {
+  outline-color: var(--green);
+  outline-offset: -2px;
+  border-radius: 999px;
 }
 
-@media (max-width: 1024px) {
-  .whatwedo { min-height: clamp(640px, 90vh, 760px); }
-}
-@media (max-width: 767px) {
-  .whatwedo {
-    min-height: 680px;
-    padding-block: 72px;
-  }
-  /* Parallax runs at a reduced 24px here, so keep some overscan. */
-  .whatwedo__layer { inset: -8% 0; }
-  .whatwedo__overlay {
+@media (max-width: 640px) {
+  .roulette__stage { height: clamp(300px, 48vh, 420px); }
+  .roulette__overlay {
     background:
-      linear-gradient(180deg, rgba(8,10,10,0.70) 0%, rgba(8,10,10,0.62) 100%),
-      rgba(0, 0, 0, 0.24);
+      linear-gradient(180deg, rgba(8,10,10,0.70) 0%, rgba(8,10,10,0.60) 100%),
+      rgba(0, 0, 0, 0.22);
   }
+  .roulette__dots { bottom: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .whatwedo__layer { transform: none !important; will-change: auto; }
+  .roulette__slide { transform: none; transition: opacity 0s linear .3s; }
+  .roulette__slide.is-active { transition: opacity .3s ease; }
+  .roulette__text { transform: none; transition: opacity .2s ease; }
+  .roulette__slide.is-active .roulette__text { transition: opacity .3s ease .15s; }
 }
 
 /* ─── 02 — Soluciones (accordion) ────────────────────────────── */
