@@ -1516,8 +1516,8 @@ h1, h2, h3, h4 {
 .roulette__slide.is-active .roulette__sub { transition-delay: .26s; }
 .roulette__slide.is-active .roulette__list { transition-delay: .32s; }
 
-/* Controls: three hairline segments (the active one fills in green with the
-   rotation countdown) and a pause / play glyph. */
+/* Controls: three hairline segments (the active one fills in green as its
+   clip plays) and a pause / play glyph. */
 .roulette__controls {
   position: absolute;
   left: 0;
@@ -1554,19 +1554,14 @@ h1, h2, h3, h4 {
   transition: background .2s ease;
 }
 .roulette__seg:hover .roulette__seg-track { background: rgba(255, 255, 255, 0.5); }
+/* Scaled every frame from the active clip's currentTime / duration. */
 .roulette__seg-fill {
   position: absolute;
   inset: 0;
   background: var(--green);
   transform-origin: left center;
-}
-.roulette__seg-fill.is-running {
   transform: scaleX(0);
-  animation: roulette-progress linear forwards;
-}
-@keyframes roulette-progress {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+  will-change: transform;
 }
 .roulette__toggle {
   width: 28px;

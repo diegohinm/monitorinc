@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type FocusEvent, type PointerEvent } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { SOLUTION_SLIDES, type SolutionSlide } from '../../content/solutions'
 import { useReducedMotionSafe } from '../hero/useReducedMotionSafe'
@@ -12,34 +12,32 @@ import { useReducedMotionSafe } from '../hero/useReducedMotionSafe'
  * slide shows comes from SOLUTION_SLIDES (content/solutions.ts); the component
  * only decides which slide is active.
  *
+ * The cycle is driven by the clips themselves: no loop, no timers. Every clip
+ * shares one `onEnded` handler, so whichever slide is on stage hands over to
+ * the next when its video finishes — 01 → 02 → 03 → 01 … indefinitely, each
+ * clip for its real duration. Picking a slide starts that clip from 0 and the
+ * cycle carries on from there.
+ *
  * Slides are stacked in one fixed-height stage, so switching never reflows.
- * The incoming slide dissolves in on top of the outgoing one (whose clip keeps
- * playing underneath until the fade ends, then parks at frame 0), and its
- * copy arrives with a short fade + rise once the outgoing copy has gone.
+ * The incoming slide dissolves in on top of the outgoing one (whose clip is
+ * paused on its current frame underneath), and its copy arrives with a short
+ * fade + rise once the outgoing copy has gone. The progress line under the
+ * index reads the active clip's currentTime / duration every frame.
  *
  * Loading: nothing is fetched until the section is about to enter the
  * viewport; then all posters, and the clips of the active and next slides.
- * A slide keeps its clip once attached. Clips play only while the section is
- * on screen and the tab is visible.
- *
- * Rotation (every INTERVAL_MS, shown by the progress line under the index
- * controls) follows the APG carousel pattern: it pauses while a real mouse
- * hovers the block or keyboard focus is inside it — the progress line freezes
- * and later resumes where it stopped —, stops for good once the visitor picks
- * a slide, and the pause control freezes both the rotation and the clips. An
- * explicit "Reproducir" overrides the hover/focus pause. With reduced motion
- * everything starts paused on the posters.
+ * Clips play only while the section is on screen and the tab is visible.
+ * The pause control freezes the clip (and so the cycle). With reduced motion
+ * everything starts paused on the posters. If autoplay is refused, the section
+ * shows the poster with the play control; a clip that fails to load is skipped.
  */
-const INTERVAL_MS = 6000
-/** Must match the `.roulette__slide.is-active` opacity transition in globals.css. */
-const FADE_MS = 500
 const COUNT = SOLUTION_SLIDES.length
 const TOTAL = String(COUNT).padStart(2, '0')
 
 /**
  * Extra zoom (on top of `object-fit: cover`) that pushes a clip's baked-in
- * bars out of a box of the given size. 1 when there is nothing to hide or
- * `cover` already crops the bars away on its own.
+ * padding out of a box of the given size. 1 when there is nothing to hide or
+ * `cover` already crops it away on its own.
  */
 function barCropScale(slide: SolutionSlide, box: { w: number; h: number }) {
   if (!slide.crop || !box.w || !box.h) return 1
@@ -48,18 +46,15 @@ function barCropScale(slide: SolutionSlide, box: { w: number; h: number }) {
   const cover = Math.max(box.w / fw, box.h / fh)
   const needed = Math.max(box.w / cw, box.h / ch)
   const scale = needed / cover
-  // Nudge past the bars so subpixel rounding can't leave a dark hairline.
+  // Nudge past the padding so subpixel rounding can't leave a dark hairline.
   return scale > 1.001 ? scale * 1.006 : 1
 }
 
-function safePlay(video: HTMLVideoElement | null) {
-  if (!video) return
-  video.muted = true
+function rewind(video: HTMLVideoElement) {
   try {
-    const p = video.play()
-    if (p && typeof p.catch === 'function') p.catch(() => {})
+    video.currentTime = 0
   } catch {
-    /* autoplay blocked or element detached — the poster stays visible */
+    /* seeking can throw before metadata is loaded */
   }
 }
 
@@ -67,26 +62,26 @@ export function SolutionsRoulette() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const stageRef = useRef<HTMLDivElement | null>(null)
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
-  // Time left on the current slide, so a hover/focus pause resumes the
-  // countdown (and the progress line) where it stopped instead of restarting.
-  const remainingRef = useRef(INTERVAL_MS)
-  const startedAtRef = useRef(0)
+  const fillRef = useRef<HTMLSpanElement | null>(null)
+  /** Mirror of `active` for event handlers, so a stale `ended` is ignored. */
+  const activeRef = useRef(0)
+  /** Slide whose clip has already been started from 0 in its current turn. */
+  const startedRef = useRef<number | null>(null)
+  const failedRef = useRef<Set<number>>(new Set())
 
   const [active, setActive] = useState(0)
-  /** Clips move and rotation is allowed. The pause control clears it. */
+  /** Clips move. The pause control (or a refused autoplay) clears it. */
   const [playing, setPlaying] = useState(true)
-  /** Automatic advance. Picking a slide clears it for good. */
-  const [autoRotate, setAutoRotate] = useState(true)
-  /** An explicit "Reproducir" overrides the hover/focus pause (APG). */
-  const [userStarted, setUserStarted] = useState(false)
-  const [hovered, setHovered] = useState(false)
-  const [focused, setFocused] = useState(false)
   const [near, setNear] = useState(false)
   const [inView, setInView] = useState(false)
   const [pageVisible, setPageVisible] = useState(true)
   const [attached, setAttached] = useState<number[]>([])
   const [box, setBox] = useState({ w: 0, h: 0 })
   const reducedMotion = useReducedMotionSafe()
+
+  useEffect(() => {
+    activeRef.current = active
+  }, [active])
 
   /* ── environment: viewport proximity, visibility, stage size ── */
 
@@ -144,10 +139,7 @@ export function SolutionsRoulette() {
   // Reduced motion only sets the initial state: the visitor can still opt in
   // through the play control.
   useEffect(() => {
-    if (reducedMotion) {
-      setPlaying(false)
-      setUserStarted(false)
-    }
+    if (reducedMotion) setPlaying(false)
   }, [reducedMotion])
 
   // Once the section is near: the active clip and the next one.
@@ -159,97 +151,115 @@ export function SolutionsRoulette() {
     })
   }, [near, active])
 
-  /* ── rotation ──────────────────────────────────────────────── */
+  /* ── the cycle: one handler for every clip ─────────────────── */
 
-  const rotating =
-    playing && autoRotate && inView && pageVisible && (userStarted || (!hovered && !focused))
+  const handleVideoEnded = useCallback((index: number) => {
+    // Only the clip on stage may advance the cycle, and only once.
+    if (index !== activeRef.current) return
+    activeRef.current = (index + 1) % COUNT
+    setActive((current) => (current + 1) % COUNT)
+  }, [])
 
-  // A new slide gets the full interval. Declared before the timer effect so
-  // it runs first when `active` changes.
-  useEffect(() => {
-    remainingRef.current = INTERVAL_MS
-  }, [active])
-
-  useEffect(() => {
-    if (!rotating) return
-    startedAtRef.current = performance.now()
-    const id = window.setTimeout(() => setActive((i) => (i + 1) % COUNT), remainingRef.current)
-    return () => {
-      window.clearTimeout(id)
-      const elapsed = performance.now() - startedAtRef.current
-      remainingRef.current = Math.max(0, remainingRef.current - elapsed)
-    }
-  }, [rotating, active])
+  const handleVideoError = useCallback(
+    (index: number) => {
+      failedRef.current.add(index)
+      // Skip a broken clip instead of stalling on it — unless none works.
+      if (failedRef.current.size < COUNT) handleVideoEnded(index)
+    },
+    [handleVideoEnded],
+  )
 
   /* ── playback ──────────────────────────────────────────────── */
 
   const motion = playing && inView && pageVisible
 
   useEffect(() => {
-    const timers: number[] = []
-    videoRefs.current.forEach((video, i) => {
-      if (!video) return
-      if (i === active) {
-        if (motion) safePlay(video)
-        else video.pause()
-        return
-      }
-      // Let the outgoing clip run under the dissolve, then park it at frame 0
-      // so it starts from the top the next time it comes round.
-      timers.push(
-        window.setTimeout(() => {
-          video.pause()
-          try {
-            video.currentTime = 0
-          } catch {
-            /* seeking can throw before metadata is loaded */
-          }
-        }, FADE_MS + 100),
-      )
+    const videos = videoRefs.current
+    const next = (active + 1) % COUNT
+
+    videos.forEach((video, i) => {
+      if (!video || i === active) return
+      // The outgoing clip stays on its current frame under the dissolve. The
+      // next one is off stage, so it can be parked at frame 0 right away.
+      video.pause()
+      if (i === next) rewind(video)
     })
-    return () => timers.forEach((id) => window.clearTimeout(id))
-  }, [active, motion, attached])
+
+    const video = videos[active]
+    if (!video) return
+
+    if (failedRef.current.has(active) && failedRef.current.size < COUNT) {
+      handleVideoEnded(active)
+      return
+    }
+
+    // Each turn on stage starts from the top.
+    if (startedRef.current !== active) {
+      startedRef.current = active
+      rewind(video)
+    }
+
+    if (!motion || !attached.includes(active)) {
+      video.pause()
+      return
+    }
+
+    video.muted = true
+    let cancelled = false
+    try {
+      const p = video.play()
+      if (p && typeof p.catch === 'function') {
+        p.catch((err: unknown) => {
+          // Autoplay refused (e.g. power saving): show the play control.
+          if (!cancelled && err instanceof DOMException && err.name === 'NotAllowedError') {
+            setPlaying(false)
+          }
+        })
+      }
+    } catch {
+      /* element detached — nothing to do */
+    }
+    return () => {
+      cancelled = true
+    }
+  }, [active, motion, attached, handleVideoEnded])
+
+  // Progress line: the active clip's real position, drawn every frame while
+  // it plays and once whenever it stops.
+  useEffect(() => {
+    const fill = fillRef.current
+    const video = videoRefs.current[active]
+    if (!fill || !video) return
+    let raf = 0
+    const draw = () => {
+      const d = video.duration
+      const p = d && Number.isFinite(d) ? Math.min(1, video.currentTime / d) : 0
+      fill.style.transform = `scaleX(${p.toFixed(4)})`
+    }
+    const loop = () => {
+      draw()
+      raf = window.requestAnimationFrame(loop)
+    }
+    if (motion) raf = window.requestAnimationFrame(loop)
+    else draw()
+    return () => window.cancelAnimationFrame(raf)
+  }, [active, motion])
 
   /* ── input ─────────────────────────────────────────────────── */
 
-  // Only a real pointer that can hover pauses the rotation. A touch tap emits
-  // emulated mouse events but never a matching leave, which would freeze it.
-  const onPointerEnter = (e: PointerEvent<HTMLElement>) => {
-    if (e.pointerType !== 'touch') setHovered(true)
-  }
-  const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
-    if (e.pointerType !== 'touch') setHovered(false)
-  }
-  // Keyboard focus pauses; focus left behind by a click or tap does not.
-  const onFocus = (e: FocusEvent<HTMLElement>) => {
-    if ((e.target as HTMLElement).matches(':focus-visible')) setFocused(true)
-  }
-  const onBlur = (e: FocusEvent<HTMLElement>) => {
-    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false)
-  }
-
-  // Picking a slide is an explicit choice, so the rotation stops there.
+  // Picking a slide starts that clip from 0; the cycle continues from it.
   const pick = (i: number) => {
-    setActive(i)
-    setAutoRotate(false)
-    setUserStarted(false)
-  }
-
-  const togglePlaying = () => {
-    if (playing) {
-      setPlaying(false)
-      setUserStarted(false)
-      return
+    if (i !== active) {
+      activeRef.current = i
+      setActive(i)
+    } else {
+      const video = videoRefs.current[i]
+      if (video) rewind(video)
     }
-    remainingRef.current = INTERVAL_MS
-    setPlaying(true)
-    setAutoRotate(true)
-    setUserStarted(true)
+    if (!reducedMotion) setPlaying(true)
   }
 
-  // The progress line animates while rotation is on (frozen during a pause)
-  // and shows as a solid marker once rotation is off.
-  const showProgress = playing && autoRotate
+  const togglePlaying = () => setPlaying((p) => !p)
 
   return (
     <section
@@ -257,13 +267,9 @@ export function SolutionsRoulette() {
       className="roulette on-dark"
       aria-roledescription="carrusel"
       aria-label="Soluciones por categoría"
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      onFocus={onFocus}
-      onBlur={onBlur}
     >
-      {/* Announce slide changes only when the visitor drives them. */}
-      <div ref={stageRef} className="roulette__stage" aria-live={rotating ? 'off' : 'polite'}>
+      {/* Announce slide changes only while the cycle is not running. */}
+      <div ref={stageRef} className="roulette__stage" aria-live={motion ? 'off' : 'polite'}>
         {SOLUTION_SLIDES.map((slide, i) => {
           const isActive = i === active
           const hasClip = attached.includes(i)
@@ -287,11 +293,12 @@ export function SolutionsRoulette() {
                 poster={near || i === 0 ? slide.posterSrc : undefined}
                 preload={hasClip ? 'auto' : 'none'}
                 muted
-                loop
                 playsInline
                 disablePictureInPicture
                 tabIndex={-1}
                 aria-hidden="true"
+                onEnded={() => handleVideoEnded(i)}
+                onError={() => handleVideoError(i)}
               />
               <div className="roulette__overlay" aria-hidden="true" />
 
@@ -331,20 +338,7 @@ export function SolutionsRoulette() {
                 >
                   <span className="roulette__seg-track" aria-hidden="true">
                     {isActive && (
-                      <span
-                        // Remount per slide and per mode so the line restarts
-                        // exactly when the countdown does.
-                        key={`${slide.id}-${showProgress ? 'run' : 'idle'}`}
-                        className={`roulette__seg-fill${showProgress ? ' is-running' : ''}`}
-                        style={
-                          showProgress
-                            ? {
-                                animationDuration: `${INTERVAL_MS}ms`,
-                                animationPlayState: rotating ? 'running' : 'paused',
-                              }
-                            : undefined
-                        }
-                      />
+                      <span key={slide.id} ref={fillRef} className="roulette__seg-fill" />
                     )}
                   </span>
                 </button>

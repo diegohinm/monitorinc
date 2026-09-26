@@ -43,7 +43,7 @@ export function Hero() {
           </div>
         </div>
 
-        <aside className="hero__panel" aria-label="Áreas de monitoreo">
+        {/* <aside className="hero__panel" aria-label="Áreas de monitoreo">
           <div className="hero__panel-head">
             <span className="hero__panel-dot" aria-hidden="true" />
             Seguridad integrada
@@ -54,7 +54,7 @@ export function Hero() {
               <span className="chip__status">{c.status}</span>
             </div>
           ))}
-        </aside>
+        </aside> */}
       </div>
     </section>
   )
