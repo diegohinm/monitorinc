@@ -17,6 +17,10 @@ type PhoneNumber = {
 }
 
 type ContactConfig = {
+  /** Legal / trading name shown in the top utility bar. */
+  companyName: string
+  /** Street address as displayed, plus the Google Maps place link it opens. */
+  address: { label: string; mapsUrl: string }
   whatsappPrimary: PhoneNumber
   /**
    * Optional. Comment the entry out (or delete it) and it disappears from the
@@ -28,6 +32,12 @@ type ContactConfig = {
 }
 
 export const CONTACT: ContactConfig = {
+  companyName: 'Monitor Inc SAS',
+  address: {
+    label: 'Cra. 50b #181-13, Bogotá',
+    mapsUrl:
+      'https://www.google.com/maps/place/MONITORINC/data=!4m2!3m1!1s0x0:0x2bdf94812d8a0e31?sa=X&ved=1t:2428&ictx=111',
+  },
   whatsappPrimary: {
     label: '+57 321 3002548',
     digits: '573213002548',

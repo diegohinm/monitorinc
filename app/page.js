@@ -7,12 +7,9 @@ import { telHref, mailtoHref } from '../lib/whatsapp'
 import { Hero } from '../components/hero/Hero'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
-import { CorporateIntro } from '../components/sections/CorporateIntro'
-import { WhatWeDo } from '../components/home/WhatWeDo'
-import { IntegrableTechnologiesSection } from '../components/sections/IntegrableTechnologiesSection'
-import { AgendarDemoButton } from '../components/ui/AgendarDemoButton'
+import { SolutionsRoulette } from '../components/home/SolutionsRoulette'
+import { SolutionsSection } from '../components/sections/SolutionsSection'
 import { ConsultationForm } from '../components/site/ConsultationForm'
-import { Faq } from '../components/site/Faq'
 import { FinalCta } from '../components/site/FinalCta'
 
 const CONTACT_LINES = [
@@ -41,9 +38,6 @@ export default function Home() {
 
         {/* ── ATENDEMOS A band ─────────────────────────────── */}
         <AudienceStrip />
-
-        {/* ── MONITORINC — bloque corporativo (desde /nosotros) ─ */}
-        <CorporateIntro />
 
         {/* ── CONSULTATION FORM ────────────────────────────── */}
         {/* <section className="section consult" id="asesoria" aria-labelledby="consult-title">
@@ -77,29 +71,13 @@ export default function Home() {
           </div>
         </section> */}
 
-        {/* ── §01 QUÉ HACEMOS (parallax) ───────────────── */}
-        <WhatWeDo />
+        {/* ── SOLUCIONES — roulette de categorías ─────────── */}
+        <SolutionsRoulette />
 
-        {/* ── TECNOLOGÍAS INTEGRABLES (desde /proyectos) ───── */}
-        <IntegrableTechnologiesSection />
+        {/* ── SOLUCIONES — Tecnologías integrables ────────── */}
+        <SolutionsSection />
 
-        {/* ── FAQ ──────────────────────────────────────────── */}
-        <section className="section faq" id="faq" aria-labelledby="faq-title">
-          <div className="container faq__grid">
-            <div>
-              <span className="eyebrow">Preguntas frecuentes</span>
-              <h2 id="faq-title" className="h2" style={{ marginTop: 16 }}>
-                Resolvemos tus dudas antes de <em>instalar.</em>
-              </h2>
-              <p className="lede" style={{ marginTop: 18 }}>
-                ¿Tienes otra pregunta? Escríbenos y con gusto te asesoramos.
-              </p>
-              <AgendarDemoButton href="/contacto" className="" style={{ marginTop: 24 }} />
-            </div>
-            <Faq />
-          </div>
-        </section>
-
+        {/* FAQ now lives on /faq (components/sections/FaqSection). */}
         <FinalCta />
       </main>
   )

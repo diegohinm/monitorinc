@@ -2,6 +2,8 @@ import Link from 'next/link'
 
 import { PDF_ABOUT } from '../components/PdfContent'
 import { SECTORS } from '../../content/site'
+import { CorporateIntro } from '../../components/sections/CorporateIntro'
+import { WhatWeDoIntro } from '../../components/sections/WhatWeDoIntro'
 import { FinalCta } from '../../components/site/FinalCta'
 import { AgendarDemoButton } from '../../components/ui/AgendarDemoButton'
 
@@ -44,13 +46,17 @@ const FOCUS = [
 export default function NosotrosPage() {
   return (
     <main>
-      {/* The corporate statement now opens Home; this existing heading is
-          promoted to h1 so the page still has exactly one. */}
-      <section className="section page-intro" aria-labelledby="enfoque-title">
+      {/* ── MONITORINC — bloque corporativo (page h1) ─────────── */}
+      <CorporateIntro />
+
+      {/* ── 01 — Qué hacemos (texto movido desde la Home) ───── */}
+      <WhatWeDoIntro />
+
+      <section className="section section--tight" aria-labelledby="enfoque-title">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow eyebrow--num">{PDF_ABOUT.title}</span>
-            <h1 id="enfoque-title" className="h2">Cómo trabajamos</h1>
+            <h2 id="enfoque-title" className="h2">Cómo trabajamos</h2>
           </div>
           <div className="svc-group">
             {FOCUS.map((f, i) => (

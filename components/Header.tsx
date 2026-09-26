@@ -5,12 +5,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { AgendarDemoButton } from './ui/AgendarDemoButton'
+import { TopUtilityBar } from './TopUtilityBar'
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/sectores', label: 'Sectores' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/nosotros', label: 'Nosotros' },
+  { href: '/faq', label: 'FAQ' },
   { href: '/contacto', label: 'Contacto' },
 ]
 
@@ -57,6 +59,10 @@ export function Header() {
        to the header's own height and spilled the links over the hero. */
     <>
       <header className="header">
+        {/* Utility row (company, address, contact) — a separate row above
+            the main nav, inside the same sticky block. */}
+        <TopUtilityBar />
+
         <div className="container header__inner">
           <Link href="/" className="brand" onClick={close} aria-label="MONITORINC — inicio">
             {/* `unoptimized` serves the SVG straight from /public: the image

@@ -11,6 +11,11 @@ export function buildWhatsAppUrl(message: string, digits: string = CONTACT.whats
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`
 }
 
+/** Plain wa.me link (no prefilled message) for a number held in CONTACT. */
+export function whatsappHref(digits: string = CONTACT.whatsappPrimary.digits) {
+  return `https://wa.me/${digits}`
+}
+
 /** `tel:` link for a number held in CONTACT. */
 export function telHref(digits: string) {
   return `tel:+${digits}`
