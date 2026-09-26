@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { CONTACT } from '../../config/contact'
 import { telHref, mailtoHref } from '../../lib/whatsapp'
 import { SECTORS } from '../../content/site'
+import { SocialLinks } from './SocialLinks'
 
 /**
  * Global footer, rendered from app/layout.js so every route shares it.
@@ -12,29 +13,6 @@ import { SECTORS } from '../../content/site'
  * which only re-colours the grey areas so the wordmark keeps contrast on the
  * dark footer. Geometry is identical; no wordmark is rebuilt in HTML.
  */
-
-/* Inline outline glyphs — no icon package is installed and nothing is
-   hotlinked. They inherit `currentColor` so the footer controls the tint. */
-const SOCIALS = [
-  {
-    net: 'instagram',
-    label: 'Instagram de MONITORINC',
-    href: 'https://www.instagram.com/monitorinc_/',
-    icon: (
-      <>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-      </>
-    ),
-  },
-  {
-    net: 'facebook',
-    label: 'Facebook de MONITORINC',
-    href: 'https://www.facebook.com/MONITORINC',
-    icon: <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />,
-  },
-]
 
 const SOLUTION_LINKS = [
   'CCTV y grabación',
@@ -68,29 +46,7 @@ export function SiteFooter() {
             <div className="footer__follow">
               <span className="footer__social-label">Síguenos</span>
               <div className="footer__social">
-                {SOCIALS.map((s) => (
-                  <a
-                    key={s.net}
-                    href={s.href}
-                    data-net={s.net}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.label}
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      {s.icon}
-                    </svg>
-                  </a>
-                ))}
+                <SocialLinks />
               </div>
             </div>
           </div>

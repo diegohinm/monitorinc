@@ -5,6 +5,7 @@
 import { CONTACT } from '../config/contact'
 import { telHref, mailtoHref } from '../lib/whatsapp'
 import { Hero } from '../components/hero/Hero'
+import { RespaldoGarantiaSection } from '../components/home/RespaldoGarantiaSection'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
 import { SolutionsRoulette } from '../components/home/SolutionsRoulette'
@@ -31,6 +32,9 @@ export default function Home() {
     <main>
         {/* ── HERO ─────────────────────────────────────────── */}
         <Hero />
+
+        {/* ── RESPALDO Y GARANTÍA + métricas ───────────────── */}
+        <RespaldoGarantiaSection />
 
         {/* ── PROVEEDORES marquee ──────────────────────────── */}
         <SuppliersMarquee />

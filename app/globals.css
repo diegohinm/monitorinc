@@ -97,6 +97,19 @@ h1, h2, h3, h4 {
   padding-inline: var(--pad);
 }
 
+/* Read by assistive tech, never drawn. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .section { padding-block: clamp(72px, 11vw, 140px); }
 .section--tight { padding-block: clamp(56px, 8vw, 96px); }
 
@@ -197,7 +210,8 @@ h1, h2, h3, h4 {
   border-bottom: 1px solid var(--border);
 }
 
-/* Top utility bar — company · address · contact, one thin dark line. */
+/* Top utility bar — company · address · contact on the left, socials on the
+   right, one thin dark line. */
 .topbar {
   background: #111922;
   color: rgba(255, 255, 255, 0.72);
@@ -257,10 +271,44 @@ h1, h2, h3, h4 {
   flex: 0 0 auto;
 }
 /* "Contacto:" (wa.me) and the number (tel:) read as one block. */
-.topbar__contact { gap: 5px; color: rgba(255, 255, 255, 0.8); }
+.topbar__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.8);
+}
 .topbar__icon--wa { width: 14px; height: 14px; color: #25D366; }
 .topbar__contact:hover .topbar__link,
 .topbar__contact:focus-within .topbar__link { color: #25D366; }
+
+/* "Síguenos" + Instagram / Facebook. Each link is a 24px-wide hit area around
+   a 16px glyph, so the gaps below are tuned for ~10px of visible air between
+   label and icons and between the two icons. */
+.topbar__follow { gap: 6px; }
+.topbar__follow-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.topbar__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  /* Pull the last glyph flush with the container edge (and the header CTA). */
+  margin-right: -4px;
+}
+.topbar__social .topbar__link {
+  justify-content: center;
+  min-width: 24px;
+  color: rgba(255, 255, 255, 0.72);
+}
+.topbar__social svg { width: 16px; height: 16px; display: block; }
+.topbar__social .topbar__link[data-net="instagram"]:hover,
+.topbar__social .topbar__link[data-net="instagram"]:focus-visible { color: #E4405F; }
+.topbar__social .topbar__link[data-net="facebook"]:hover,
+.topbar__social .topbar__link[data-net="facebook"]:focus-visible { color: #1877F2; }
 
 .header__inner {
   height: var(--header-h);
@@ -451,6 +499,120 @@ h1, h2, h3, h4 {
 .audience__item:hover .audience__icon img { transform: translateY(-1px); }
 .audience__item:hover .audience__text { color: #1F2022; }
 
+/* ─── Respaldo y garantía (Home) ─────────────────────────────── */
+/* Light editorial block between the hero and the suppliers strip: copy on
+   the left, field photo on the right, then a hairline metrics band. The
+   section's bottom rule separates it from the suppliers marquee. */
+.respaldo {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding-top: clamp(72px, 8.5vw, 120px);
+}
+.respaldo__grid {
+  display: grid;
+  /* ~47 / 53: as wide as the copy can go while the photo stays dominant. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 4.5vw, 64px);
+  align-items: center;
+  padding-bottom: clamp(48px, 5vw, 64px);
+}
+.respaldo__title { margin-top: 18px; }
+.respaldo__text {
+  margin-top: 22px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+.respaldo__media {
+  position: relative;
+  height: clamp(420px, 36vw, 500px);
+  border-radius: 18px;
+  overflow: hidden;
+  /* Placeholder tone while the photo decodes; the box never resizes. */
+  background: var(--bg-alt);
+  box-shadow: 0 1px 2px rgba(24, 25, 27, 0.04), 0 14px 32px -20px rgba(24, 25, 27, 0.24);
+}
+/* The technician and the camera sit left of centre in the frame. */
+.respaldo__img { object-fit: cover; object-position: 42% center; }
+
+/* Metrics band: three columns split by short hairlines, no cards. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+.stats__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(32px, 4vw, 48px) clamp(20px, 3vw, 44px);
+}
+.stats__item:first-child { padding-left: 0; }
+.stats__item + .stats__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 26%;
+  bottom: 26%;
+  width: 1px;
+  background: var(--border);
+}
+.stats__value {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(44px, 4.6vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  /* Equal-width digits so the figure doesn't jitter while it counts. */
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.stats__plus { color: var(--green-dark); margin-right: 0.03em; }
+.stats__label {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--muted);
+}
+/* StatsStrip phases: `idle` hides the items instantly (no transition) while
+   they wait below the fold; `run` fades them up in a short stagger. */
+.stats[data-phase="idle"] .stats__item {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.stats[data-phase="run"] .stats__item {
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 140ms);
+}
+
+@media (max-width: 1024px) {
+  .respaldo__grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .respaldo__copy { max-width: 640px; }
+  /* Stacked: the frame takes the photo's own ratio instead of a fixed height. */
+  .respaldo__media { height: auto; aspect-ratio: 1586 / 992; }
+}
+
+@media (max-width: 640px) {
+  .respaldo__text { font-size: 16px; }
+  .respaldo__media { aspect-ratio: 4 / 3; border-radius: 16px; }
+  /* Phones: one metric per row, figure and label side by side. */
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .stats__item {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 16px;
+    padding: 22px 0;
+  }
+  .stats__item + .stats__item { border-top: 1px solid var(--border); }
+  .stats__item + .stats__item::before { display: none; }
+  .stats__value { flex: 0 0 auto; width: 2.9em; font-size: 40px; }
+}
+
 /* ─── Proveedores marquee ────────────────────────────────────── */
 .suppliers {
   background: var(--bg);
@@ -546,6 +708,14 @@ h1, h2, h3, h4 {
   background: var(--dark-bg);
   color: var(--dark-text);
   overflow: hidden;
+  /* Close to one full screen under the sticky header (utility bar + nav),
+     capped so very tall monitors don't get a towering banner. svh, not dvh:
+     the height must not jump while mobile browser chrome collapses. */
+  --hero-chrome: calc(var(--topbar-h) + var(--header-h));
+  min-height: clamp(680px, calc(100vh - var(--hero-chrome)), 920px);
+  min-height: clamp(680px, calc(100svh - var(--hero-chrome)), 920px);
+  display: flex;
+  flex-direction: column;
 }
 .hero::before {
   content: "";
@@ -584,11 +754,19 @@ h1, h2, h3, h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  /* Per-clip framing comes in from HeroVideoBackground as custom properties. */
+  object-position: var(--hero-video-pos, center center);
   opacity: 0;
   transition: opacity var(--hero-video-fade, 650ms) ease-in-out;
   pointer-events: none;
   border: 0;
+}
+/* In a portrait box `cover` shows only a narrow vertical slice of the 16:9
+   footage, so each clip can re-aim that slice at its subject. */
+@media (orientation: portrait) {
+  .hero-video__el {
+    object-position: var(--hero-video-pos-portrait, var(--hero-video-pos, center center));
+  }
 }
 .hero-video__el--active { opacity: 1; }
 .hero-video__overlay {
@@ -596,62 +774,76 @@ h1, h2, h3, h4 {
   inset: 0;
   pointer-events: none;
 }
-.hero-video__overlay--flat { background: rgba(8, 10, 10, 0.16); }
+/* Dark on the left under the copy, easing off so the footage stays vivid on
+   the right. The vertical pass only softens the top and bottom edges. */
 .hero-video__overlay--h {
   background: linear-gradient(
     90deg,
-    rgba(8,10,10,0.58) 0%,
-    rgba(8,10,10,0.34) 40%,
-    rgba(8,10,10,0.05) 70%,
-    rgba(8,10,10,0.16) 100%
+    rgba(0,0,0,0.62) 0%,
+    rgba(0,0,0,0.42) 40%,
+    rgba(0,0,0,0.15) 72%,
+    rgba(0,0,0,0.08) 100%
   );
 }
 .hero-video__overlay--v {
   background: linear-gradient(
     180deg,
-    rgba(8,10,10,0.42) 0%,
-    rgba(8,10,10,0.00) 26%,
-    rgba(8,10,10,0.00) 66%,
-    rgba(8,10,10,0.52) 100%
+    rgba(0,0,0,0.22) 0%,
+    rgba(0,0,0,0.00) 24%,
+    rgba(0,0,0,0.00) 70%,
+    rgba(0,0,0,0.30) 100%
   );
 }
 .hero__inner {
   position: relative;
   z-index: 10;
+  flex: 1 0 auto;
   /* Soft shadow keeps the copy readable over a bright video without
      forcing a heavy flat overlay that would hide the footage. */
   text-shadow: 0 1px 2px rgba(0,0,0,0.32), 0 6px 26px rgba(0,0,0,0.42);
-  padding-top: clamp(72px, 12vw, 130px);
-  padding-bottom: clamp(56px, 9vw, 104px);
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(32px, 5vw, 72px);
+  display: flex;
   align-items: center;
+  /* Deeper bottom padding sits the copy a touch above the true centre. */
+  padding-top: clamp(48px, 7vh, 80px);
+  padding-bottom: clamp(64px, 10vh, 112px);
+}
+/* Narrow editorial column: the rest of the hero is left to the footage. */
+.hero__content {
+  width: 100%;
+  max-width: 680px;
 }
 .hero__eyebrow {
-  color: var(--dark-muted);
-  margin-bottom: 26px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 22px;
 }
 .hero__eyebrow::before { background: var(--green); }
+/* Sized so "Haz de cada espacio" (≈9em wide) holds on one line: the title
+   reads as two lines on every desktop, never with an orphaned word. */
 .hero h1 {
   color: #fff;
-  font-size: clamp(2.9rem, 6vw, 5.4rem);
+  font-size: clamp(52px, 4.7vw, 74px);
   line-height: 0.98;
-  letter-spacing: -0.02em;
-  margin-bottom: 26px;
+  letter-spacing: -0.025em;
+  margin-bottom: 30px;
+  /* Phones need a third line: keep "cada espacio" together, no lone word. */
+  text-wrap: balance;
 }
 .hero h1 em {
   font-style: italic;
   color: var(--green);
 }
 .hero__sub {
-  font-size: clamp(1.05rem, 1.7vw, 1.28rem);
-  color: var(--dark-muted);
-  max-width: 46ch;
+  font-size: clamp(18px, 1.35vw, 21px);
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 560px;
   margin-bottom: 34px;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero__actions .btn {
+  min-height: 52px;
+  padding-inline: 28px;
+}
 
 /* Hero side panel — subtle status chips (secondary, not a dashboard) */
 .hero__panel {
@@ -1062,7 +1254,6 @@ h1, h2, h3, h4 {
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   :root { --pad: 28px; }
-  .hero__inner { grid-template-columns: 1fr; }
   .hero__panel { max-width: 460px; }
   .consult__grid,
   .services__intro,
@@ -1079,19 +1270,47 @@ h1, h2, h3, h4 {
   .header__toggle { display: flex; }
 }
 
+/* Utility bar needs ~630px for everything: the company name goes first. */
+@media (max-width: 720px) {
+  .topbar__brand, .topbar__sep--brand { display: none; }
+}
+
 @media (max-width: 640px) {
   :root { --pad: 20px; --header-h: 66px; --topbar-h: 30px; }
-  /* Utility bar: drop the company name on phones; keep address + contact. */
-  .topbar__brand, .topbar__sep { display: none; }
+  /* Utility bar on phones: contact on the left, socials on the right. */
+  .topbar__address, .topbar__sep--address { display: none; }
   .brand__logo { height: 30px; }
-  .hero-video__overlay--flat { background: rgba(8, 10, 10, 0.28); }
+  .hero {
+    min-height: clamp(640px, calc(100vh - var(--hero-chrome)), 860px);
+    min-height: clamp(640px, calc(100svh - var(--hero-chrome)), 860px);
+  }
+  /* Phones: the copy spans the full width, so the shade stays near-even. */
   .hero-video__overlay--h {
     background: linear-gradient(
       90deg,
-      rgba(8,10,10,0.40) 0%,
-      rgba(8,10,10,0.30) 55%,
-      rgba(8,10,10,0.34) 100%
+      rgba(0,0,0,0.58) 0%,
+      rgba(0,0,0,0.48) 55%,
+      rgba(0,0,0,0.50) 100%
     );
+  }
+  .hero__inner {
+    padding-top: 40px;
+    padding-bottom: 56px;
+  }
+  .hero h1 {
+    font-size: clamp(42px, 12vw, 58px);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  /* Tighter tracking keeps the eyebrow on a single line at 390px. */
+  .hero__eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    margin-bottom: 20px;
+  }
+  .hero__sub {
+    font-size: 17px;
+    margin-bottom: 30px;
   }
   body { font-size: 16px; }
   .svc-row {
@@ -1108,9 +1327,9 @@ h1, h2, h3, h4 {
   .final-cta__actions .btn { flex: 1 1 auto; }
 }
 
-@media (max-width: 480px) {
-  /* Address and contact no longer fit on one line: contact only. */
-  .topbar__address { display: none; }
+@media (max-width: 369px) {
+  /* Too tight for the label: contact and the two icons only. */
+  .topbar__follow-label { display: none; }
 }
 
 @media (max-width: 420px) {

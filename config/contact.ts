@@ -29,6 +29,8 @@ type ContactConfig = {
   phoneSecondary?: PhoneNumber
   emailPrimary: string
   website: { label: string; url: string }
+  /** Social profiles — shared by the top utility bar and the footer. */
+  social: { instagram: string; facebook: string }
 }
 
 export const CONTACT: ContactConfig = {
@@ -50,5 +52,9 @@ export const CONTACT: ContactConfig = {
   website: {
     label: 'www.monitorinc.com.co',
     url: 'https://www.monitorinc.com.co',
+  },
+  social: {
+    instagram: 'https://www.instagram.com/monitorinc_/',
+    facebook: 'https://www.facebook.com/MONITORINC',
   },
 }

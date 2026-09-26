@@ -21,6 +21,11 @@ type HeroVideoSource = {
   src: string
   objectPosition?: string
   /**
+   * Framing for portrait boxes (phones, portrait tablets), where `cover` keeps
+   * only a narrow vertical slice of the frame. Falls back to `objectPosition`.
+   */
+  portraitObjectPosition?: string
+  /**
    * Set these only when a clip ships with letter/pillarbox bars baked into its
    * pixels. `object-fit: cover` treats those bars as picture content, so the
    * only way to lose them is to crop in past them.
@@ -34,15 +39,22 @@ type HeroVideoSource = {
 
 const VIDEO_SOURCES: HeroVideoSource[] = [
   // 4:3 footage pillarboxed into a 1280x720 frame: 159px of black on the left,
-  // 160px on the right, measured off a decoded frame.
+  // 160px on the right, measured off a decoded frame. The crew stands at
+  // roughly 20–50% of the frame width for most of the clip.
   {
     src: '/videos/video1.mp4',
     objectPosition: 'center center',
+    portraitObjectPosition: '40% center',
     contentAspect: 961 / 720,
     frameAspect: 1280 / 720,
   },
-  // Native 16:9, no bars — no zoom, no needless upscaling.
-  { src: '/videos/video2.mp4', objectPosition: 'center center' },
+  // Native 16:9, no bars — no zoom, no needless upscaling. The operator drifts
+  // from ~30% to ~80% of the width in front of the centred monitor wall.
+  {
+    src: '/videos/video2.mp4',
+    objectPosition: 'center center',
+    portraitObjectPosition: '55% center',
+  },
 ]
 
 /**
@@ -292,10 +304,13 @@ export function HeroVideoBackground({ className = '', transitionMs = 650 }: Prop
           className={`hero-video__el${
             index === activeIndex && firstFrameReady ? ' hero-video__el--active' : ''
           }`}
-          style={{
-            objectPosition: source.objectPosition ?? 'center center',
-            transform: scale > 1 ? `scale(${scale.toFixed(4)})` : undefined,
-          }}
+          style={
+            {
+              '--hero-video-pos': source.objectPosition ?? 'center center',
+              '--hero-video-pos-portrait': source.portraitObjectPosition,
+              transform: scale > 1 ? `scale(${scale.toFixed(4)})` : undefined,
+            } as React.CSSProperties
+          }
           src={source.src}
           autoPlay={index === 0}
           muted
@@ -323,7 +338,6 @@ export function HeroVideoBackground({ className = '', transitionMs = 650 }: Prop
         )
       })}
 
-      <div className="hero-video__overlay hero-video__overlay--flat" />
       <div className="hero-video__overlay hero-video__overlay--h" />
       <div className="hero-video__overlay hero-video__overlay--v" />
     </div>

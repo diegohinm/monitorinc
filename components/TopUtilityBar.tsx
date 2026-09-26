@@ -1,11 +1,17 @@
 import { CONTACT } from '../config/contact'
 import { telHref, whatsappHref } from '../lib/whatsapp'
+import { SocialLinks } from './site/SocialLinks'
 
 /**
  * Thin dark utility bar rendered as the first row inside the global <header>,
- * so it shares the sticky block with the main header row. Company name and
- * address on the left, WhatsApp / phone contact on the right; every value
- * comes from config/contact.ts.
+ * so it shares the sticky block with the main header row. Company name,
+ * address and WhatsApp / phone contact read as one group on the left; the
+ * social links (shared with the footer) sit on the right. Every value comes
+ * from config/contact.ts.
+ *
+ * As the bar narrows, items drop in reverse priority — company name first,
+ * then the address and the "Síguenos" label — so contact and socials always
+ * stay on a single line.
  *
  * "Contacto:" (with the WhatsApp glyph) and the number are two adjacent
  * anchors styled as one block — wa.me and tel: respectively — because an
@@ -28,7 +34,7 @@ export function TopUtilityBar() {
             <span className="topbar__dot" aria-hidden="true" />
             {CONTACT.companyName}
           </span>
-          <span className="topbar__sep" aria-hidden="true" />
+          <span className="topbar__sep topbar__sep--brand" aria-hidden="true" />
           <a
             className="topbar__link topbar__address"
             href={CONTACT.address.mapsUrl}
@@ -52,33 +58,40 @@ export function TopUtilityBar() {
             </svg>
             <span>{CONTACT.address.label}</span>
           </a>
+          <span className="topbar__sep topbar__sep--address" aria-hidden="true" />
+          <span className="topbar__contact">
+            <a
+              className="topbar__link topbar__wa"
+              href={whatsappHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contactar a MONITORINC por WhatsApp"
+            >
+              <svg
+                className="topbar__icon topbar__icon--wa"
+                viewBox="0 0 510 512.459"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d={WHATSAPP_PATH} />
+              </svg>
+              <span>Contacto:</span>
+            </a>
+            <a
+              className="topbar__link topbar__tel"
+              href={telHref(CONTACT.whatsappPrimary.digits)}
+              aria-label="Llamar a MONITORINC"
+            >
+              {CONTACT.whatsappPrimary.label}
+            </a>
+          </span>
         </div>
 
-        <div className="topbar__group topbar__contact">
-          <a
-            className="topbar__link topbar__wa"
-            href={whatsappHref()}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Contactar a MONITORINC por WhatsApp"
-          >
-            <svg
-              className="topbar__icon topbar__icon--wa"
-              viewBox="0 0 510 512.459"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d={WHATSAPP_PATH} />
-            </svg>
-            <span>Contacto:</span>
-          </a>
-          <a
-            className="topbar__link topbar__tel"
-            href={telHref(CONTACT.whatsappPrimary.digits)}
-            aria-label="Llamar a MONITORINC"
-          >
-            {CONTACT.whatsappPrimary.label}
-          </a>
+        <div className="topbar__group topbar__follow">
+          <span className="topbar__follow-label">Síguenos</span>
+          <span className="topbar__social">
+            <SocialLinks linkClassName="topbar__link" />
+          </span>
         </div>
       </div>
     </div>
