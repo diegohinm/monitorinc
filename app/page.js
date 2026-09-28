@@ -8,7 +8,6 @@ import { Hero } from '../components/hero/Hero'
 import { RespaldoGarantiaSection } from '../components/home/RespaldoGarantiaSection'
 import { SuppliersMarquee } from '../components/home/SuppliersMarquee'
 import { AudienceStrip } from '../components/home/AudienceStrip'
-import { SolutionsRoulette } from '../components/home/SolutionsRoulette'
 import { ConsultationForm } from '../components/site/ConsultationForm'
 import { FinalCta } from '../components/site/FinalCta'
 
@@ -30,7 +29,7 @@ export const metadata = {
 export default function Home() {
   return (
     <main>
-        {/* ── HERO ─────────────────────────────────────────── */}
+        {/* ── HERO — videos por categoría (Seguridad · Automatización · Monitoreo) ── */}
         <Hero />
 
         {/* ── RESPALDO Y GARANTÍA + métricas ───────────────── */}
@@ -73,9 +72,6 @@ export default function Home() {
             <ConsultationForm />
           </div>
         </section> */}
-
-        {/* ── SOLUCIONES — roulette de categorías (la sección completa vive en /soluciones) ── */}
-        <SolutionsRoulette />
 
         {/* FAQ now lives on /faq (components/sections/FaqSection). */}
         <FinalCta />

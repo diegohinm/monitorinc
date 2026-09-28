@@ -11,8 +11,12 @@ import { StatsStrip, type Stat } from './StatsStrip'
  * metrics band hydrates, for its count-up.
  *
  * The photo is a 1586×992 PNG of ~3 MB, so it goes through next/image: the
- * browser gets a WebP/AVIF sized to the column instead of the source file.
+ * browser gets a WebP/AVIF sized to the frame instead of the source file.
  * The frame has a fixed height / aspect ratio, so nothing shifts on load.
+ *
+ * `sizes` is the width `cover` actually paints, not the frame width: the
+ * 1.6:1 photo is height-bound in the desktop frame (up to 500px tall, so
+ * 800px wide) and in the 4:3 phone frame (1.2× the frame width).
  */
 
 /** Module-level so StatsStrip's effect sees a stable reference. */
@@ -48,7 +52,7 @@ export function RespaldoGarantiaSection() {
               src="/images/tech-back.png"
               alt="Equipo y respaldo tecnológico de Monitorinc"
               fill
-              sizes="(max-width: 1024px) calc(100vw - 56px), 640px"
+              sizes="(max-width: 640px) calc((100vw - 40px) * 1.2), (max-width: 1024px) calc(100vw - 56px), 800px"
               className="respaldo__img"
             />
           </div>
