@@ -52,18 +52,20 @@ export function SiteFooter() {
           </div>
 
           <div className="footer__col">
-            <h4>Soluciones</h4>
+            <h4><Link href="/soluciones">Soluciones</Link></h4>
             <ul>
+              {/* /soluciones has no per-solution anchors (its accordion ids
+                  are positional), so every item opens the section itself. */}
               {SOLUTION_LINKS.map((label) => (
                 <li key={label}>
-                  <Link href="/proyectos#soluciones">{label}</Link>
+                  <Link href="/soluciones">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="footer__col">
-            <h4>Sectores</h4>
+            <h4><Link href="/sectores">Sectores</Link></h4>
             <ul>
               {SECTORS.map((s) => (
                 <li key={s.slug}>
@@ -75,12 +77,18 @@ export function SiteFooter() {
           </div>
 
           <div className="footer__col">
-            <h4>Contacto</h4>
+            <h4><Link href="/contacto">Contacto</Link></h4>
             <ul>
               <li><a href={telHref(CONTACT.whatsappPrimary.digits)}>{CONTACT.whatsappPrimary.label}</a></li>
               {CONTACT.phoneSecondary && (
                 <li><a href={telHref(CONTACT.phoneSecondary.digits)}>{CONTACT.phoneSecondary.label}</a></li>
               )}
+              {/* Same place link as the top utility bar. */}
+              <li>
+                <a href={CONTACT.address.mapsUrl} target="_blank" rel="noopener noreferrer">
+                  {CONTACT.address.label}
+                </a>
+              </li>
               <li><a href={mailtoHref()}>{CONTACT.emailPrimary}</a></li>
               <li><a href={CONTACT.website.url} target="_blank" rel="noreferrer">{CONTACT.website.label}</a></li>
             </ul>

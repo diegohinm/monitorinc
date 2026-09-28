@@ -1064,7 +1064,11 @@ h1, h2, h3, h4 {
 }
 .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
 .footer__col a, .footer__col li { font-size: 15px; color: var(--dark-muted); }
+.footer__col a { transition: color 180ms var(--ease); }
 .footer__col a:hover { color: #fff; }
+/* Column headings link to their route but keep the heading's own look. */
+.footer__col h4 a { font-size: inherit; color: inherit; }
+.footer__col h4 a:hover { color: #fff; }
 .footer__bottom {
   padding-top: 28px;
   display: flex;
